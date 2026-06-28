@@ -1,4 +1,4 @@
-# Sourav Khandelwal — AI & Automation for Audit, Tax & Finance
+# Chandan Panda — AI & Automation for Audit, Tax & Finance
 
 I'm a Chartered Accountant who builds production-grade automation for the work
 most finance professionals still do by hand. Over the last few months I've
@@ -79,4 +79,4 @@ The core of my work — encoding audit methodology into repeatable tooling.
 - **Modern AI engineering** — RAG pipelines, agentic workflows (LangGraph), reusable Claude Skills, vision models.
 - **End-to-end delivery** — from raw PDF/Excel input to Excel reports, HTML dashboards, decks, and alerts.
 
-📫 souravkhandelwal49@gmail.com
+📫 chandanpanda615@gmail.com
