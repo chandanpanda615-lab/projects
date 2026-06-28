@@ -3,39 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chandan Panda — AI & Automation for Audit, Tax & Finance</title>
+<title>Chandan Panda — AI &amp; Automation for Audit, Tax &amp; Finance</title>
 <style>
   :root{
     --bg:#0f1115; --panel:#161922; --line:#262b38; --text:#e6e9ef;
-    --muted:#9aa3b2; --accent:#5b9dff; --chip:#1e2433;
+    --muted:#9aa3b2; --accent:#5b9dff; --chip:#1e2433; --gold:#f0b429;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);
     font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
-  .wrap{max-width:960px;margin:0 auto;padding:48px 20px}
-  header h1{font-size:2.1rem;margin:0 0 8px;letter-spacing:-.02em}
+  .wrap{max-width:1000px;margin:0 auto;padding:48px 20px}
+  header h1{font-size:2.2rem;margin:0 0 8px;letter-spacing:-.02em}
   header .tag{color:var(--muted);font-size:1.05rem}
   .intro{margin:28px 0;padding:22px;background:var(--panel);
     border:1px solid var(--line);border-radius:14px}
-  .intro p{margin:0 0 12px}
-  .intro p:last-child{margin:0}
-  .lead{font-weight:600}
+  .intro p{margin:0 0 12px}.intro p:last-child{margin:0}
+  .lead{font-weight:600;font-size:1.08rem}
   .note{font-size:.9rem;color:var(--muted);border-left:3px solid var(--accent);
     padding:10px 14px;background:#12161f;border-radius:0 8px 8px 0;margin-top:16px}
-  h2{margin:44px 0 6px;font-size:1.35rem;letter-spacing:-.01em}
-  h2 .ico{margin-right:8px}
+  h2{margin:48px 0 6px;font-size:1.4rem;letter-spacing:-.01em}
   .sub{color:var(--muted);margin:0 0 18px;font-size:.95rem}
   .grid{display:grid;gap:14px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
-    padding:16px 18px;transition:border-color .15s,transform .15s}
+    padding:18px 20px;transition:border-color .15s,transform .15s;position:relative}
   .card:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .card h3{margin:0 0 6px;font-size:1.02rem}
-  .card p{margin:0 0 10px;color:var(--text);font-size:.94rem}
+  .card .num{position:absolute;top:14px;right:16px;font-size:.8rem;color:var(--muted);
+    font-weight:700;opacity:.5}
+  .card h3{margin:0 0 6px;font-size:1.05rem;padding-right:28px}
+  .card p{margin:0 0 8px;font-size:.94rem}
+  .card .impact{color:var(--gold);font-size:.88rem;font-weight:600;margin:0 0 10px}
   .stack{display:flex;flex-wrap:wrap;gap:6px}
   .stack span{background:var(--chip);color:var(--muted);font-size:.78rem;
     padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+  .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;
+    border-radius:999px;margin-left:6px;vertical-align:middle}
+  .b-live{background:#10331f;color:#5fd38a;border:1px solid #1d5b38}
+  .b-wip{background:#3a2f10;color:#f0b429;border:1px solid #5b491d}
+  .mini{display:grid;gap:10px;grid-template-columns:1fr}
+  .mini .row{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:12px 16px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+  .mini .row b{font-weight:600}.mini .row .d{color:var(--muted);font-size:.9rem;flex:1;min-width:200px}
+  .mini .row .t{color:var(--muted);font-size:.8rem}
   .demo{margin-top:48px;padding:24px;background:var(--panel);
     border:1px solid var(--line);border-radius:14px}
   .demo ul{margin:8px 0 0;padding-left:20px;color:var(--muted)}
@@ -48,75 +58,121 @@
 <div class="wrap">
   <header>
     <h1>Chandan Panda</h1>
-    <div class="tag">AI &amp; Automation for Audit, Tax &amp; Finance · Chartered Accountant</div>
+    <div class="tag">AI &amp; Automation for Audit, Tax &amp; Finance · Chartered Accountant (Finalist)</div>
   </header>
 
   <section class="intro">
-    <p class="lead">I'm a Chartered Accountant who builds production-grade automation for the work most finance professionals still do by hand.</p>
-    <p>Over the last few months I've designed and shipped <strong>27 tools</strong> spanning statutory audit, GST/tax compliance, AI agents, RAG pipelines, and a few civic and creative side projects. The thread that connects all of them: <strong>domain expertise turned into software.</strong> I don't just write Python — I encode audit logic, ICAI standards, and tax law into systems that hold up against messy real-world data.</p>
-    <div class="note"><strong>On confidentiality:</strong> Several tools below were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published.</div>
+    <p class="lead">I'm a CA who builds production automation for the audit work most firms still do by hand — and actually runs it on live engagements.</p>
+    <p>The thread across everything below: <strong>domain expertise turned into software.</strong> I don't write generic scripts — I encode audit methodology, ICAI standards, and tax law into tools that hold up against messy, real-world data. Every project on this page is <strong>built and in real use</strong> unless explicitly marked <em>in progress</em>.</p>
+    <div class="note"><strong>On confidentiality:</strong> Several tools were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published.</div>
   </section>
 
-  <h2><span class="ico">🔎</span>Audit &amp; Assurance Automation</h2>
-  <p class="sub">The core of my work — encoding audit methodology into repeatable tooling.</p>
+  <h2>⭐ Selected Work</h2>
+  <p class="sub">Ten projects, chosen for impact and range. All production-used unless tagged.</p>
   <div class="grid">
-    <div class="card"><h3>IFC Test-of-Design File Mapper</h3><p>Scans evidence folders, anonymizes client data, and uses AI to map files to control objectives across HR/Payroll, Direct Tax &amp; SOFTEX.</p><div class="stack"><span>Python</span><span>Claude API</span></div></div>
-    <div class="card"><h3>Entity-Specific Audit Program Generator</h3><p>Parses Risk &amp; Control Matrices across 6 areas (O2C, P2P, H2R, FSCP, PPE, Tax) and generates an Excel workbook tying procedures to SAP T-codes, control IDs &amp; reviewers.</p><div class="stack"><span>Python</span><span>JSON</span><span>Excel</span></div></div>
-    <div class="card"><h3>RCM Autofill (Claude Skill)</h3><p>A persistent AI skill that reads blank Risk &amp; Control Matrices and auto-applies CEAVOP assertions using strict ICAI theory rules.</p><div class="stack"><span>Claude Skills</span><span>Markdown</span></div></div>
-    <div class="card"><h3>Audit Walkthrough → SOP Extractor</h3><p>Turns messy post-meeting notes into a process narrative, draft SOP, Mermaid.js flowchart, gap list, and starter RCM.</p><div class="stack"><span>LLM</span><span>Mermaid.js</span></div></div>
-    <div class="card"><h3>Vendor Master Anomaly Detection</h3><p>28-parameter rule engine over 500–2,000 vendor records — fuzzy matching on names, bank accounts &amp; PANs to flag duplicates, shell companies &amp; missing fields.</p><div class="stack"><span>Python</span><span>pandas</span></div></div>
-    <div class="card"><h3>Employee Master &amp; Payroll Audit Tool</h3><p>Validates PF/ESIC applicability, UAN–PAN consistency, duplicate codes/Aadhaar/PAN, and reconciles bank accounts to surface ghost-employee fraud vectors.</p><div class="stack"><span>Python</span><span>pandas</span><span>Tkinter</span></div></div>
-    <div class="card"><h3>Leave Reconciliation Script</h3><p>Cross-checks HR system data against physical leave registers to flag unrecorded leaves and discrepancies.</p><div class="stack"><span>Python</span><span>pandas</span></div></div>
-    <div class="card"><h3>Apify Due-Diligence Agent</h3><p>LangGraph agent node that scrapes annual reports &amp; news into a structured JSON risk profile for audit risk assessment.</p><div class="stack"><span>LangGraph</span><span>Apify</span><span>Claude</span></div></div>
-    <div class="card"><h3>SmartExcelReader Wrapper</h3><p>OO Python class that dynamically locates headers, unmerges cells while keeping values, and decouples fragile file parsing from audit logic.</p><div class="stack"><span>Python</span><span>openpyxl</span></div></div>
-    <div class="card"><h3>FC Sheet-Mapping Extractor</h3><p>Builds an index map across multiple Financial Control working files for faster fieldwork navigation.</p><div class="stack"><span>Python</span><span>openpyxl</span><span>Jupyter</span></div></div>
+
+    <div class="card"><span class="num">01</span>
+      <h3>GST Reconciliation Engine<span class="badge b-live">in use</span></h3>
+      <p>Automated three-way matching — GSTR-1 vs 3B vs books — over 700+ invoices/month across .xlsx &amp; .xlsb. Flags mismatches, ITC discrepancies and rounding differences into an exception report.</p>
+      <p class="impact">⟶ Cut reconciliation from ~5 hours to under 30 minutes per client/month.</p>
+      <div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span></div>
+    </div>
+
+    <div class="card"><span class="num">02</span>
+      <h3>Entity-Specific Audit Program Generator<span class="badge b-live">in use</span></h3>
+      <p>Ingests unstructured Risk &amp; Control Matrices and generates a customised Q4 audit program — mapping 45 control procedures to exact SAP T-codes (VK11, VF01…) and named reviewers across O2C, P2P, H2R, FSCP, PPE &amp; Tax.</p>
+      <p class="impact">⟶ Replaces manual drafting; every step traceable to a real control.</p>
+      <div class="stack"><span>Python</span><span>JSON</span><span>Excel</span></div>
+    </div>
+
+    <div class="card"><span class="num">03</span>
+      <h3>Vendor Master Anomaly Detection<span class="badge b-live">in use</span></h3>
+      <p>A 28-parameter rule engine over 500–2,000 vendor records/client. Fuzzy matching on names, bank accounts &amp; PANs to surface duplicates, shell vendors and missing mandatory fields.</p>
+      <p class="impact">⟶ Catches duplicate-payment &amp; fraud risk manual review misses.</p>
+      <div class="stack"><span>Python</span><span>pandas</span></div>
+    </div>
+
+    <div class="card"><span class="num">04</span>
+      <h3>IFC Test-of-Design File Mapper<span class="badge b-live">in use</span></h3>
+      <p>Scans client evidence folders, anonymises data, and uses the Claude API to map files to control objectives across HR/Payroll, Direct Tax &amp; SOFTEX — then drafts the testing instructions.</p>
+      <p class="impact">⟶ Compresses the evidence-gathering phase of ToD reviews.</p>
+      <div class="stack"><span>Python</span><span>Claude API</span><span>filesystem</span></div>
+    </div>
+
+    <div class="card"><span class="num">05</span>
+      <h3>Employee Master &amp; Payroll Audit<span class="badge b-live">in use</span></h3>
+      <p>Validates PF/ESIC applicability, UAN–PAN consistency, duplicate codes/Aadhaar/PAN, and reconciles bank accounts — a practical ghost-employee fraud detector.</p>
+      <p class="impact">⟶ Turns payroll compliance testing into a one-run exception report.</p>
+      <div class="stack"><span>Python</span><span>pandas</span><span>Tkinter</span></div>
+    </div>
+
+    <div class="card"><span class="num">06</span>
+      <h3>RCM Autofill — Claude Skill<span class="badge b-live">in use</span></h3>
+      <p>Packages my firm's IFC CEAVOP rules into a reusable Claude Skill (SKILL.md + assertion_logic.md). Reads blank Risk &amp; Control Matrices and auto-applies the correct assertions and risk types.</p>
+      <p class="impact">⟶ Domain logic, encoded once, reused on every engagement.</p>
+      <div class="stack"><span>Claude Skills</span><span>Markdown</span></div>
+    </div>
+
+    <div class="card"><span class="num">07</span>
+      <h3>Professional Tax Challan Extractor<span class="badge b-live">in use</span></h3>
+      <p>Auto-detects the state across all 20 Indian states from text-based PDF challans (incl. Gujarati-script translation), parses details and cross-checks against payroll liability — no paid API.</p>
+      <p class="impact">⟶ Replaced 2–3 days of manual data entry.</p>
+      <div class="stack"><span>Python</span><span>pdfplumber</span><span>deep-translator</span></div>
+    </div>
+
+    <div class="card"><span class="num">08</span>
+      <h3>CMA Inter OMSM Battle-Plan Dashboard<span class="badge b-live">built</span></h3>
+      <p>9-tab interactive dashboard built from 14 ICMAI papers: topic heatmap, exact-repeat tracker (13 repeats found), marks split, gap analysis &amp; a confidence-scored study order.</p>
+      <p class="impact">⟶ Shows data-engineering + front-end range, end to end.</p>
+      <div class="stack"><span>Python</span><span>HTML/JS</span></div>
+    </div>
+
+    <div class="card"><span class="num">09</span>
+      <h3>Finance Slide-Deck Builders<span class="badge b-live">built</span></h3>
+      <p>Generates polished .pptx from dense source material — a 28-slide DCF valuation deck (formulas, life-cycle curve) and a ~30-slide Ind AS 116 Leases deck with latest amendments.</p>
+      <p class="impact">⟶ Turns 350-page packets into presentation-ready decks.</p>
+      <div class="stack"><span>Python</span><span>python-pptx</span><span>Tesseract OCR</span></div>
+    </div>
+
+    <div class="card"><span class="num">10</span>
+      <h3>CA Research Assistant — Local RAG<span class="badge b-wip">prototype · 70%</span></h3>
+      <p>A local RAG pipeline (ChromaDB + Gemini embeddings) that grounds tax/audit answers strictly in the Income Tax Act, Companies Act &amp; Standards on Auditing — returns exact paragraph citations, no hallucination.</p>
+      <p class="impact">⟶ Next: swap to a local model (Ollama) to make it client-data safe.</p>
+      <div class="stack"><span>Python</span><span>ChromaDB</span><span>Gemini embeddings</span></div>
+    </div>
+
   </div>
 
-  <h2><span class="ico">🧾</span>Tax &amp; GST Automation</h2>
-  <div class="grid">
-    <div class="card"><h3>GST Reconciliation Engine</h3><p>Three-way matching (GSTR-1 vs 3B, GSTR-2B vs books) over 700+ invoices/month across .xlsx &amp; .xlsb — cut 4–6 hrs/client to minutes.</p><div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span></div></div>
-    <div class="card"><h3>Professional Tax Challan Extractor</h3><p>Auto-detects state across 20 Indian states from PDF challans (incl. Gujarati-script translation), cross-checks against payroll liability. Replaced 2–3 days of manual entry.</p><div class="stack"><span>Python</span><span>pdfplumber</span><span>deep-translator</span></div></div>
-    <div class="card"><h3>GSTR-3B Cell-Address Extractor</h3><p>Pulls tax data from heavily-formatted, merged-cell templates using cached cell coordinates — robust where row-iteration breaks.</p><div class="stack"><span>Python</span><span>openpyxl</span><span>JSON</span></div></div>
-    <div class="card"><h3>CA Research Assistant (Local RAG)</h3><p>Grounds tax answers strictly in the Income Tax Act, Companies Act &amp; Standards on Auditing — retrieves exact paragraph citations, no hallucination.</p><div class="stack"><span>Python</span><span>ChromaDB</span><span>Gemini embeddings</span></div></div>
+  <h2>🛠️ Also Built &amp; In Use</h2>
+  <p class="sub">Smaller production tools that quietly save hours.</p>
+  <div class="mini">
+    <div class="row"><b>AI Work-Journal Generator</b><span class="d">Rough notes → structured, timestamped work log auto-saved as HTML &amp; PDF.</span><span class="t">Python · Gemini</span></div>
+    <div class="row"><b>Smart Prompt Builder (RTDCFF Skill)</b><span class="d">Claude Skill enforcing Role-Task-Don't-Context-Format-Focus on every prompt task.</span><span class="t">Claude Skills</span></div>
+    <div class="row"><b>Leave Reconciliation Script</b><span class="d">Cross-checks HR system data vs physical leave registers; flags unrecorded leaves.</span><span class="t">Python · pandas</span></div>
+    <div class="row"><b>FC Sheet-Mapping Extractor</b><span class="d">Builds an index map across Financial Control working files for faster fieldwork.</span><span class="t">Python · openpyxl</span></div>
   </div>
 
-  <h2><span class="ico">🤖</span>AI Agents, Skills &amp; Infrastructure</h2>
-  <div class="grid">
-    <div class="card"><h3>Smart Prompt Builder (RTDCFF Skill)</h3><p>A reusable skill enforcing the Role–Task–Don't–Context–Format–Focus framework to keep technical outputs on rails.</p><div class="stack"><span>Claude Skills</span></div></div>
-    <div class="card"><h3>AI Work-Journal Generator</h3><p>Expands rough daily notes into a structured, timestamped professional work log auto-saved as HTML &amp; PDF.</p><div class="stack"><span>Python</span><span>Gemini API</span></div></div>
-    <div class="card"><h3>Telegram StockWatch Bot</h3><p>Watches a webcam feed, captures on motion, runs frames through a vision model, and pushes pilferage/hygiene alerts to Telegram.</p><div class="stack"><span>Python</span><span>OpenCV</span><span>Gemini Vision</span><span>Telegram API</span></div></div>
-  </div>
-
-  <h2><span class="ico">🎓</span>EdTech &amp; Exam Intelligence</h2>
-  <div class="grid">
-    <div class="card"><h3>CA Inter Group Prediction Engine</h3><p>Pipeline (syllabus_extractor → smart_extractor → scorer) over 21 PDFs that predicts high-probability questions and outputs an interactive HTML tool + 6-sheet Excel report.</p><div class="stack"><span>Python</span><span>pdfplumber</span><span>Gemini</span><span>Claude</span></div></div>
-    <div class="card"><h3>CMA Inter OMSM Battle-Plan Dashboard</h3><p>9-tab interactive dashboard: topic heatmap, exact-repeat tracker (13 repeats across 14 papers), marks split, gap analysis &amp; phased study plan.</p><div class="stack"><span>Python</span><span>HTML/JS</span></div></div>
-    <div class="card"><h3>Finance Slide-Deck Builders</h3><p>Converts 351-page lecture packets &amp; standards into modern decks (42-slide valuation deck, ~30-slide Ind AS 116 deck).</p><div class="stack"><span>Python</span><span>python-pptx</span><span>Tesseract OCR</span></div></div>
-    <div class="card"><h3>ICAI Papers Bulk Downloader</h3><p>Crawls the ICAI BOS portal &amp; Drive links to bulk-fetch study modules, MTPs, RTPs &amp; PYQs.</p><div class="stack"><span>Python</span><span>requests</span><span>BeautifulSoup</span></div></div>
-    <div class="card"><h3>Bulk File Organizer</h3><p>CLI scripts that rename and sort downloaded exam papers into standardized project folders.</p><div class="stack"><span>Python</span><span>CLI</span></div></div>
-  </div>
-
-  <h2><span class="ico">🌏</span>Civic, Personal &amp; Creative</h2>
-  <div class="grid">
-    <div class="card"><h3>PMGSY Govt Data Extractor</h3><p>Pulls structured road-project &amp; financial data from inconsistently-formatted government PDFs.</p><div class="stack"><span>Python</span><span>pdfplumber</span><span>Gemini</span></div></div>
-    <div class="card"><h3>LPG / BBPS Bulk ID Fetcher</h3><p>Bulk-verifies 50+ consumer IDs against BBPS bill-fetch APIs, sorting eligible vs ineligible into Excel.</p><div class="stack"><span>Python</span><span>BBPS API</span></div></div>
-    <div class="card"><h3>Namma Bus Map (Bengaluru)</h3><p>Maps-style web app that geocodes locations, finds stops within ~1km, matches overlapping BMTC routes &amp; draws polylines.</p><div class="stack"><span>HTML/JS</span><span>Leaflet</span><span>Overpass API</span></div></div>
-    <div class="card"><h3>Maati Katha — Brand &amp; Site</h3><p>Full brand identity + landing page for an "anti-resort" village-stay business in Sarangada, Odisha.</p><div class="stack"><span>HTML/CSS</span><span>Recraft</span><span>Stitch</span></div></div>
-    <div class="card"><h3>Batch Photo Description Generator</h3><p>Batch-captions village photos (landscape/time/mood) for alt-text &amp; archives, output to CSV + Markdown.</p><div class="stack"><span>Python</span><span>Gemini Vision</span></div></div>
+  <h2>🚧 In Progress</h2>
+  <p class="sub">Working prototypes I'm iterating toward production. (Honest status — not abandoned.)</p>
+  <div class="mini">
+    <div class="row"><b>CA Inter Prediction Engine</b><span class="d">Parses 21 PDFs to predict high-probability exam questions + HTML/Excel output. Finishing the MCQ extraction path.</span><span class="t">85%</span></div>
+    <div class="row"><b>LPG / BBPS Bulk ID Fetcher</b><span class="d">Bulk-verifies consumer IDs via BBPS APIs, sorts eligible vs ineligible to Excel.</span><span class="t">90%</span></div>
+    <div class="row"><b>GSTR-3B Cell-Address Extractor</b><span class="d">Pulls tax data from merged-cell, multi-linked templates via cached cell coordinates.</span><span class="t">80%</span></div>
+    <div class="row"><b>Telegram StockWatch Bot</b><span class="d">Webcam + vision model → motion-triggered pilferage/hygiene alerts to Telegram.</span><span class="t">80%</span></div>
   </div>
 
   <section class="demo">
-    <h2 style="margin-top:0"><span class="ico">💡</span>What this portfolio demonstrates</h2>
+    <h2 style="margin-top:0">💡 What this work demonstrates</h2>
     <ul>
       <li><strong>Real-world data resilience</strong> — merged cells, multi-format files, regional scripts, broken government PDFs.</li>
       <li><strong>Domain logic as code</strong> — CEAVOP assertions, ICAI standards, GST matching rules, statutory citations.</li>
-      <li><strong>Modern AI engineering</strong> — RAG pipelines, agentic workflows (LangGraph), reusable Claude Skills, vision models.</li>
-      <li><strong>End-to-end delivery</strong> — from raw PDF/Excel input to Excel reports, HTML dashboards, decks, and alerts.</li>
+      <li><strong>Modern AI engineering</strong> — RAG pipelines, reusable Claude Skills, vision &amp; embedding models.</li>
+      <li><strong>End-to-end delivery</strong> — from raw PDF/Excel input to Excel reports, HTML dashboards, decks &amp; alerts.</li>
     </ul>
   </section>
 
   <footer>
-    📫 <a href="mailto:chandanpanda615@gmail.com">chandanpanda615@gmail.com</a>
+    📫 <a href="mailto:chandanpanda615@gmail.com">chandanpanda615@gmail.com</a> · CA Finalist · Embedded Audit Automation Specialist
   </footer>
 </div>
 </body>
