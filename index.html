@@ -41,6 +41,7 @@
     border-radius:999px;margin-left:6px;vertical-align:middle}
   .b-live{background:#10331f;color:#5fd38a;border:1px solid #1d5b38}
   .b-wip{background:#3a2f10;color:#f0b429;border:1px solid #5b491d}
+  .b-exp{background:#161f38;color:#7fb0ff;border:1px solid #2a3c66}
   .mini{display:grid;gap:10px;grid-template-columns:1fr}
   .mini .row{background:var(--panel);border:1px solid var(--line);border-radius:10px;
     padding:12px 16px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
@@ -51,6 +52,22 @@
   .demo ul{margin:8px 0 0;padding-left:20px;color:var(--muted)}
   footer{margin:48px 0 0;padding-top:24px;border-top:1px solid var(--line);
     color:var(--muted);font-size:.95rem}
+
+  /* long-form story cards, with evidence tables */
+  .card.wide{grid-column:1/-1}
+  .card p.cap{margin:16px 0 6px;font-weight:600;font-size:.92rem;color:var(--text)}
+  .tw{overflow-x:auto;margin:0 0 12px}
+  table.log{width:100%;border-collapse:collapse;font-size:.87rem;min-width:520px}
+  table.log th{text-align:left;color:var(--muted);font-weight:600;
+    padding:7px 14px 7px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.log td{padding:8px 14px 8px 0;border-bottom:1px solid var(--line);
+    vertical-align:top;color:var(--text)}
+  table.log tr:last-child td{border-bottom:none}
+  table.log td.ok{color:#5fd38a;white-space:nowrap;font-weight:600}
+  code{background:#12161f;border:1px solid var(--line);border-radius:4px;
+    padding:1px 5px;font-size:.85em;color:#c9d4e6;white-space:nowrap}
+  .scope{font-size:.87rem;color:var(--muted);border-left:2px solid var(--gold);
+    padding:10px 14px;background:#12161f;border-radius:0 8px 8px 0;margin:0 0 12px}
   @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -64,77 +81,153 @@
   <section class="intro">
     <p class="lead">I'm a CA who builds production automation for the audit work most firms still do by hand — and actually runs it on live engagements.</p>
     <p>The thread across everything below: <strong>domain expertise turned into software.</strong> I don't write generic scripts — I encode audit methodology, ICAI standards, and tax law into tools that hold up against messy, real-world data. Every project on this page is <strong>built and in real use</strong> unless explicitly marked <em>in progress</em>.</p>
-    <div class="note"><strong>On confidentiality:</strong> Several tools were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published.</div>
+    <p>The second half of the page is the part nobody pays me for. Experiments, mostly run from the terminal, mostly at night. A few became tools I use every day. Others taught me exactly where this technology falls over — which turned out to be worth more.</p>
+    <div class="note"><strong>On confidentiality:</strong> Several tools were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published. Where a write-up needed a real figure to make sense, the figure is withheld and said to be withheld.</div>
   </section>
 
   <h2>⭐ Selected Work</h2>
-  <p class="sub">Ten projects, chosen for impact and range. All production-used unless tagged.</p>
+  <p class="sub">Eleven projects, chosen for impact and range. All production-used unless tagged.</p>
   <div class="grid">
 
-    <div class="card"><span class="num">01</span>
+    <div class="card wide"><span class="num">01</span>
+      <h3>PR/PO Extraction Engine<span class="badge b-live">in use</span></h3>
+      <p>A live three-way match. Hundreds of purchase-order PDFs had to become one Excel sheet — 39 columns, one row per line item, header fields repeated down every row — so the detail could be tied back against the client's own records. By hand it was days of typing, and typing is where the errors come from.</p>
+
+      <p class="cap">The PDFs looked perfectly clean. They were not.</p>
+      <div class="tw">
+      <table class="log">
+        <tr><th>What my eye saw</th><th>What the computer actually read</th><th>Why it happens</th></tr>
+        <tr>
+          <td><code>630498.00000</code></td>
+          <td><code>63049</code> · <code>8.000</code> · <code>00</code></td>
+          <td>The column was too narrow, so the renderer stacked one number over three lines inside a single cell. Your eye joins them back up. The parser sees three fragments.</td>
+        </tr>
+        <tr>
+          <td><code>60 DAYS</code></td>
+          <td><code>6 0 DAYS</code></td>
+          <td>A kerning gap between the 6 and the 0, read as a space. Same for <code>B Y ROAD</code> and <code>D elivered at Place</code>.</td>
+        </tr>
+        <tr>
+          <td>One table, running across two pages</td>
+          <td>18 columns on page 1, 19 on page 2</td>
+          <td>A divider line drawn fractionally differently. Hardcode "Rate is column 7" and every rate on page 2 comes out wrong — silently, with no error raised.</td>
+        </tr>
+        <tr>
+          <td>The last row of data</td>
+          <td><code>Total Qty · TOTAL · …</code></td>
+          <td>The totals row carries numbers and reads like a line item. A naive extractor books a phantom item and the sheet still looks fine.</td>
+        </tr>
+      </table>
+      </div>
+
+      <p>None of that is visible to a person, because your brain repairs all four while you read, in real time, without telling you it did. The computer has no brain doing that. Every repair has to be written down as code.</p>
+
+      <p>What fixed it was giving up on position. Fields get identified by <em>what they contain</em>, not which column they sit in — an 8-digit string is the HSN code, <code>dd-mm-yyyy</code> is the required date, <code>INR</code> is the currency. State codes come from the first two digits of the GSTIN, which cannot lie about itself, instead of the printed <code>State Code</code> label, which the same spacing artefact had corrupted. And a row counts as a line item only if cell 0 is a plain integer and an 8-digit HSN appears somewhere in it — which is what keeps the totals row out.</p>
+
+      <p>Two tools, one page: <code>extract_tables()</code> for anything sitting inside the ruled grid, <code>extract_text()</code> plus regex for the free-floating header block. If the data sits inside drawn box lines, it's a table problem. If it doesn't, it's a text problem. Using one tool for both is what makes people give up on PDF extraction.</p>
+
+      <p class="cap">Then the part that comes from the day job.</p>
+      <div class="tw">
+      <table class="log">
+        <tr><th>Reconciliation check</th><th>Result</th></tr>
+        <tr><td>Sum of extracted line amounts vs the PO's own stated Net Amount</td><td class="ok">Tied exactly</td></tr>
+        <tr><td>Sum of extracted tax vs stated Total Tax</td><td class="ok">Tied exactly</td></tr>
+        <tr><td>Count of extracted line items vs stated Total Qty</td><td class="ok">Tied exactly</td></tr>
+        <tr><td>Net + Tax vs stated Grand Total</td><td class="ok">Tied exactly</td></tr>
+      </table>
+      </div>
+
+      <p>This is the same discipline as tying a sample back to the general ledger. If one row had been dropped or one number misread, the sums would not agree. That check is the whole difference between hoping an extraction is right and knowing it is. It also surfaced four real bugs before the output was used — all four in the header block. The line items were correct on the first run; it was the vendor name, the state codes and the payment terms that were quietly wrong.</p>
+
+      <p>One edge case I went looking for on purpose: a single-item PO. I built a synthetic one rather than wait to be surprised by a real one. One row out, no phantom totals row. Detection runs per row, so one item and a hundred items take the same path.</p>
+
+      <p class="cap">What I got wrong, and what I do now.</p>
+      <p>I uploaded a real purchase order. A live GSTIN, a PAN, both company names, the commercial amounts — all of it, straight up, because I was busy solving the extraction problem and wasn't thinking about the document as client data. Nobody stopped me. Nothing broke. That's the part worth saying out loud.</p>
+      <p>Afterwards I went and worked out what actually happens, and found I'd been wrong about that too.</p>
+      <div class="tw">
+      <table class="log">
+        <tr><th>What I'd assumed</th><th>What actually happens</th></tr>
+        <tr>
+          <td>An agent running on my own machine keeps the document on my machine</td>
+          <td>It doesn't upload the file — but it sends the extracted text to the API. The model is running on someone else's servers either way</td>
+        </tr>
+        <tr>
+          <td>Using a local tool instead of a browser makes client data safe</td>
+          <td>Training and retention policies differ between the two. Whether the data travels does not. If the rule is "no client data to a third-party cloud", <em>both</em> need masking first</td>
+        </tr>
+      </table>
+      </div>
+      <p>Which leads to the thing that resolves it. There's a chicken-and-egg here — to write a masking script you have to understand the document's structure, and to understand the structure you have to look at the document. But you only need to do that <strong>once per format</strong>, and structure is not data. So now the table structure gets dumped locally with code I already have, the sensitive values are replaced in that text output, and only the masked structure goes anywhere. The model sees the shape of the document and never the client. That step is now built into the ToD file mapper as a first-class part of the pipeline, not an afterthought.</p>
+
+      <p class="impact">⟶ Runs daily on 3–4 desks. Days of manual entry became one command over a folder.</p>
+      <div class="scope"><strong>Honest scope.</strong> This is fitted to one PO layout. A new format needs the structure dumped and the content patterns re-fitted — a morning's work, not a rewrite. The five-step method transfers to any document; the parser does not. Client name, GSTINs and figures are withheld here deliberately.</div>
+      <div class="stack"><span>Python</span><span>pdfplumber</span><span>openpyxl</span><span>regex</span><span>Claude Code</span></div>
+    </div>
+
+    <div class="card"><span class="num">02</span>
       <h3>GST Reconciliation Engine<span class="badge b-live">in use</span></h3>
       <p>Automated three-way matching — GSTR-1 vs 3B vs books — over 700+ invoices/month across .xlsx &amp; .xlsb. Flags mismatches, ITC discrepancies and rounding differences into an exception report.</p>
       <p class="impact">⟶ Cut reconciliation from ~5 hours to under 30 minutes per client/month.</p>
       <div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span></div>
     </div>
 
-    <div class="card"><span class="num">02</span>
+    <div class="card"><span class="num">03</span>
       <h3>Entity-Specific Audit Program Generator<span class="badge b-live">in use</span></h3>
       <p>Ingests unstructured Risk &amp; Control Matrices and generates a customised Q4 audit program — mapping 45 control procedures to exact SAP T-codes (VK11, VF01…) and named reviewers across O2C, P2P, H2R, FSCP, PPE &amp; Tax.</p>
       <p class="impact">⟶ Replaces manual drafting; every step traceable to a real control.</p>
       <div class="stack"><span>Python</span><span>JSON</span><span>Excel</span></div>
     </div>
 
-    <div class="card"><span class="num">03</span>
+    <div class="card"><span class="num">04</span>
       <h3>Vendor Master Anomaly Detection<span class="badge b-live">in use</span></h3>
       <p>A 28-parameter rule engine over 500–2,000 vendor records/client. Fuzzy matching on names, bank accounts &amp; PANs to surface duplicates, shell vendors and missing mandatory fields.</p>
       <p class="impact">⟶ Catches duplicate-payment &amp; fraud risk manual review misses.</p>
       <div class="stack"><span>Python</span><span>pandas</span></div>
     </div>
 
-    <div class="card"><span class="num">04</span>
+    <div class="card"><span class="num">05</span>
       <h3>IFC Test-of-Design File Mapper<span class="badge b-live">in use</span></h3>
       <p>Scans client evidence folders, anonymises data, and uses the Claude API to map files to control objectives across HR/Payroll, Direct Tax &amp; SOFTEX — then drafts the testing instructions.</p>
       <p class="impact">⟶ Compresses the evidence-gathering phase of ToD reviews.</p>
       <div class="stack"><span>Python</span><span>Claude API</span><span>filesystem</span></div>
     </div>
 
-    <div class="card"><span class="num">05</span>
+    <div class="card"><span class="num">06</span>
       <h3>Employee Master &amp; Payroll Audit<span class="badge b-live">in use</span></h3>
       <p>Validates PF/ESIC applicability, UAN–PAN consistency, duplicate codes/Aadhaar/PAN, and reconciles bank accounts — a practical ghost-employee fraud detector.</p>
       <p class="impact">⟶ Turns payroll compliance testing into a one-run exception report.</p>
       <div class="stack"><span>Python</span><span>pandas</span><span>Tkinter</span></div>
     </div>
 
-    <div class="card"><span class="num">06</span>
+    <div class="card"><span class="num">07</span>
       <h3>RCM Autofill — Claude Skill<span class="badge b-live">in use</span></h3>
       <p>Packages my firm's IFC CEAVOP rules into a reusable Claude Skill (SKILL.md + assertion_logic.md). Reads blank Risk &amp; Control Matrices and auto-applies the correct assertions and risk types.</p>
       <p class="impact">⟶ Domain logic, encoded once, reused on every engagement.</p>
       <div class="stack"><span>Claude Skills</span><span>Markdown</span></div>
     </div>
 
-    <div class="card"><span class="num">07</span>
+    <div class="card"><span class="num">08</span>
       <h3>Professional Tax Challan Extractor<span class="badge b-live">in use</span></h3>
       <p>Auto-detects the state across all 20 Indian states from text-based PDF challans (incl. Gujarati-script translation), parses details and cross-checks against payroll liability — no paid API.</p>
       <p class="impact">⟶ Replaced 2–3 days of manual data entry.</p>
       <div class="stack"><span>Python</span><span>pdfplumber</span><span>deep-translator</span></div>
     </div>
 
-    <div class="card"><span class="num">08</span>
+    <div class="card"><span class="num">09</span>
       <h3>CMA Inter OMSM Battle-Plan Dashboard<span class="badge b-live">built</span></h3>
       <p>9-tab interactive dashboard built from 14 ICMAI papers: topic heatmap, exact-repeat tracker (13 repeats found), marks split, gap analysis &amp; a confidence-scored study order.</p>
       <p class="impact">⟶ Shows data-engineering + front-end range, end to end.</p>
       <div class="stack"><span>Python</span><span>HTML/JS</span></div>
     </div>
 
-    <div class="card"><span class="num">09</span>
+    <div class="card"><span class="num">10</span>
       <h3>Finance Slide-Deck Builders<span class="badge b-live">built</span></h3>
       <p>Generates polished .pptx from dense source material — a 28-slide DCF valuation deck (formulas, life-cycle curve) and a ~30-slide Ind AS 116 Leases deck with latest amendments.</p>
       <p class="impact">⟶ Turns 350-page packets into presentation-ready decks.</p>
       <div class="stack"><span>Python</span><span>python-pptx</span><span>Tesseract OCR</span></div>
     </div>
 
-    <div class="card"><span class="num">10</span>
+    <div class="card"><span class="num">11</span>
       <h3>CA Research Assistant — Local RAG<span class="badge b-wip">prototype · 70%</span></h3>
       <p>A local RAG pipeline (ChromaDB + Gemini embeddings) that grounds tax/audit answers strictly in the Income Tax Act, Companies Act &amp; Standards on Auditing — returns exact paragraph citations, no hallucination.</p>
       <p class="impact">⟶ Next: swap to a local model (Ollama) to make it client-data safe.</p>
@@ -143,9 +236,168 @@
 
   </div>
 
+  <h2>🔬 Experiments</h2>
+  <p class="sub">Nobody asked for these. They're how I found out what this technology is actually good at — and where it quietly fails.</p>
+  <div class="grid">
+
+    <div class="card wide">
+      <h3>NotebookLM wired into Claude Code, over MCP<span class="badge b-live">in use</span></h3>
+      <p><em>MCP — Model Context Protocol — is a standard way to let an AI agent talk to another tool. Here it lets an agent running in my terminal reach into my own Google NotebookLM account.</em></p>
+      <p>I have 257 notebooks. NotebookLM's retrieval engine is Gemini's, and it is genuinely good at one job: grounding an answer across fifty or a hundred sources and telling you which source each claim came from. What it will not do is take that answer anywhere. You read it in a browser tab, and then you retype it into whatever you were actually making.</p>
+      <p>So I split the work. NotebookLM finds and cites. Claude Code takes the raw answer and produces the file I actually wanted. Four tools do the whole thing: <code>notebook_list</code>, <code>notebook_query</code>, <code>chat_configure</code>, <code>refresh_auth</code>.</p>
+      <p>The first honest limitation I hit: the auth expires, and it expires quietly. The commands now detect it and stop to ask for a re-login, rather than returning a confident answer built on nothing.</p>
+      <div class="stack"><span>MCP</span><span>NotebookLM</span><span>Gemini</span><span>Claude Code</span></div>
+    </div>
+
+    <div class="card wide">
+      <h3>Why I reach for a CLI before an MCP server<span class="badge b-live">how I work</span></h3>
+      <p>The card above is MCP, so this is the counterargument to my own setup. Most of the time I don't use one.</p>
+      <p>An MCP server has to describe itself to the model before it can be used. Every tool it offers — the name, the description, the full schema for every parameter — is loaded into the context window and sits there on <em>every single request</em>, whether you call that tool or not. Connect a handful of servers and you have spent tens of thousands of tokens before asking your first question. You pay that rent on every turn of the conversation.</p>
+      <p>A command-line tool costs nothing until the moment you run it. The agent already knows how to run a shell command; <code>firecrawl scrape "&lt;url&gt;" -o page.md</code> is a dozen tokens, and if it needs the flags it can read <code>--help</code> then, once.</p>
+      <div class="tw">
+      <table class="log">
+        <tr><th></th><th>MCP server</th><th>CLI tool</th></tr>
+        <tr>
+          <td>Cost before you use it</td>
+          <td>Every tool's schema in context, every request</td>
+          <td>Nothing — a command is a few tokens</td>
+        </tr>
+        <tr>
+          <td>Where the output lands</td>
+          <td>Straight into the context window, all of it</td>
+          <td>In a file. You choose what to read into context</td>
+        </tr>
+        <tr>
+          <td>After the session ends</td>
+          <td>Gone with the conversation</td>
+          <td>A command you can rerun, schedule, or pipe into the next one</td>
+        </tr>
+      </table>
+      </div>
+      <p>That middle row is the one that bites hardest in practice. Scrape a long page through a tool that returns its result directly and you have just spent fifty thousand tokens of context on something you wanted four paragraphs of. Write it to a file and you read the four paragraphs.</p>
+      <p class="cap">Where MCP genuinely wins, and why I still use it.</p>
+      <p>When the thing has no command line and lives behind a login it holds itself — NotebookLM is exactly that. There is no <code>notebooklm</code> binary; the session state, the auth, the query interface only exist through the server. Paying the context rent is worth it because the alternative is not a cheaper tool, it is no tool.</p>
+      <p>So: CLI by default, MCP when there's no other door in.</p>
+      <div class="stack"><span>Claude Code</span><span>CLI</span><span>MCP</span><span>context economics</span></div>
+    </div>
+
+    <div class="card wide">
+      <h3>Getting data off the web — an escalation ladder<span class="badge b-live">in use</span></h3>
+      <p>Four different tools, and the whole skill is knowing which rung you're on. Every one of these is heavier, slower and more expensive than the one above it, so you start at the top and only drop when the page refuses.</p>
+      <div class="tw">
+      <table class="log">
+        <tr><th>The situation</th><th>What I reach for</th><th>Why that one</th></tr>
+        <tr>
+          <td>I have the URL. Static page, or a JavaScript app</td>
+          <td><strong>Firecrawl</strong> <code>scrape</code></td>
+          <td>One command, clean markdown out, no browser to babysit. Handles SPAs, which is where naive scraping usually dies</td>
+        </tr>
+        <tr>
+          <td>I don't have the URL, or I need every page under a section</td>
+          <td><strong>Firecrawl</strong> <code>search</code> / <code>map</code> / <code>crawl</code></td>
+          <td>Find or enumerate first, then scrape. Bulk-download a docs site to local files and read it offline</td>
+        </tr>
+        <tr>
+          <td>The platform fights back — LinkedIn at volume, YouTube comment threads</td>
+          <td><strong>Apify</strong> actor</td>
+          <td>Someone has already solved the proxies, the rate limits and the layout changes, and is maintaining it. Pay per event. Writing this yourself is a hobby, not a task</td>
+        </tr>
+        <tr>
+          <td>It needs clicking — forms, pagination, a login, a multi-step flow</td>
+          <td><strong>Playwright</strong> CLI</td>
+          <td>A real browser I drive myself, scripted, repeatable, headless when I want it</td>
+        </tr>
+        <tr>
+          <td>It has to be <em>my</em> browser, already signed in</td>
+          <td><strong>Claude in Chrome</strong></td>
+          <td>Runs in my live session, so the logins are already where they need to be. Last resort — a human in the loop, and slow</td>
+        </tr>
+      </table>
+      </div>
+      <p class="cap">The two things that took actual use to learn.</p>
+      <p>Scrape to a file, then read the file. Most of these tools will happily answer a question about a page for you, and that convenience costs extra credits and dumps the whole page into context. Saving it and searching it myself is cheaper and I can go back to it tomorrow.</p>
+      <p>And every one of these bills differently — per event, per credit, per page. Reaching for the heavy tool first is how a scrape that should cost pennies quietly doesn't.</p>
+      <div class="stack"><span>Firecrawl</span><span>Apify</span><span>Playwright</span><span>Claude in Chrome</span><span>CLI</span></div>
+    </div>
+
+    <div class="card">
+      <h3>/lecture — a podcast into usable notes<span class="badge b-live">in use</span></h3>
+      <p>Point it at a notebook holding a lecture or an interview. Two queries go out — one for structure and speakers, one for the questions the host actually asked and the moments worth watching — and one markdown file comes back: a timestamped table of the six to eight segments that earn your time, every notable question in order, the quotes, and what to do with all of it.</p>
+      <p class="impact">⟶ A three-hour interview becomes a page you can act on.</p>
+      <p>The rule written into the command matters more than the output. NotebookLM <em>estimates</em> timestamps, so the file says they're approximate. Anything the query didn't return is left blank instead of filled in.</p>
+      <div class="stack"><span>Claude Code</span><span>NotebookLM</span><span>Markdown</span></div>
+    </div>
+
+    <div class="card">
+      <h3>YouTube from the terminal<span class="badge b-live">in use</span></h3>
+      <p>yt-dlp from the command line, transcripts only — pull the subtitle track and clean it into something a person can actually read, instead of the timestamped fragments YouTube hands over.</p>
+      <p>Unglamorous, and the only reason the two story corpora below exist. Building a 113-source notebook by clicking is not something anyone finishes.</p>
+      <div class="stack"><span>yt-dlp</span><span>CLI</span><span>transcripts</span></div>
+    </div>
+
+    <div class="card wide">
+      <h3>Studying a writer's craft — /anulata, /kanchan, /craft-new<span class="badge b-live">in use</span></h3>
+      <p>This is the one I do for love, and it holds the best engineering on this page.</p>
+      <p>I take Hindi audio stories off YouTube and push them into notebooks — Anulata Raj Nair, 113 sources; Kanchan Pant, 61 — then study how the writing actually works. Nine lenses per story: how it opens, the relationship architecture and who holds power at each stage, what texture carries the feeling, what is withheld, how the dilemma is loaded on both sides so that neither choice is free, the subtext, where the perspective turns, how it lands, and the narrator's voice.</p>
+      <p>Five modes: a cross-story signature, one story dissected, a single lens run across the whole corpus, a critique of a draft I've written myself, or seeds for new premises built out of her structures.</p>
+      <p class="cap">The architecture is the part I'd defend in a review.</p>
+      <p>Every piece of analysis logic lives in one shared file. A writer's command is a nine-line stub pointing at it. <code>/craft-new "&lt;name&gt;"</code> builds a new one — it finds their notebook, refuses to guess the two things it must never guess (pronouns, and whether quotes should come back in roman script), writes the stub, and offers to index the corpus. Edit the shared file once and every writer command changes at the same moment.</p>
+      <p class="cap">And the part that took a wrong answer to learn.</p>
+      <p>One notebook holds fifteen sources uploaded by mistake — a scooter review, a politics clip, some music. The notebook's own auto-summary confidently credited the writer with "sociopolitical critique" that had come from the politics clip. Nothing about the answer looked wrong. So the command now carries a permanent ignore list, and when an answer cites anything on it, that answer is thrown away and the query re-run naming the story explicitly.</p>
+      <p>Evidence rule throughout: verbatim quotes only, roman-script Hinglish with the English meaning on the next line, and anything I'm not certain is verbatim gets labelled as not verbatim.</p>
+      <div class="stack"><span>Claude Code</span><span>NotebookLM</span><span>MCP</span><span>slash commands</span></div>
+    </div>
+
+    <div class="card wide">
+      <h3>Marking scripts with open-weight models — Ollama + Docling<span class="badge b-wip">in progress</span></h3>
+      <p>Evaluating answer scripts, where two problems sit on top of each other.</p>
+      <p>The first is the scans. Scanning is cheap now, so people send whatever the phone produced — skewed, grey, compressed, handwriting running across the ruling. That is not a document, it is a photograph of one. <strong>Docling</strong> is the part that turns it back into structure worth reading; a plain text dump off a scan like that is close to useless.</p>
+      <p class="cap">The second problem is the one that actually decides whether this can work.</p>
+      <p>The marking scheme is the expensive constant. Every script gets judged against the same scheme, so the naive build re-reads that scheme for every single paper — the same tokens, the same reasoning, the same cost, over and over, for the one part of the job that never changes.</p>
+      <p>So it gets read <em>once</em>. The scheme is parsed into a structured artefact up front — question by question, marks, what earns each one — and the project laid out so every paper after that is a cheap comparison against something already understood, instead of a fresh act of comprehension. The variable input stays variable. The constant stops being paid for repeatedly.</p>
+      <p>Running it on <strong>Ollama</strong>, with open-weight models on my own machine, is the other half. Student answer scripts are somebody else's work and somebody else's name. That is the same reason my statutory RAG pipeline is moving local: some material should not leave the machine at all, and the only honest way to guarantee that is for the model to be sitting on it.</p>
+      <div class="scope"><strong>Honest status.</strong> In progress, not deployed. The open question is quality: whether a model small enough to run locally can hold a marking standard steady across a stack of papers, which is exactly what a human examiner struggles with too. I'd rather find that out than assume it.</div>
+      <div class="stack"><span>Ollama</span><span>Docling</span><span>open-weight models</span><span>Claude Code</span><span>Python</span></div>
+    </div>
+
+    <div class="card wide">
+      <h3>Reading the market before preparing for it<span class="badge b-live">built</span></h3>
+      <p>Before writing a single line of interview preparation, I went and found out what was actually being asked.</p>
+      <p>Three staged runs through Apify's LinkedIn actor — 303 posts, then a pass for the comment threads, then 800 posts across eight question-focused queries — plus two published question banks pulled with Firecrawl. Then the filter: what people report actually being asked, against what the syllabus says will be.</p>
+      <p class="impact">⟶ The finding changed the plan. Demand sat in controllership, not where I had assumed.</p>
+      <p>Every claim in the output traces back to the post it came from, in a written source file. If a conclusion can't be traced, it isn't a conclusion.</p>
+      <p>What went wrong, since that's the useful half: the comment pass under-delivered badly — 307 posts but only 187 comments — so a chunk of what I wanted was never there. The scrape reported success. Checking the counts is what caught it.</p>
+      <div class="stack"><span>Apify</span><span>Firecrawl</span><span>Python</span><span>JSON</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Exam prep as a retrieval problem<span class="badge b-wip">ongoing</span></h3>
+      <p>Official ICAI material in one notebook. What students said about the paper they had just walked out of in another. The first tells you what is examinable. The second tells you what is actually being asked this cycle — and those are not the same list.</p>
+      <p>Put both in front of the same retrieval engine and the high-value topics separate out on their own. Then generate questions and answers against that shortlist rather than against the whole syllabus.</p>
+      <p>Two sources, two different jobs: the official one for authority, the crowd one for currency. Neither is any use alone.</p>
+      <div class="stack"><span>NotebookLM</span><span>Gemini</span><span>Claude Code</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Fixing my own phone over ADB<span class="badge b-exp">experiment</span></h3>
+      <p>Developer options on, USB debugging on, phone plugged into the laptop. <em>ADB — Android Debug Bridge — is the cable-level interface to the device.</em> From there, an agent in PowerShell could see the phone directly: what was eating storage, where it was hiding, and what was safe to clear.</p>
+      <p>Storage freed, which was the point. But the part worth keeping was watching an agent work against a real device instead of a folder — and deciding for myself which commands I was willing to let it run on a phone I carry.</p>
+      <div class="stack"><span>ADB</span><span>Android</span><span>PowerShell</span><span>Claude Code</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Memory across sessions<span class="badge b-live">in use</span></h3>
+      <p>Every working session gets summarised and indexed locally, so "what did I try three weeks ago, and why did I drop it" has an answer that isn't my memory of it.</p>
+      <p>Most of the write-ups on this page were reconstructed from that index rather than from what I happened to recall. Which is rather the point.</p>
+      <div class="stack"><span>claude-mem</span><span>local index</span></div>
+    </div>
+
+  </div>
+
   <h2>🛠️ Also Built &amp; In Use</h2>
   <p class="sub">Smaller production tools that quietly save hours.</p>
   <div class="mini">
+    <div class="row"><b>MarkItDown Converter (web app)</b><span class="d">PDF and Excel to clean text, so a model reads structure instead of a collapsed table. <a href="https://markitdown-converter-chandan.streamlit.app/">Live app →</a></span><span class="t">Python · Streamlit</span></div>
     <div class="row"><b>AI Work-Journal Generator</b><span class="d">Rough notes → structured, timestamped work log auto-saved as HTML &amp; PDF.</span><span class="t">Python · Gemini</span></div>
     <div class="row"><b>Smart Prompt Builder (RTDCFF Skill)</b><span class="d">Claude Skill enforcing Role-Task-Don't-Context-Format-Focus on every prompt task.</span><span class="t">Claude Skills</span></div>
     <div class="row"><b>Leave Reconciliation Script</b><span class="d">Cross-checks HR system data vs physical leave registers; flags unrecorded leaves.</span><span class="t">Python · pandas</span></div>
@@ -159,15 +411,17 @@
     <div class="row"><b>LPG / BBPS Bulk ID Fetcher</b><span class="d">Bulk-verifies consumer IDs via BBPS APIs, sorts eligible vs ineligible to Excel.</span><span class="t">90%</span></div>
     <div class="row"><b>GSTR-3B Cell-Address Extractor</b><span class="d">Pulls tax data from merged-cell, multi-linked templates via cached cell coordinates.</span><span class="t">80%</span></div>
     <div class="row"><b>Telegram StockWatch Bot</b><span class="d">Webcam + vision model → motion-triggered pilferage/hygiene alerts to Telegram.</span><span class="t">80%</span></div>
+    <div class="row"><b>GraphRAG over statutory material</b><span class="d">A section points to a rule, the rule to a schedule, the schedule gets amended. Similarity search drops that chain; a knowledge graph keeps it walkable.</span><span class="t">exploring</span></div>
   </div>
 
   <section class="demo">
     <h2 style="margin-top:0">💡 What this work demonstrates</h2>
     <ul>
-      <li><strong>Real-world data resilience</strong> — merged cells, multi-format files, regional scripts, broken government PDFs.</li>
+      <li><strong>Real-world data resilience</strong> — merged cells, multi-format files, regional scripts, phone-camera scans, broken government PDFs.</li>
       <li><strong>Domain logic as code</strong> — CEAVOP assertions, ICAI standards, GST matching rules, statutory citations.</li>
-      <li><strong>Modern AI engineering</strong> — RAG pipelines, reusable Claude Skills, vision &amp; embedding models.</li>
+      <li><strong>Modern AI engineering</strong> — RAG pipelines, MCP connectors, reusable Claude Skills, local open-weight models, vision &amp; embedding models.</li>
       <li><strong>End-to-end delivery</strong> — from raw PDF/Excel input to Excel reports, HTML dashboards, decks &amp; alerts.</li>
+      <li><strong>Verification as a habit</strong> — extractions tied back to control totals, scrape counts checked, wrong answers traced to the source that caused them. An automated number nobody checked is worse than no number at all.</li>
     </ul>
   </section>
 
