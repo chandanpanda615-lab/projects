@@ -4,78 +4,262 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chandan Panda — AI &amp; Automation for Audit, Tax &amp; Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0f1115; --panel:#161922; --line:#262b38; --text:#e6e9ef;
-    --muted:#9aa3b2; --accent:#5b9dff; --chip:#1e2433; --gold:#f0b429;
+    --bg:#0a0c11;
+    --surface:#12151d;
+    --surface-2:#171b26;
+    --line:#232839;
+    --line-2:#2f3648;
+    --text:#e8ecf4;
+    --muted:#96a0b5;
+    --accent:#5b9dff;
+    --accent-2:#38bdf8;
+    --gold:#f5b544;
+    --green:#4ade80;
+    --chip:#1a1f2c;
+    --r:14px;
+    --sp:20px;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);
-    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .wrap{max-width:1000px;margin:0 auto;padding:48px 20px}
-  header h1{font-size:2.2rem;margin:0 0 8px;letter-spacing:-.02em}
-  header .tag{color:var(--muted);font-size:1.05rem}
-  .intro{margin:28px 0;padding:22px;background:var(--panel);
-    border:1px solid var(--line);border-radius:14px}
-  .intro p{margin:0 0 12px}.intro p:last-child{margin:0}
-  .lead{font-weight:600;font-size:1.08rem}
-  .note{font-size:.9rem;color:var(--muted);border-left:3px solid var(--accent);
-    padding:10px 14px;background:#12161f;border-radius:0 8px 8px 0;margin-top:16px}
-  h2{margin:48px 0 6px;font-size:1.4rem;letter-spacing:-.01em}
-  .sub{color:var(--muted);margin:0 0 18px;font-size:.95rem}
-  .grid{display:grid;gap:14px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
-    padding:18px 20px;transition:border-color .15s,transform .15s;position:relative}
-  .card:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .card .num{position:absolute;top:14px;right:16px;font-size:.8rem;color:var(--muted);
-    font-weight:700;opacity:.5}
-  .card h3{margin:0 0 6px;font-size:1.05rem;padding-right:28px}
-  .card p{margin:0 0 8px;font-size:.94rem}
-  .card .impact{color:var(--gold);font-size:.88rem;font-weight:600;margin:0 0 10px}
-  .stack{display:flex;flex-wrap:wrap;gap:6px}
-  .stack span{background:var(--chip);color:var(--muted);font-size:.78rem;
-    padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
-  .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;
-    border-radius:999px;margin-left:6px;vertical-align:middle}
-  .b-live{background:#10331f;color:#5fd38a;border:1px solid #1d5b38}
-  .b-wip{background:#3a2f10;color:#f0b429;border:1px solid #5b491d}
-  .b-exp{background:#161f38;color:#7fb0ff;border:1px solid #2a3c66}
-  .mini{display:grid;gap:10px;grid-template-columns:1fr}
-  .mini .row{background:var(--panel);border:1px solid var(--line);border-radius:10px;
-    padding:12px 16px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-  .mini .row b{font-weight:600}.mini .row .d{color:var(--muted);font-size:.9rem;flex:1;min-width:200px}
-  .mini .row .t{color:var(--muted);font-size:.8rem}
-  .demo{margin-top:48px;padding:24px;background:var(--panel);
-    border:1px solid var(--line);border-radius:14px}
-  .demo ul{margin:8px 0 0;padding-left:20px;color:var(--muted)}
-  footer{margin:48px 0 0;padding-top:24px;border-top:1px solid var(--line);
-    color:var(--muted);font-size:.95rem}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 
-  /* long-form story cards, with evidence tables */
-  .card.wide{grid-column:1/-1}
-  .card p.cap{margin:16px 0 6px;font-weight:600;font-size:.92rem;color:var(--text)}
-  .tw{overflow-x:auto;margin:0 0 12px}
-  table.log{width:100%;border-collapse:collapse;font-size:.87rem;min-width:520px}
-  table.log th{text-align:left;color:var(--muted);font-weight:600;
-    padding:7px 14px 7px 0;border-bottom:1px solid var(--line);white-space:nowrap}
-  table.log td{padding:8px 14px 8px 0;border-bottom:1px solid var(--line);
-    vertical-align:top;color:var(--text)}
+  body{
+    margin:0;color:var(--text);
+    font:16px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-feature-settings:"cv05","ss01";
+    background:
+      radial-gradient(1100px 620px at 12% -12%, rgba(91,157,255,.15), transparent 62%),
+      radial-gradient(820px 520px at 92% 2%,  rgba(56,189,248,.10), transparent 60%),
+      radial-gradient(760px 620px at 60% 108%, rgba(245,181,68,.055), transparent 60%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+  /* faint engineering grid, sits behind everything */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.021) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.021) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:44px 20px 64px;position:relative;z-index:1}
+
+  a{color:var(--accent);text-decoration:none}
+  a:hover{color:var(--accent-2);text-decoration:underline;text-underline-offset:3px}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+  /* ---------- masthead ---------- */
+  header{padding:8px 0 4px}
+  header h1{
+    font-size:clamp(2.1rem,5vw,2.8rem);margin:0 0 10px;letter-spacing:-.033em;font-weight:700;
+    background:linear-gradient(102deg,#fff 8%,#cfe0ff 48%,#8fbaff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  header .tag{color:var(--muted);font-size:1.03rem;max-width:62ch}
+  header .tag b{color:var(--text);font-weight:600}
+
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+  .stat{
+    flex:1 1 128px;padding:12px 14px;border-radius:12px;
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);
+  }
+  .stat .n{display:block;font-size:1.32rem;font-weight:700;letter-spacing:-.02em;color:var(--text)}
+  .stat .l{display:block;font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+
+  nav.jump{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+  nav.jump a{
+    font-size:.83rem;font-weight:500;color:var(--muted);
+    padding:6px 13px;border-radius:999px;border:1px solid var(--line);
+    background:var(--chip);transition:color .2s,border-color .2s,background .2s;
+  }
+  nav.jump a:hover{color:var(--text);border-color:var(--line-2);background:var(--surface-2);text-decoration:none}
+
+  /* ---------- intro ---------- */
+  .intro{
+    margin:30px 0 0;padding:24px;border-radius:var(--r);
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);position:relative;overflow:hidden;
+  }
+  .intro::before{
+    content:"";position:absolute;inset:0 0 auto;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(91,157,255,.75),rgba(56,189,248,.35),transparent);
+  }
+  .intro p{margin:0 0 13px}.intro p:last-child{margin:0}
+  .lead{font-weight:600;font-size:1.1rem;letter-spacing:-.011em}
+  .note{
+    font-size:.9rem;color:var(--muted);border-left:3px solid var(--accent);
+    padding:12px 16px;background:rgba(91,157,255,.055);
+    border-radius:0 10px 10px 0;margin-top:18px;
+  }
+  .note strong{color:var(--text)}
+
+  /* ---------- section headers ---------- */
+  .sechead{display:flex;align-items:center;gap:11px;margin:56px 0 4px}
+  .sechead svg{width:19px;height:19px;flex:none;stroke:var(--accent);fill:none;
+    stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  h2{margin:0;font-size:1.42rem;letter-spacing:-.021em;font-weight:600}
+  .sechead .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent)}
+  .sub{color:var(--muted);margin:0 0 20px;font-size:.95rem;max-width:76ch}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;gap:16px}
+  .card{
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);border-radius:var(--r);
+    padding:20px 22px;position:relative;overflow:hidden;
+    transition:border-color .22s ease,transform .22s ease,box-shadow .22s ease;
+  }
+  .card:hover{
+    border-color:rgba(91,157,255,.5);transform:translateY(-3px);
+    box-shadow:0 14px 34px -18px rgba(0,0,0,.85),0 0 0 1px rgba(91,157,255,.09);
+  }
+  .card .num{
+    position:absolute;top:15px;right:18px;font-size:.74rem;color:var(--muted);
+    font-weight:700;opacity:.45;font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:.04em;
+  }
+  .card h3{margin:0 0 9px;font-size:1.07rem;padding-right:34px;letter-spacing:-.014em;font-weight:600;line-height:1.42}
+  .card p{margin:0 0 10px;font-size:.945rem}
+  .card .impact{
+    color:var(--gold);font-size:.88rem;font-weight:600;margin:14px 0 12px;
+    padding:9px 13px;background:rgba(245,181,68,.07);
+    border:1px solid rgba(245,181,68,.19);border-radius:9px;
+  }
+  .stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .stack span{
+    background:var(--chip);color:var(--muted);font-size:.755rem;
+    padding:4px 10px;border-radius:999px;border:1px solid var(--line);
+    font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:-.01em;
+  }
+  .badge{
+    display:inline-block;font-size:.685rem;font-weight:700;padding:3px 9px;
+    border-radius:999px;margin-left:8px;vertical-align:middle;
+    letter-spacing:.035em;text-transform:uppercase;white-space:nowrap;
+  }
+  .b-live{background:rgba(74,222,128,.12);color:#5fd38a;border:1px solid rgba(74,222,128,.28)}
+  .b-wip{background:rgba(245,181,68,.12);color:var(--gold);border:1px solid rgba(245,181,68,.28)}
+  .b-exp{background:rgba(91,157,255,.13);color:#8dbaff;border:1px solid rgba(91,157,255,.3)}
+
+  /* featured long-form cards */
+  .card.wide{grid-column:1/-1;padding:24px 26px}
+  .card.wide::before{
+    content:"";position:absolute;inset:0 0 auto;height:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2) 42%,transparent 88%);
+    opacity:.85;
+  }
+  .card p.cap{
+    margin:22px 0 8px;font-weight:600;font-size:.935rem;color:var(--text);
+    letter-spacing:-.01em;padding-left:12px;border-left:2px solid var(--accent);
+  }
+
+  /* ---------- tables ---------- */
+  .tw{overflow-x:auto;margin:0 0 14px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.2)}
+  table.log{width:100%;border-collapse:collapse;font-size:.875rem;min-width:540px}
+  table.log th{
+    text-align:left;color:var(--muted);font-weight:600;font-size:.74rem;
+    text-transform:uppercase;letter-spacing:.06em;
+    padding:11px 16px;border-bottom:1px solid var(--line-2);
+    background:rgba(255,255,255,.022);white-space:nowrap;
+  }
+  table.log td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text)}
   table.log tr:last-child td{border-bottom:none}
-  table.log td.ok{color:#5fd38a;white-space:nowrap;font-weight:600}
-  code{background:#12161f;border:1px solid var(--line);border-radius:4px;
-    padding:1px 5px;font-size:.85em;color:#c9d4e6;white-space:nowrap}
-  .scope{font-size:.87rem;color:var(--muted);border-left:2px solid var(--gold);
-    padding:10px 14px;background:#12161f;border-radius:0 8px 8px 0;margin:0 0 12px}
-  @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+  table.log tbody tr,table.log tr{transition:background .16s ease}
+  table.log tr:hover td{background:rgba(91,157,255,.045)}
+  table.log td.ok{color:var(--green);white-space:nowrap;font-weight:600}
+  table.log td:first-child{color:var(--muted)}
+  table.log td strong{color:var(--text)}
+
+  code{
+    background:rgba(91,157,255,.09);border:1px solid rgba(91,157,255,.18);
+    border-radius:5px;padding:1.5px 6px;font-size:.83em;color:#a8c8ff;
+    font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;
+  }
+  .scope{
+    font-size:.875rem;color:var(--muted);border:1px solid rgba(245,181,68,.22);
+    border-left:3px solid var(--gold);
+    padding:13px 16px;background:rgba(245,181,68,.05);
+    border-radius:0 10px 10px 0;margin:14px 0 12px;
+  }
+  .scope strong{color:var(--gold)}
+
+  /* ---------- mini rows ---------- */
+  .mini{display:grid;gap:10px;grid-template-columns:1fr}
+  .mini .row{
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);border-radius:11px;
+    padding:14px 18px;display:flex;justify-content:space-between;gap:14px;
+    align-items:center;flex-wrap:wrap;transition:border-color .2s ease,transform .2s ease;
+  }
+  .mini .row:hover{border-color:var(--line-2);transform:translateX(3px)}
+  .mini .row b{font-weight:600;letter-spacing:-.01em}
+  .mini .row .d{color:var(--muted);font-size:.9rem;flex:1;min-width:220px}
+  .mini .row .t{
+    color:var(--muted);font-size:.755rem;font-family:"JetBrains Mono",ui-monospace,monospace;
+    background:var(--chip);border:1px solid var(--line);padding:4px 10px;border-radius:999px;white-space:nowrap;
+  }
+
+  /* ---------- closing ---------- */
+  .demo{
+    margin-top:56px;padding:26px;border-radius:var(--r);
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);position:relative;overflow:hidden;
+  }
+  .demo::before{
+    content:"";position:absolute;inset:0 0 auto;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(245,181,68,.55),transparent);
+  }
+  .demo .sechead{margin-top:0}
+  .demo ul{margin:14px 0 0;padding-left:20px;color:var(--muted)}
+  .demo li{margin-bottom:9px}
+  .demo li strong{color:var(--text)}
+
+  footer{
+    margin:56px 0 0;padding-top:26px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:.93rem;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  }
+  footer svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.7;
+    stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  @media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){
+    .wrap{padding:32px 15px 48px}
+    .card{padding:17px 17px}
+    .card.wide{padding:19px 17px}
+    .stat{flex:1 1 44%}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+    .card:hover,.mini .row:hover{transform:none}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>Chandan Panda</h1>
-    <div class="tag">AI &amp; Automation for Audit, Tax &amp; Finance · Chartered Accountant (Finalist)</div>
+    <div class="tag"><b>AI &amp; Automation for Audit, Tax &amp; Finance</b> · Chartered Accountant (Finalist)</div>
+
+    <div class="stats">
+      <div class="stat"><span class="n">11</span><span class="l">Built &amp; in use</span></div>
+      <div class="stat"><span class="n">11</span><span class="l">Experiments</span></div>
+      <div class="stat"><span class="n">700+</span><span class="l">Invoices / month</span></div>
+      <div class="stat"><span class="n">3–4</span><span class="l">Desks running it</span></div>
+    </div>
+
+    <nav class="jump" aria-label="Sections">
+      <a href="#work">Selected work</a>
+      <a href="#experiments">Experiments</a>
+      <a href="#also">Also built</a>
+      <a href="#progress">In progress</a>
+      <a href="mailto:chandanpanda615@gmail.com">Contact</a>
+    </nav>
   </header>
 
   <section class="intro">
@@ -85,7 +269,10 @@
     <div class="note"><strong>On confidentiality:</strong> Several tools were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published. Where a write-up needed a real figure to make sense, the figure is withheld and said to be withheld.</div>
   </section>
 
-  <h2>⭐ Selected Work</h2>
+  <div class="sechead" id="work">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7l2.85 5.9 6.4.92-4.63 4.5 1.1 6.38L12 17.4l-5.72 3l1.1-6.38-4.63-4.5 6.4-.92z"/></svg>
+    <h2>Selected Work</h2><span class="rule"></span>
+  </div>
   <p class="sub">Eleven projects, chosen for impact and range. All production-used unless tagged.</p>
   <div class="grid">
 
@@ -236,7 +423,10 @@
 
   </div>
 
-  <h2>🔬 Experiments</h2>
+  <div class="sechead" id="experiments">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2.8h6M10 2.8v6.9L4.6 18.9a2 2 0 0 0 1.7 3h11.4a2 2 0 0 0 1.7-3L14 9.7V2.8M6.6 15h10.8"/></svg>
+    <h2>Experiments</h2><span class="rule"></span>
+  </div>
   <p class="sub">Nobody asked for these. They're how I found out what this technology is actually good at — and where it quietly fails.</p>
   <div class="grid">
 
@@ -394,7 +584,10 @@
 
   </div>
 
-  <h2>🛠️ Also Built &amp; In Use</h2>
+  <div class="sechead" id="also">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.8 6.3a4.2 4.2 0 0 0 5.5 5.5l-8.6 8.6a2.2 2.2 0 0 1-3.1-3.1z"/><path d="M20.3 11.8a4.2 4.2 0 0 0-5.5-5.5l2.4-2.4a4.2 4.2 0 0 1 5.5 5.5z"/></svg>
+    <h2>Also Built &amp; In Use</h2><span class="rule"></span>
+  </div>
   <p class="sub">Smaller production tools that quietly save hours.</p>
   <div class="mini">
     <div class="row"><b>MarkItDown Converter (web app)</b><span class="d">PDF and Excel to clean text, so a model reads structure instead of a collapsed table. <a href="https://markitdown-converter-chandan.streamlit.app/">Live app →</a></span><span class="t">Python · Streamlit</span></div>
@@ -404,7 +597,10 @@
     <div class="row"><b>FC Sheet-Mapping Extractor</b><span class="d">Builds an index map across Financial Control working files for faster fieldwork.</span><span class="t">Python · openpyxl</span></div>
   </div>
 
-  <h2>🚧 In Progress</h2>
+  <div class="sechead" id="progress">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v3.6M12 17.9v3.6M4.9 4.9l2.6 2.6M16.5 16.5l2.6 2.6M2.5 12h3.6M17.9 12h3.6M4.9 19.1l2.6-2.6M16.5 7.5l2.6-2.6"/></svg>
+    <h2>In Progress</h2><span class="rule"></span>
+  </div>
   <p class="sub">Working prototypes I'm iterating toward production. (Honest status — not abandoned.)</p>
   <div class="mini">
     <div class="row"><b>CA Inter Prediction Engine</b><span class="d">Parses 21 PDFs to predict high-probability exam questions + HTML/Excel output. Finishing the MCQ extraction path.</span><span class="t">85%</span></div>
@@ -415,7 +611,10 @@
   </div>
 
   <section class="demo">
-    <h2 style="margin-top:0">💡 What this work demonstrates</h2>
+    <div class="sechead">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 18.2h5.6M10.4 21.4h3.2M12 2.6a6.9 6.9 0 0 0-4 12.5v2h8v-2a6.9 6.9 0 0 0-4-12.5z"/></svg>
+      <h2>What this work demonstrates</h2><span class="rule"></span>
+    </div>
     <ul>
       <li><strong>Real-world data resilience</strong> — merged cells, multi-format files, regional scripts, phone-camera scans, broken government PDFs.</li>
       <li><strong>Domain logic as code</strong> — CEAVOP assertions, ICAI standards, GST matching rules, statutory citations.</li>
@@ -426,7 +625,9 @@
   </section>
 
   <footer>
-    📫 <a href="mailto:chandanpanda615@gmail.com">chandanpanda615@gmail.com</a> · CA Finalist · Embedded Audit Automation Specialist
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="m3.4 6.4 8.6 6.2 8.6-6.2"/></svg>
+    <a href="mailto:chandanpanda615@gmail.com">chandanpanda615@gmail.com</a>
+    <span>· CA Finalist · Embedded Audit Automation Specialist</span>
   </footer>
 </div>
 </body>
