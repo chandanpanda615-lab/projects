@@ -9,18 +9,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0c11;
-    --surface:#12151d;
-    --surface-2:#171b26;
-    --line:#232839;
-    --line-2:#2f3648;
-    --text:#e8ecf4;
-    --muted:#96a0b5;
-    --accent:#5b9dff;
-    --accent-2:#38bdf8;
-    --gold:#f5b544;
-    --green:#4ade80;
-    --chip:#1a1f2c;
+    --bg:#0d1118;
+    --surface:#151b24;
+    --surface-2:#1a2330;
+    --line:#293445;
+    --line-2:#3a485c;
+    --text:#f1f5f9;
+    --muted:#a7b3c4;
+    --accent:#75a7ff;
+    --accent-2:#47c9bb;
+    --gold:#f2bd63;
+    --green:#70d69a;
+    --chip:#202a38;
     --r:14px;
     --sp:20px;
   }
@@ -32,9 +32,9 @@
     font:16px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     font-feature-settings:"cv05","ss01";
     background:
-      radial-gradient(1100px 620px at 12% -12%, rgba(91,157,255,.15), transparent 62%),
-      radial-gradient(820px 520px at 92% 2%,  rgba(56,189,248,.10), transparent 60%),
-      radial-gradient(760px 620px at 60% 108%, rgba(245,181,68,.055), transparent 60%),
+      radial-gradient(1100px 620px at 12% -12%, rgba(117,167,255,.17), transparent 62%),
+      radial-gradient(820px 520px at 92% 2%, rgba(71,201,187,.11), transparent 60%),
+      radial-gradient(760px 620px at 60% 108%, rgba(242,189,99,.06), transparent 60%),
       var(--bg);
     background-attachment:fixed;
   }
@@ -99,6 +99,36 @@
     border-radius:0 10px 10px 0;margin-top:18px;
   }
   .note strong{color:var(--text)}
+
+  /* ---------- learning story ---------- */
+  .story-grid{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:story}
+  .story-step{
+    counter-increment:story;position:relative;padding:21px 22px 20px 66px;
+    border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(145deg,rgba(26,35,48,.96),rgba(21,27,36,.96));
+  }
+  .story-step::before{
+    content:"0" counter(story);position:absolute;left:20px;top:20px;
+    color:var(--accent-2);font:600 .78rem/1 "JetBrains Mono",ui-monospace,monospace;
+    letter-spacing:.04em;
+  }
+  .story-step::after{
+    content:"";position:absolute;left:48px;top:18px;bottom:18px;width:1px;
+    background:linear-gradient(var(--accent),rgba(71,201,187,.15));
+  }
+  .story-step .when{
+    display:block;margin-bottom:6px;color:var(--accent-2);font-size:.73rem;
+    font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  }
+  .story-step h3{margin:0 0 8px;font-size:1.02rem;letter-spacing:-.012em}
+  .story-step p{margin:0;color:var(--muted);font-size:.925rem}
+  .story-step strong{color:var(--text);font-weight:600}
+  .story-close{
+    margin:16px 0 0;padding:15px 18px;border-left:3px solid var(--accent-2);
+    border-radius:0 10px 10px 0;background:rgba(71,201,187,.065);
+    color:var(--muted);font-size:.93rem;
+  }
+  .story-close strong{color:var(--text)}
 
   /* ---------- section headers ---------- */
   .sechead{display:flex;align-items:center;gap:11px;margin:56px 0 4px}
@@ -226,7 +256,10 @@
   footer svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.7;
     stroke-linecap:round;stroke-linejoin:round;flex:none}
 
-  @media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:700px){
+    .grid{grid-template-columns:1fr 1fr}
+    .story-grid{grid-template-columns:1fr 1fr}
+  }
   @media(max-width:560px){
     .wrap{padding:32px 15px 48px}
     .card{padding:17px 17px}
@@ -254,6 +287,7 @@
     </div>
 
     <nav class="jump" aria-label="Sections">
+      <a href="#story">My story</a>
       <a href="#work">Selected work</a>
       <a href="#experiments">Experiments</a>
       <a href="#also">Also built</a>
@@ -268,6 +302,35 @@
     <p>The second half of the page is the part nobody pays me for. Experiments, mostly run from the terminal, mostly at night. A few became tools I use every day. Others taught me exactly where this technology falls over — which turned out to be worth more.</p>
     <div class="note"><strong>On confidentiality:</strong> Several tools were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published. Where a write-up needed a real figure to make sense, the figure is withheld and said to be withheld.</div>
   </section>
+
+  <div class="sechead" id="story">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5.8A2.3 2.3 0 0 1 6.3 3.5H20v15H6.3A2.3 2.3 0 0 0 4 20.8"/><path d="M8 7.5h8M8 11.5h6"/></svg>
+    <h2>How I Got Here</h2><span class="rule"></span>
+  </div>
+  <p class="sub">This started in January 2026 with one conversation, not a plan to become a programmer.</p>
+  <div class="story-grid">
+    <article class="story-step">
+      <span class="when">January 2026</span>
+      <h3>A roommate made Excel feel different</h3>
+      <p>My B.Tech roommate told me that repetitive Excel work could be automated with Python. He helped me install it, explained what a library was and showed me how to add one. That small conversation started the curiosity.</p>
+    </article>
+    <article class="story-step">
+      <span class="when">The first scripts</span>
+      <h3>I began by asking websites for code</h3>
+      <p>I generated snippets in Claude and ChatGPT, copied them, ran them and came back with the errors. Slowly, those snippets became Python files I could change, debug and reuse for my own work.</p>
+    </article>
+    <article class="story-step">
+      <span class="when">Learning by using</span>
+      <h3>I paid for the tool from my own pocket</h3>
+      <p>I started paying $20 a month for Claude because the time it saved felt worth more than the subscription. I moved from browser chats to the desktop app and gave the tools harder, more useful problems.</p>
+    </article>
+    <article class="story-step">
+      <span class="when">Now</span>
+      <h3>The terminal became my working desk</h3>
+      <p>I now use Claude Code and Codex to automate as much repeatable work as I can. At the same time, I'm learning what sits underneath: LLMs, vision models, open-weight models, tools, user and system prompts, and where AI works well or fails.</p>
+    </article>
+  </div>
+  <p class="story-close"><strong>The goal has changed.</strong> I no longer want code that merely runs. I want to understand why it works, how to check it and when a person still needs to stay in the loop.</p>
 
   <div class="sechead" id="work">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7l2.85 5.9 6.4.92-4.63 4.5 1.1 6.38L12 17.4l-5.72 3l1.1-6.38-4.63-4.5 6.4-.92z"/></svg>
