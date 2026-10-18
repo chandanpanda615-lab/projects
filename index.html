@@ -217,6 +217,11 @@
     border-radius:0 10px 10px 0;margin:14px 0 12px;
   }
   .scope strong{color:var(--gold)}
+  .proof{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+  .proof a{font-size:.8rem;font-weight:600;padding:5px 10px;border-radius:8px;border:1px solid var(--line-2);text-decoration:none}
+  .proof a:hover{border-color:var(--accent)}
+  .prove{margin:16px 0 0;padding:14px 16px;border-radius:12px;border:1px solid rgba(74,222,128,.28);background:rgba(74,222,128,.06)}
+  .prove strong{color:var(--text)}
 
   /* ---------- mini rows ---------- */
   .mini{display:grid;gap:10px;grid-template-columns:1fr}
@@ -290,6 +295,7 @@
       <a href="#story">My story</a>
       <a href="#accounts">Accounts work</a>
       <a href="#work">Selected work</a>
+      <a href="proof.html">Proof: try it</a>
       <a href="#experiments">Experiments</a>
       <a href="#also">Also built</a>
       <a href="#progress">In progress</a>
@@ -302,6 +308,7 @@
     <p>The thread across everything below: <strong>domain expertise turned into software.</strong> I don't write generic scripts — I encode audit methodology, ICAI standards, and tax law into tools that hold up against messy, real-world data. Every project on this page is <strong>built and in real use</strong> unless its badge says otherwise.</p>
     <p>The newest work comes from the day job in accounts. Purchase bills, vendor prepayments, customer ledgers and fixed assets, booked and reconciled in NetSuite. It started in August with one brand. Since October it carries eight.</p>
     <p>The second half of the page is the part nobody pays me for. Experiments, mostly run from the terminal, mostly at night. A few became tools I use every day. Others taught me exactly where this technology falls over — which turned out to be worth more.</p>
+    <div class="prove"><strong>Don't take my word for it.</strong> The code is public, cleaned of client data, in <a href="https://github.com/chandanpanda615-lab/automation">chandanpanda615-lab/automation</a>. And on <a href="proof.html">the proof page</a> you can run the booking gates and the prepayment knock-off yourself, on made-up invoices, and try to get a bad bill past them.</div>
     <div class="note"><strong>On confidentiality:</strong> Several tools were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published. Where a write-up needed a real figure to make sense, the figure is withheld and said to be withheld.</div>
   </section>
 
@@ -375,6 +382,7 @@
 
       <p class="impact">⟶ One brand to eight. Reading a PDF costs roughly 30 to 45 paise.</p>
       <div class="scope"><strong>Honest scope.</strong> There is still a person in the middle. REVIEW rows, image-only invoices and wrong links get typed or chased by hand, and the NetSuite import is manual on purpose. The pipeline does the reading, checking and paperwork. It does not decide anything it can't prove.</div>
+      <div class="proof"><a href="proof.html#gates">Try the gates →</a><a href="https://github.com/chandanpanda615-lab/automation/tree/main/netsuite-purchase-automation">Read the code →</a></div>
       <div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span><span>PyMuPDF</span><span>zxing-cpp</span><span>Gemini 2.5 Flash</span><span>SQLite</span><span>Playwright</span><span>NetSuite</span></div>
     </div>
 
@@ -385,6 +393,7 @@
       <p>My first plan missed two business rules... a prepayment is tied to a bill by reference number, not only vendor and date, and FIFO runs per hub, not per vendor, because one vendor spans ten hubs. One more I found the hard way: the screen shows 100 bills a page, so a vendor with 150 open bills had its oldest on page two, where the bot couldn't see it. It now works out the page and switches. If it still can't keep FIFO, it skips the prepayment instead of applying it out of order.</p>
       <p class="impact">⟶ September: 808 prepayments across five brands, reconciled 808 of 808 to the NetSuite export with zero variance. FIFO re-checked read-only on 39 vendors, no failures.</p>
       <div class="scope"><strong>Honest scope.</strong> When the period was locked mid-run, 54 rows stopped with "header not set". That's the bot refusing, which is what it should do. Prepayments sitting on old vendor codes still need moving by hand; a bot shouldn't change master data.</div>
+      <div class="proof"><a href="proof.html#fifo">Try the FIFO knock-off →</a></div>
       <div class="stack"><span>Python</span><span>Playwright</span><span>NetSuite</span><span>openpyxl</span></div>
     </div>
 
@@ -393,6 +402,7 @@
       <p>Each hub's goods-received list against what is booked in NetSuite. Gaps go to a missing-PDF chase list, split by hub, with the links, ready to send to the hub.</p>
       <p>A bug caught on the way: the filter looked for "GRAND TOTAL" in the item name when it sat in the item code, so the totals row was being added into taxable value.</p>
       <p class="impact">⟶ Open chase items went from about 79 to 10 in a week.</p>
+      <div class="proof"><a href="https://github.com/chandanpanda615-lab/automation/tree/main/netsuite-purchase-automation/2_Reconciliation">Read the code →</a></div>
       <div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span></div>
     </div>
 
@@ -402,6 +412,7 @@
       <p>Four balances didn't match on day one. The saved search filtered one receivables account; the dashboard counts all of them.</p>
       <p class="impact">⟶ 3,310 customer balances tied, zero variance. A colleague runs it with no Python installed... one double-click.</p>
       <div class="scope"><strong>Known gap.</strong> A customer missing from the name mapping drops out silently if the total still ties. Noted, not fixed yet.</div>
+      <div class="proof"><a href="https://github.com/chandanpanda615-lab/automation/tree/main/customer-ledger-check">Read the code →</a></div>
       <div class="stack"><span>Python</span><span>pandas</span><span>NetSuite</span><span>portable Python</span></div>
     </div>
 
@@ -409,6 +420,7 @@
       <h3>Fixed asset register, proved row by row<span class="badge b-live">delivered</span></h3>
       <p>208 asset additions, each to be tied to an AP invoice, its PDF and the serial numbers in the IT register. The invoices came out of Oracle Fusion by driving a browser, because the REST API rejected the SSO session.</p>
       <p class="impact">⟶ 194 rows clean, 14 doubtful with a reason each, tie-out passed. 691 of 713 IT register rows linked; each of the 22 left has a reason.</p>
+      <div class="proof"><a href="https://github.com/chandanpanda615-lab/automation/tree/main/far-invoice-reconciliation">Read the code →</a></div>
       <div class="stack"><span>Python</span><span>PyMuPDF</span><span>Gemini</span><span>Playwright</span></div>
     </div>
 
@@ -501,6 +513,7 @@
 
       <p class="impact">⟶ Runs daily on 3–4 desks. Days of manual entry became one command over a folder.</p>
       <div class="scope"><strong>Honest scope.</strong> This is fitted to one PO layout. A new format needs the structure dumped and the content patterns re-fitted — a morning's work, not a rewrite. The five-step method transfers to any document; the parser does not. Client name, GSTINs and figures are withheld here deliberately.</div>
+      <div class="proof"><a href="https://github.com/chandanpanda615-lab/automation/tree/main/po-extractor">Read the code →</a></div>
       <div class="stack"><span>Python</span><span>pdfplumber</span><span>openpyxl</span><span>regex</span><span>Claude Code</span></div>
     </div>
 
@@ -508,6 +521,7 @@
       <h3>GST Reconciliation Engine<span class="badge b-live">in use</span></h3>
       <p>Automated three-way matching — GSTR-1 vs 3B vs books — over 700+ invoices/month across .xlsx &amp; .xlsb. Flags mismatches, ITC discrepancies and rounding differences into an exception report.</p>
       <p class="impact">⟶ Cut reconciliation from ~5 hours to under 30 minutes per client/month.</p>
+      <div class="proof"><a href="https://github.com/chandanpanda615-lab/automation/tree/main/gst-reconciliation">Read the code →</a></div>
       <div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span></div>
     </div>
 
@@ -743,9 +757,9 @@
   </div>
   <p class="sub">Smaller production tools that quietly save hours.</p>
   <div class="mini">
-    <div class="row"><b>MarkItDown Converter (web app)</b><span class="d">PDF and Excel to clean text, so a model reads structure instead of a collapsed table. <a href="https://markitdown-converter-chandan.streamlit.app/">Live app →</a></span><span class="t">Python · Streamlit</span></div>
-    <div class="row"><b>Bill-Discounting JV Maker</b><span class="d">Bank bill-discounting tracker to NetSuite journal import, JV numbers written back to the Excel. 260 JVs posted across three bank batches, reconciled one for one. Packaged as an .exe for a colleague.</span><span class="t">Python · NetSuite</span></div>
-    <div class="row"><b>Oracle Fusion Attachment Downloader</b><span class="d">Invoice PDFs off Oracle Fusion when the API refuses the SSO session. 82 of 87 on the first run, the rest after a filename fix.</span><span class="t">Python · Playwright</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/markitdown-converter">MarkItDown Converter (web app)</a></b><span class="d">PDF and Excel to clean text, so a model reads structure instead of a collapsed table. <a href="https://markitdown-converter-chandan.streamlit.app/">Live app →</a></span><span class="t">Python · Streamlit</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/bank-jv-automation">Bill-Discounting JV Maker</a></b><span class="d">Bank bill-discounting tracker to NetSuite journal import, JV numbers written back to the Excel. 260 JVs posted across three bank batches, reconciled one for one. Packaged as an .exe for a colleague.</span><span class="t">Python · NetSuite</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/far-invoice-reconciliation">Oracle Fusion Attachment Downloader</a></b><span class="d">Invoice PDFs off Oracle Fusion when the API refuses the SSO session. 82 of 87 on the first run, the rest after a filename fix.</span><span class="t">Python · Playwright</span></div>
     <div class="row"><b>Portal PDF Recovery</b><span class="d">Fetches invoice PDFs the hubs uploaded late, straight from the distribution portal, and refreshes its own access token.</span><span class="t">Python · REST API</span></div>
     <div class="row"><b>TDS Master vs Income-tax Act 2025</b><span class="d">Every row of the NetSuite TDS list checked against the new Act's sections, payment codes and rates. 25 to fix, 15 to inactivate, 3 to add.</span><span class="t">Excel · tax law</span></div>
     <div class="row"><b>AI Work-Journal Generator</b><span class="d">Rough notes → structured, timestamped work log auto-saved as HTML &amp; PDF.</span><span class="t">Python · Gemini</span></div>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proof · Chandan Panda</title>
+<meta name="description" content="Run the purchase-bill gates and the FIFO prepayment knock-off yourself, on made-up invoices, and read the code behind the portfolio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1118;
+    --surface:#151b24;
+    --surface-2:#1a2330;
+    --line:#293445;
+    --line-2:#3a485c;
+    --text:#f1f5f9;
+    --muted:#a7b3c4;
+    --accent:#75a7ff;
+    --accent-2:#47c9bb;
+    --gold:#f2bd63;
+    --green:#70d69a;
+    --chip:#202a38;
+    --r:14px;
+    --sp:20px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+
+  body{
+    margin:0;color:var(--text);
+    font:16px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-feature-settings:"cv05","ss01";
+    background:
+      radial-gradient(1100px 620px at 12% -12%, rgba(117,167,255,.17), transparent 62%),
+      radial-gradient(820px 520px at 92% 2%, rgba(71,201,187,.11), transparent 60%),
+      radial-gradient(760px 620px at 60% 108%, rgba(242,189,99,.06), transparent 60%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+  /* faint engineering grid, sits behind everything */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.021) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.021) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:44px 20px 64px;position:relative;z-index:1}
+
+  a{color:var(--accent);text-decoration:none}
+  a:hover{color:var(--accent-2);text-decoration:underline;text-underline-offset:3px}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+  /* ---------- masthead ---------- */
+  header{padding:8px 0 4px}
+  header h1{
+    font-size:clamp(2.1rem,5vw,2.8rem);margin:0 0 10px;letter-spacing:-.033em;font-weight:700;
+    background:linear-gradient(102deg,#fff 8%,#cfe0ff 48%,#8fbaff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  header .tag{color:var(--muted);font-size:1.03rem;max-width:62ch}
+  header .tag b{color:var(--text);font-weight:600}
+
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+  .stat{
+    flex:1 1 128px;padding:12px 14px;border-radius:12px;
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);
+  }
+  .stat .n{display:block;font-size:1.32rem;font-weight:700;letter-spacing:-.02em;color:var(--text)}
+  .stat .l{display:block;font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+
+  nav.jump{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+  nav.jump a{
+    font-size:.83rem;font-weight:500;color:var(--muted);
+    padding:6px 13px;border-radius:999px;border:1px solid var(--line);
+    background:var(--chip);transition:color .2s,border-color .2s,background .2s;
+  }
+  nav.jump a:hover{color:var(--text);border-color:var(--line-2);background:var(--surface-2);text-decoration:none}
+
+  /* ---------- intro ---------- */
+  .intro{
+    margin:30px 0 0;padding:24px;border-radius:var(--r);
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);position:relative;overflow:hidden;
+  }
+  .intro::before{
+    content:"";position:absolute;inset:0 0 auto;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(91,157,255,.75),rgba(56,189,248,.35),transparent);
+  }
+  .intro p{margin:0 0 13px}.intro p:last-child{margin:0}
+  .lead{font-weight:600;font-size:1.1rem;letter-spacing:-.011em}
+  .note{
+    font-size:.9rem;color:var(--muted);border-left:3px solid var(--accent);
+    padding:12px 16px;background:rgba(91,157,255,.055);
+    border-radius:0 10px 10px 0;margin-top:18px;
+  }
+  .note strong{color:var(--text)}
+
+  /* ---------- learning story ---------- */
+  .story-grid{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:story}
+  .story-step{
+    counter-increment:story;position:relative;padding:21px 22px 20px 66px;
+    border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(145deg,rgba(26,35,48,.96),rgba(21,27,36,.96));
+  }
+  .story-step::before{
+    content:"0" counter(story);position:absolute;left:20px;top:20px;
+    color:var(--accent-2);font:600 .78rem/1 "JetBrains Mono",ui-monospace,monospace;
+    letter-spacing:.04em;
+  }
+  .story-step::after{
+    content:"";position:absolute;left:48px;top:18px;bottom:18px;width:1px;
+    background:linear-gradient(var(--accent),rgba(71,201,187,.15));
+  }
+  .story-step .when{
+    display:block;margin-bottom:6px;color:var(--accent-2);font-size:.73rem;
+    font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  }
+  .story-step h3{margin:0 0 8px;font-size:1.02rem;letter-spacing:-.012em}
+  .story-step p{margin:0;color:var(--muted);font-size:.925rem}
+  .story-step strong{color:var(--text);font-weight:600}
+  .story-close{
+    margin:16px 0 0;padding:15px 18px;border-left:3px solid var(--accent-2);
+    border-radius:0 10px 10px 0;background:rgba(71,201,187,.065);
+    color:var(--muted);font-size:.93rem;
+  }
+  .story-close strong{color:var(--text)}
+
+  /* ---------- section headers ---------- */
+  .sechead{display:flex;align-items:center;gap:11px;margin:56px 0 4px}
+  .sechead svg{width:19px;height:19px;flex:none;stroke:var(--accent);fill:none;
+    stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  h2{margin:0;font-size:1.42rem;letter-spacing:-.021em;font-weight:600}
+  .sechead .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent)}
+  .sub{color:var(--muted);margin:0 0 20px;font-size:.95rem;max-width:76ch}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;gap:16px}
+  .card{
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);border-radius:var(--r);
+    padding:20px 22px;position:relative;overflow:hidden;
+    transition:border-color .22s ease,transform .22s ease,box-shadow .22s ease;
+  }
+  .card:hover{
+    border-color:rgba(91,157,255,.5);transform:translateY(-3px);
+    box-shadow:0 14px 34px -18px rgba(0,0,0,.85),0 0 0 1px rgba(91,157,255,.09);
+  }
+  .card .num{
+    position:absolute;top:15px;right:18px;font-size:.74rem;color:var(--muted);
+    font-weight:700;opacity:.45;font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:.04em;
+  }
+  .card h3{margin:0 0 9px;font-size:1.07rem;padding-right:34px;letter-spacing:-.014em;font-weight:600;line-height:1.42}
+  .card p{margin:0 0 10px;font-size:.945rem}
+  .card .impact{
+    color:var(--gold);font-size:.88rem;font-weight:600;margin:14px 0 12px;
+    padding:9px 13px;background:rgba(245,181,68,.07);
+    border:1px solid rgba(245,181,68,.19);border-radius:9px;
+  }
+  .stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .stack span{
+    background:var(--chip);color:var(--muted);font-size:.755rem;
+    padding:4px 10px;border-radius:999px;border:1px solid var(--line);
+    font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:-.01em;
+  }
+  .badge{
+    display:inline-block;font-size:.685rem;font-weight:700;padding:3px 9px;
+    border-radius:999px;margin-left:8px;vertical-align:middle;
+    letter-spacing:.035em;text-transform:uppercase;white-space:nowrap;
+  }
+  .b-live{background:rgba(74,222,128,.12);color:#5fd38a;border:1px solid rgba(74,222,128,.28)}
+  .b-wip{background:rgba(245,181,68,.12);color:var(--gold);border:1px solid rgba(245,181,68,.28)}
+  .b-exp{background:rgba(91,157,255,.13);color:#8dbaff;border:1px solid rgba(91,157,255,.3)}
+
+  /* featured long-form cards */
+  .card.wide{grid-column:1/-1;padding:24px 26px}
+  .card.wide::before{
+    content:"";position:absolute;inset:0 0 auto;height:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2) 42%,transparent 88%);
+    opacity:.85;
+  }
+  .card p.cap{
+    margin:22px 0 8px;font-weight:600;font-size:.935rem;color:var(--text);
+    letter-spacing:-.01em;padding-left:12px;border-left:2px solid var(--accent);
+  }
+
+  /* ---------- tables ---------- */
+  .tw{overflow-x:auto;margin:0 0 14px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.2)}
+  table.log{width:100%;border-collapse:collapse;font-size:.875rem;min-width:540px}
+  table.log th{
+    text-align:left;color:var(--muted);font-weight:600;font-size:.74rem;
+    text-transform:uppercase;letter-spacing:.06em;
+    padding:11px 16px;border-bottom:1px solid var(--line-2);
+    background:rgba(255,255,255,.022);white-space:nowrap;
+  }
+  table.log td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text)}
+  table.log tr:last-child td{border-bottom:none}
+  table.log tbody tr,table.log tr{transition:background .16s ease}
+  table.log tr:hover td{background:rgba(91,157,255,.045)}
+  table.log td.ok{color:var(--green);white-space:nowrap;font-weight:600}
+  table.log td:first-child{color:var(--muted)}
+  table.log td strong{color:var(--text)}
+
+  code{
+    background:rgba(91,157,255,.09);border:1px solid rgba(91,157,255,.18);
+    border-radius:5px;padding:1.5px 6px;font-size:.83em;color:#a8c8ff;
+    font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;
+  }
+  .scope{
+    font-size:.875rem;color:var(--muted);border:1px solid rgba(245,181,68,.22);
+    border-left:3px solid var(--gold);
+    padding:13px 16px;background:rgba(245,181,68,.05);
+    border-radius:0 10px 10px 0;margin:14px 0 12px;
+  }
+  .scope strong{color:var(--gold)}
+
+  /* ---------- mini rows ---------- */
+  .mini{display:grid;gap:10px;grid-template-columns:1fr}
+  .mini .row{
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);border-radius:11px;
+    padding:14px 18px;display:flex;justify-content:space-between;gap:14px;
+    align-items:center;flex-wrap:wrap;transition:border-color .2s ease,transform .2s ease;
+  }
+  .mini .row:hover{border-color:var(--line-2);transform:translateX(3px)}
+  .mini .row b{font-weight:600;letter-spacing:-.01em}
+  .mini .row .d{color:var(--muted);font-size:.9rem;flex:1;min-width:220px}
+  .mini .row .t{
+    color:var(--muted);font-size:.755rem;font-family:"JetBrains Mono",ui-monospace,monospace;
+    background:var(--chip);border:1px solid var(--line);padding:4px 10px;border-radius:999px;white-space:nowrap;
+  }
+
+  /* ---------- closing ---------- */
+  .demo{
+    margin-top:56px;padding:26px;border-radius:var(--r);
+    background:linear-gradient(180deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line);position:relative;overflow:hidden;
+  }
+  .demo::before{
+    content:"";position:absolute;inset:0 0 auto;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(245,181,68,.55),transparent);
+  }
+  .demo .sechead{margin-top:0}
+  .demo ul{margin:14px 0 0;padding-left:20px;color:var(--muted)}
+  .demo li{margin-bottom:9px}
+  .demo li strong{color:var(--text)}
+
+  footer{
+    margin:56px 0 0;padding-top:26px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:.93rem;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  }
+  footer svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.7;
+    stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  @media(min-width:700px){
+    .grid{grid-template-columns:1fr 1fr}
+    .story-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:560px){
+    .wrap{padding:32px 15px 48px}
+    .card{padding:17px 17px}
+    .card.wide{padding:19px 17px}
+    .stat{flex:1 1 44%}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+    .card:hover,.mini .row:hover{transform:none}
+  }
+
+  /* proof page */
+  .back{margin:0 0 18px;font-size:.9rem}
+  .hint{color:var(--muted);font-size:.86rem;margin:-4px 0 8px}
+  textarea{width:100%;max-width:340px;background:var(--surface-2);color:var(--text);border:1px solid var(--line-2);
+    border-radius:9px;padding:9px 11px;font:500 .85rem/1.5 "JetBrains Mono",monospace;margin:0 0 18px}
+  table.demo{min-width:900px}
+  table.demo td{padding:5px 6px}
+  table.demo input{width:100%;min-width:70px;background:var(--surface-2);color:var(--text);border:1px solid var(--line);
+    border-radius:7px;padding:6px 7px;font:500 .8rem "JetBrains Mono",monospace}
+  table.demo input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+  #bills table.demo,#pre.demo,#bills.demo{min-width:0}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 18px}
+  button{font:600 .9rem Inter,sans-serif;padding:10px 16px;border-radius:10px;cursor:pointer;
+    background:var(--accent);color:#08101c;border:1px solid var(--accent)}
+  button.ghost{background:transparent;color:var(--text);border-color:var(--line-2)}
+  button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .pill{display:inline-block;font:600 .72rem Inter,sans-serif;letter-spacing:.05em;padding:3px 8px;border-radius:999px;white-space:nowrap}
+  .p-pass{background:rgba(74,222,128,.12);color:#5fd38a;border:1px solid rgba(74,222,128,.28)}
+  .p-review{background:rgba(245,181,68,.12);color:var(--gold);border:1px solid rgba(245,181,68,.28)}
+  .p-skip{background:rgba(91,157,255,.13);color:#8dbaff;border:1px solid rgba(91,157,255,.3)}
+  .verdict{padding:12px 14px;border-radius:10px;font-weight:600;margin:0 0 6px}
+  .verdict.good{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.25)}
+  .verdict.bad{background:rgba(245,181,68,.08);border:1px solid rgba(245,181,68,.28)}
+  .split{display:grid;gap:16px;grid-template-columns:1.4fr 1fr}
+  .split table.demo{min-width:0}
+  .mode{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:0 0 14px;display:grid;gap:6px;font-size:.9rem}
+  .mode legend{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;padding:0 6px}
+  .mode input{accent-color:var(--accent);margin-right:6px}
+  small{color:var(--muted)}
+  @media(max-width:760px){.split{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="back"><a href="index.html">← Back to the portfolio</a></p>
+    <h1>Don't take my word for it</h1>
+    <div class="tag"><b>Run the checks yourself</b> · made-up invoices, real rules, real code</div>
+  </header>
+
+  <section class="intro">
+    <p class="lead">The portfolio says the booking pipeline catches wrong files, misread tax and double bookings. This page lets you try to break it.</p>
+    <p>Below are the gates a purchase bill passes before it goes into NetSuite, and the oldest-first rule the prepayment bot follows. They run in your browser on invoices I made up. Change any number and press the button... the rules either catch it or they don't.</p>
+    <div class="note"><strong>What this is, honestly.</strong> The rules here are a JavaScript copy of the Python that runs in production. The Python itself is public in <a href="https://github.com/chandanpanda615-lab/automation">chandanpanda615-lab/automation</a>, client names and numbers replaced. That code is a 27 September snapshot, from before the pipeline went to eight brands. The prepayment bot and the newer multi-brand code aren't public yet.</div>
+  </section>
+
+  <div class="sechead" id="gates">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.1 8.4-7.5 9.8-4.4-1.4-7.5-5.2-7.5-9.8V5.8z"/><path d="m8.6 12 2.4 2.4 4.6-4.8"/></svg>
+    <h2>1 · The booking gates</h2><span class="rule"></span>
+  </div>
+  <p class="sub">Nine invoices from a made-up supplier. Each row is what was read off the PDF, plus the total from its e-invoice QR. Every cell is editable.</p>
+
+  <div class="card wide">
+    <p class="cap">Already in the booked ledger</p>
+    <p class="hint">One invoice number per line. These are what NetSuite stores: no year suffix, no leading zero.</p>
+    <textarea id="ledger" rows="3" spellcheck="false" aria-label="Invoice numbers already booked">7100000088
+7100000077</textarea>
+
+    <p class="cap">The day's invoices</p>
+    <div class="tw"><table class="log demo" id="inv">
+      <thead><tr>
+        <th>Invoice no<br>(GRN file)</th><th>Invoice no<br>in the QR</th><th>Taxable 5%</th><th>Taxable 18%</th><th>Taxable 40%</th><th>Printed tax</th><th>Invoice amt</th><th>QR total</th><th>Supplier state</th><th>Hub state</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <div class="btns">
+      <button type="button" id="runGates">Run the gates</button>
+      <button type="button" class="ghost" id="resetGates">Reset the example</button>
+    </div>
+
+    <div id="gateOut" aria-live="polite"></div>
+  </div>
+
+  <div class="card wide explain">
+    <p class="cap">What each gate is for, and where it lives in the code.</p>
+    <div class="tw"><table class="log">
+      <tr><th>Gate</th><th>The rule</th><th>Why it exists</th></tr>
+      <tr><td>Ledger</td><td>Strip a year suffix (<code>-26</code>, <code>/2026</code>, <code>_2026</code>) and leading zeros, then look the number up in the booked ledger.</td><td>The upload adds suffixes NetSuite never stores. A leading zero booked one bill twice on 8 October.</td></tr>
+      <tr><td>Right file</td><td>The invoice number in the e-invoice QR must be this row's number. <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/fill_tax_from_pdfs.py#L138-L148"><code>qr_status()</code></a></td><td>Hubs upload the wrong PDF. One hub, one day: 15 of 26.</td></tr>
+      <tr><td>Nothing read / 40%</td><td>All taxable zero, or any 40% line, goes to a person.</td><td>Free goods and samples look like zero bills. 40% is rare enough that a person should see every one.</td></tr>
+      <tr><td>Tax checksum</td><td>5% × base + 18% × base must equal the printed tax, within ₹1. <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/fill_tax_from_pdfs.py#L101-L115"><code>reconcile()</code></a></td><td>Catches a misread digit or a decimal in the wrong place.</td></tr>
+      <tr><td>Invoice amount</td><td>Taxable + printed tax must equal the printed invoice amount, within ₹1. <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/fill_tax_from_pdfs.py#L118-L128"><code>amt_gap()</code></a></td><td>A read that doubles every line still passes the checksum. It doesn't pass this.</td></tr>
+      <tr><td>QR total</td><td>Taxable + computed tax must equal the QR total, within ₹1. <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/fill_tax_from_pdfs.py#L130-L136"><code>qr_gap()</code></a></td><td>The QR is read by code, not the AI, so a misread can't agree with it by accident. Swapped slabs that add up perfectly get caught here.</td></tr>
+      <tr><td>Export</td><td>One failing row blocks the whole import file.</td><td>Half a batch in NetSuite is worse than none. Fix the row or accept it by name.</td></tr>
+    </table></div>
+    <p>Tax type is derived, never typed: same state means CGST + SGST, different state means IGST. TDS under 194Q is 0.1% of taxable, and the bill amount is taxable + GST − TDS.</p>
+  </div>
+
+  <div class="sechead" id="fifo">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h16M4 12h11M4 17.5h6"/><path d="m17 15 3 3-3 3"/></svg>
+    <h2>2 · Prepayments, oldest bill first</h2><span class="rule"></span>
+  </div>
+  <p class="sub">One made-up vendor, two hubs. Advances get knocked off against open bills of the same hub, oldest first. The NetSuite screen lists bills in its own order, a page at a time. Here a page holds three.</p>
+
+  <div class="card wide">
+    <div class="split">
+      <div>
+        <p class="cap">Open bills, in the order the screen lists them</p>
+        <div class="tw"><table class="log demo" id="bills"><thead><tr><th>Hub</th><th>Bill</th><th>Bill date</th><th>Open ₹</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div>
+        <p class="cap">Prepayments to apply</p>
+        <div class="tw"><table class="log demo" id="pre"><thead><tr><th>Hub</th><th>Ref</th><th>Amount ₹</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+    <fieldset class="mode">
+      <legend>Which bot?</legend>
+      <label><input type="radio" name="mode" value="fixed" checked> The bot as it runs now: finds the page the oldest bill is on</label>
+      <label><input type="radio" name="mode" value="naive"> My first version: only sees page one</label>
+    </fieldset>
+    <div class="btns">
+      <button type="button" id="runFifo">Apply the prepayments</button>
+      <button type="button" class="ghost" id="resetFifo">Reset the example</button>
+    </div>
+    <div id="fifoOut" aria-live="polite"></div>
+  </div>
+
+  <div class="sechead" id="code">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 7-5 5 5 5M15.5 7l5 5-5 5"/></svg>
+    <h2>3 · The code behind the portfolio</h2><span class="rule"></span>
+  </div>
+  <p class="sub">Public, cleaned of client names, GSTINs, hostnames and invoice numbers. Each line says what a reader can check in it.</p>
+  <div class="mini">
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/netsuite-purchase-automation">Purchase bill pipeline</a></b><span class="d">Download, tax read, QR check, gates, NetSuite import files, booked ledger, daily GRN reconciliation, missing-PDF chase list. The offline self-test runs with <code>python fill_tax_from_pdfs.py --selftest</code>, no API and no files needed.</span><span class="t">A1 · A3</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/customer-ledger-check">Customer ledgers</a></b><span class="d">One saved-search export into a ledger per customer, balances tied before anything is sent.</span><span class="t">A4</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/far-invoice-reconciliation">FAR to invoice</a></b><span class="d">Asset lines to invoice lines, the Oracle Fusion PDF downloader, serial-level verification list.</span><span class="t">A5</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/bank-jv-automation">Bill-discounting JVs</a></b><span class="d">Bank sheet to NetSuite journal import, then posted JVs reconciled back.</span><span class="t">Also built</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/po-extractor">PR/PO extractor</a></b><span class="d">The extraction engine from card 01, with the arithmetic checks.</span><span class="t">01</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/gst-reconciliation">GST reconciliation</a></b><span class="d">GSTR-2B against purchase books, GSTR-1 against sales, both against 3B. Script and Streamlit app.</span><span class="t">02</span></div>
+    <div class="row"><b><a href="https://github.com/chandanpanda615-lab/markitdown-converter">MarkItDown converter</a></b><span class="d">The web app from Also Built.</span><span class="t">Also built</span></div>
+  </div>
+  <div class="scope"><strong>Not public yet.</strong> The prepayment bot, the multi-brand vendor routing, the answer-key scorer and the strike-off pipeline. They still hold client configuration. They go up once it's masked and checked, the same way the rest did.</div>
+
+  <footer>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="m3.4 6.4 8.6 6.2 8.6-6.2"/></svg>
+    <a href="mailto:chandanpanda615@gmail.com">chandanpanda615@gmail.com</a>
+    <span>· <a href="index.html">Portfolio</a></span>
+  </footer>
+</div>
+
+<script>
+const TOL = 1.0;                       // fill_tax_from_pdfs.py CHECKSUM_TOLERANCE
+const r2 = x => Math.round((x + Number.EPSILON) * 100) / 100;
+const num = s => { const v = parseFloat(String(s).replace(/,/g, '')); return isNaN(v) ? 0 : v; };
+const inr = x => (x < 0 ? '−₹' : '₹') + Math.abs(r2(x)).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// ---------- 1. gates ----------
+const COLS = ['no', 'qr', 'a5', 'a18', 'a40', 'printed', 'amt', 'qrtot', 'sup', 'hub'];
+const INVOICES = [
+  ['7100000101', '7100000101', '100000', '50000', '', '14000', '164000', '164000', '29', '29'],
+  ['7100000088-26', '7100000088', '42000', '', '', '2100', '44100', '44100', '29', '29'],
+  ['07100000077', '7100000077', '', '61000', '', '10980', '71980', '71980', '29', '29'],
+  ['7100000102', '7100000999', '25000', '', '', '1250', '26250', '26250', '29', '29'],
+  ['7100000103', '7100000103', '200000', '20000', '', '13600', '', '257000', '29', '29'],
+  ['7100000104', '7100000104', '', '80000', '', '14400', '94400', '94400', '33', '29'],
+  ['7100000105', '7100000105', '', '', '10000', '4000', '14000', '14000', '29', '29'],
+  ['7100000106', '7100000106', '33333.33', '', '', '1667.00', '35000.33', '35000.00', '29', '29'],
+  ['7100000107', '7100000107', '', '100000', '', '1800', '101800', '118000', '29', '29'],
+];
+
+// the ledger key, as booked_key() builds it in production: year suffix off, leading zeros off an all-digit number
+function bookedKey(no) {
+  let k = String(no).trim().replace(/[-\/_](20)?2\d$/, '');
+  if (/^\d+$/.test(k)) k = k.replace(/^0+/, '') || '0';
+  return k;
+}
+const tax = (a5, a18) => r2(a5 * 0.05 + a18 * 0.18);
+
+function judgeRow(v, ledger) {
+  const key = bookedKey(v.no);
+  if (ledger.has(key)) return {s: 'SKIP', note: `already booked as ${key}`};
+  if (!v.qr.trim()) return {s: 'REVIEW', note: 'no QR to check the file against'};
+  if (bookedKey(v.qr) !== key) return {s: 'REVIEW', note: `WRONG FILE: the PDF's QR says ${v.qr}`};
+  const a5 = num(v.a5), a18 = num(v.a18), a40 = num(v.a40), printed = num(v.printed);
+  if (a40 > 0) return {s: 'REVIEW', note: '40% slab: a person checks every one'};
+  if (a5 === 0 && a18 === 0) return {s: 'REVIEW', note: 'NIL invoice: nothing taxable read (free goods? samples?)'};
+  if (printed <= 0) return {s: 'REVIEW', note: 'no printed tax to verify against'};
+  const d = r2(tax(a5, a18) - printed);
+  if (Math.abs(d) > TOL) return {s: 'REVIEW', note: `tax checksum off by ${inr(d)} (computed ${inr(tax(a5, a18))} vs printed ${inr(printed)})`};
+  if (v.amt.trim()) {
+    const g = r2(a5 + a18 + printed - num(v.amt));
+    if (Math.abs(g) > TOL) return {s: 'REVIEW', note: `taxable + tax is off the invoice amount by ${inr(g)}`};
+  }
+  if (v.qrtot.trim()) {
+    const q = r2(a5 + a18 + tax(a5, a18) - num(v.qrtot));
+    if (Math.abs(q) > TOL) return {s: 'REVIEW', note: `taxable + tax is off the QR total by ${inr(q)}`};
+  }
+  const igst = v.sup.trim() !== v.hub.trim();
+  const gst = tax(a5, a18), tds = r2((a5 + a18) * 0.001);
+  return {s: 'PASS', igst, gst, tds, bill: r2(a5 + a18 + gst - tds),
+          note: (igst ? 'IGST' : 'CGST + SGST') + (v.amt.trim() ? '' : ' · invoice amount not read, QR total used')};
+}
+
+function fillTable(id, rows, cols) {
+  const tb = document.querySelector(`#${id} tbody`);
+  tb.innerHTML = rows.map(r => '<tr>' + r.map((c, i) =>
+    `<td><input value="${esc(c)}" data-col="${cols[i]}" aria-label="${cols[i]}" spellcheck="false"></td>`).join('') + '</tr>').join('');
+}
+function readTable(id) {
+  return [...document.querySelectorAll(`#${id} tbody tr`)].map(tr => {
+    const o = {}; tr.querySelectorAll('input').forEach(i => o[i.dataset.col] = i.value); return o;
+  });
+}
+
+function runGates() {
+  const ledger = new Set(document.getElementById('ledger').value.split(/\s+/).filter(Boolean).map(bookedKey));
+  const rows = readTable('inv'), res = rows.map(v => judgeRow(v, ledger));
+  const pass = res.filter(x => x.s === 'PASS'), rev = res.filter(x => x.s === 'REVIEW'), skip = res.filter(x => x.s === 'SKIP');
+  let h = '<div class="tw"><table class="log"><tr><th>Invoice</th><th>Result</th><th>Why</th><th>Bill amount</th></tr>';
+  rows.forEach((v, i) => {
+    const x = res[i];
+    h += `<tr><td><code>${esc(v.no)}</code></td><td><span class="pill p-${x.s.toLowerCase()}">${x.s}</span></td><td>${esc(x.note)}</td>` +
+         `<td>${x.s === 'PASS' ? inr(x.bill) + `<br><small>GST ${inr(x.gst)} · TDS ${inr(x.tds)}</small>` : ''}</td></tr>`;
+  });
+  h += '</table></div>';
+  h += rev.length
+    ? `<p class="verdict bad">Export blocked. ${rev.length} row${rev.length > 1 ? 's' : ''} failing, so no import file is written for any of the ${pass.length} that passed. Fix the rows or accept them by name.</p>`
+    : `<p class="verdict good">Export ready: ${pass.length} bills, ${inr(pass.reduce((s, x) => s + x.bill, 0))} in total. ${skip.length} skipped as already booked.</p>`;
+  document.getElementById('gateOut').innerHTML = h;
+}
+
+// ---------- 2. FIFO knock-off ----------
+const BCOLS = ['hub', 'bill', 'date', 'open'], PCOLS = ['hub', 'ref', 'amt'];
+const BILLS = [
+  ['North', 'B-104', '2026-08-21', '40000'],
+  ['North', 'B-107', '2026-09-02', '25000'],
+  ['South', 'B-201', '2026-08-25', '30000'],
+  ['North', 'B-099', '2026-07-30', '15000'],
+  ['North', 'B-110', '2026-09-12', '50000'],
+  ['South', 'B-205', '2026-09-08', '45000'],
+];
+const PREPAY = [['North', 'PP-01', '70000'], ['South', 'PP-02', '30000'], ['South', 'PP-03', '60000'], ['East', 'PP-04', '10000']];
+const PAGE = 3;
+
+function runFifo() {
+  const naive = document.querySelector('input[name=mode]:checked').value === 'naive';
+  const bills = readTable('bills').map((b, i) => ({...b, open: num(b.open), paid: 0, pos: i}));
+  const pre = readTable('pre');
+  const rows = [];
+  for (const p of pre) {
+    let left = num(p.amt);
+    // what the bot can see: the whole list, or only screen page one
+    const visible = bills.filter(b => b.hub.trim() === p.hub.trim() && (!naive || b.pos < PAGE));
+    const open = visible.filter(b => b.open - b.paid > 0.004).sort((a, b) => a.date.localeCompare(b.date));
+    const used = [];
+    for (const b of open) {
+      if (left <= 0.004) break;
+      const take = r2(Math.min(left, b.open - b.paid));
+      b.paid = r2(b.paid + take); left = r2(left - take);
+      used.push(`${b.bill} ${inr(take)}${b.open - b.paid > 0.004 ? ' (part)' : ''}`);
+    }
+    const status = !used.length ? 'No bills' : left > 0.004 ? 'Part applied' : 'Applied';
+    rows.push({p, used, left, status});
+  }
+  // the read-only check verify_all.py runs after a live save: no open bill older than the newest one paid
+  const hubs = [...new Set(bills.map(b => b.hub.trim()))];
+  const checks = hubs.map(h => {
+    const hb = bills.filter(b => b.hub.trim() === h), paid = hb.filter(b => b.paid > 0);
+    if (!paid.length) return {h, ok: true, note: 'nothing applied'};
+    const newest = paid.map(b => b.date).sort().pop();
+    const skipped = hb.filter(b => b.date < newest && b.open - b.paid > 0.004);
+    return {h, ok: !skipped.length, note: skipped.length ? `${skipped.map(b => b.bill).join(', ')} still open but older than ${newest}` : `oldest first, up to ${newest}`};
+  });
+  const applied = r2(rows.reduce((s, x) => s + num(x.p.amt) - x.left, 0)), unapplied = r2(rows.reduce((s, x) => s + x.left, 0));
+  const total = r2(pre.reduce((s, p) => s + num(p.amt), 0));
+  let h = '<div class="tw"><table class="log"><tr><th>Prepayment</th><th>Status</th><th>Applied to</th><th>Left over</th></tr>';
+  rows.forEach(x => {
+    const cls = x.status === 'Applied' ? 'pass' : x.status === 'No bills' ? 'skip' : 'review';
+    h += `<tr><td><code>${esc(x.p.ref)}</code> ${esc(x.p.hub)}<br><small>${inr(num(x.p.amt))}</small></td><td><span class="pill p-${cls}">${x.status}</span></td><td>${x.used.map(esc).join('<br>') || '—'}</td><td>${x.left > 0 ? inr(x.left) : ''}</td></tr>`;
+  });
+  h += '</table></div><p class="cap">The checks that run after</p><div class="tw"><table class="log">';
+  h += `<tr><th>Check</th><th>Result</th><th>Detail</th></tr>`;
+  h += `<tr><td>Applied + left over = prepayments</td><td><span class="pill p-${r2(applied + unapplied) === total ? 'pass' : 'review'}">${r2(applied + unapplied) === total ? 'OK' : 'CHECK'}</span></td><td>${inr(applied)} + ${inr(unapplied)} = ${inr(total)}</td></tr>`;
+  checks.forEach(c => h += `<tr><td>FIFO, hub ${esc(c.h)}</td><td><span class="pill p-${c.ok ? 'pass' : 'review'}">${c.ok ? 'OK' : 'CHECK'}</span></td><td>${esc(c.note)}</td></tr>`);
+  h += '</table></div>';
+  const bad = checks.some(c => !c.ok);
+  h += bad
+    ? '<p class="verdict bad">FIFO broken. The oldest North bill sits on screen page two, so a bot that only reads page one pays newer bills first. My first version had exactly this bug. Now the bot works out which page the oldest bill is on, and this check runs read-only after every live save.</p>'
+    : '<p class="verdict good">Oldest first on every hub, and every rupee accounted for.</p>';
+  document.getElementById('fifoOut').innerHTML = h;
+}
+
+function resetGates() { fillTable('inv', INVOICES, COLS); runGates(); }
+function resetFifo() { fillTable('bills', BILLS, BCOLS); fillTable('pre', PREPAY, PCOLS); runFifo(); }
+document.getElementById('runGates').onclick = runGates;
+document.getElementById('resetGates').onclick = resetGates;
+document.getElementById('runFifo').onclick = runFifo;
+document.getElementById('resetFifo').onclick = resetFifo;
+document.querySelectorAll('input[name=mode]').forEach(r => r.onchange = runFifo);
+resetGates(); resetFifo();
+</script>
+</body>
+</html>

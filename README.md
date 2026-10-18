@@ -4,6 +4,8 @@
 still do by hand... and runs it on the live books, every day.
 
 🔗 **Live showcase:** https://chandanpanda615-lab.github.io/projects/
+🧪 **Try it yourself:** https://chandanpanda615-lab.github.io/projects/proof.html — run the booking gates and the FIFO knock-off on made-up invoices
+💻 **The code:** https://github.com/chandanpanda615-lab/automation — cleaned of client data
 
 The thread across everything: **domain expertise turned into software.** Not generic
 scripts — audit methodology, ICAI standards, and tax law encoded into tools that hold
