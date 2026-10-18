@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chandan Panda — AI &amp; Automation for Audit, Tax &amp; Finance</title>
+<title>Chandan Panda · Automation for Accounts, Audit, Tax &amp; Finance</title>
+<meta name="description" content="CA Final student who builds and runs finance automation: purchase bills into NetSuite across eight brands, prepayment knock-off, ledgers and reconciliations, with live demos and public code.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chandan Panda · Automation for Accounts, Audit, Tax &amp; Finance">
+<meta property="og:description" content="Purchase bills into NetSuite across eight brands, 808/808 prepayments reconciled, live demos you can try.">
+<meta property="og:url" content="https://chandanpanda615-lab.github.io/projects/">
+<link rel="canonical" href="https://chandanpanda615-lab.github.io/projects/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d1118'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='15' text-anchor='middle' fill='%2375a7ff'%3ECP%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -217,6 +224,50 @@
     border-radius:0 10px 10px 0;margin:14px 0 12px;
   }
   .scope strong{color:var(--gold)}
+  /* at a glance */
+  .tiles{display:grid;gap:12px;grid-template-columns:repeat(3,1fr);margin:0 0 16px}
+  .tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+  .tile .n{display:block;font-size:1.6rem;font-weight:700;letter-spacing:-.02em}
+  .tile .l{display:block;color:var(--muted);font-size:.86rem;margin:2px 0 8px}
+  .tile .s{font-size:.8rem;font-weight:600;color:var(--green)}
+  .viz-grid{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin:16px 0}
+  figure.viz{margin:0}
+  .viz figcaption b{display:block;font-size:1rem}
+  .viz figcaption span{display:block;color:var(--muted);font-size:.84rem;margin:2px 0 12px}
+  .chart{width:100%}
+  .chart svg{display:block;overflow:visible}
+  .chart rect,.chart circle{cursor:default}
+  .chart rect:focus,.chart circle:focus{outline:2px solid var(--gold);outline-offset:2px}
+  .chart .grid{stroke:var(--line);stroke-width:1}
+  .chart .ax{fill:var(--muted);font:500 11px Inter,sans-serif}
+  .chart .lab{fill:var(--text);font:600 12px Inter,sans-serif}
+  .chart .cat{fill:var(--text);font:500 13px Inter,sans-serif}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:8px 0 10px;font-size:.82rem;color:var(--muted)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .viz details{margin:10px 0 0;font-size:.85rem}
+  .viz details summary{cursor:pointer;color:var(--accent)}
+  .viz details table.log{min-width:0;margin-top:8px}
+  .viz .foot{color:var(--muted);font-size:.84rem;margin:10px 0 0}
+  .tip{position:fixed;z-index:20;pointer-events:none;opacity:0;transition:opacity .12s;background:#0b0f15;border:1px solid var(--line-2);
+    border-radius:8px;padding:8px 10px;font-size:.82rem;color:var(--text);max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+  .flow{list-style:none;padding:0;margin:4px 0 14px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:22px}
+  .flow li{position:relative;background:var(--surface-2);border:1px solid var(--line-2);border-radius:11px;padding:11px 11px}
+  .flow li b{display:block;font-size:.86rem;margin-bottom:4px}
+  .flow li span{display:block;color:var(--muted);font-size:.76rem;line-height:1.4}
+  .flow li:not(:last-child)::after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:var(--accent);font-weight:700}
+  .flow li.gate{border-color:rgba(242,189,99,.55);background:rgba(242,189,99,.07)}
+  .flow-side{border:1px dashed rgba(242,189,99,.55);border-radius:11px;padding:11px 14px;font-size:.88rem;color:var(--muted)}
+  .flow-side b{color:var(--text)}
+  .who{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);
+    border:1px solid rgba(242,189,99,.45);border-radius:999px;padding:2px 8px;margin-right:6px}
+  @media(max-width:900px){
+    .flow{grid-template-columns:1fr;gap:20px}
+    .flow li:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-19px;transform:translateX(-50%)}
+    .tiles{grid-template-columns:1fr 1fr}
+    .viz-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:420px){.tiles{grid-template-columns:1fr}}
+
   .proof{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
   .proof a{font-size:.8rem;font-weight:600;padding:5px 10px;border-radius:8px;border:1px solid var(--line-2);text-decoration:none}
   .proof a:hover{border-color:var(--accent)}
@@ -292,6 +343,7 @@
     </div>
 
     <nav class="jump" aria-label="Sections">
+      <a href="#glance">At a glance</a>
       <a href="#story">My story</a>
       <a href="#accounts">Accounts work</a>
       <a href="#work">Selected work</a>
@@ -311,6 +363,60 @@
     <div class="prove"><strong>Don't take my word for it.</strong> The code is public, cleaned of client data, in <a href="https://github.com/chandanpanda615-lab/automation">chandanpanda615-lab/automation</a>. And on <a href="proof.html">the proof page</a> you can run the booking gates and the prepayment knock-off yourself, on made-up invoices, and try to get a bad bill past them.</div>
     <div class="note"><strong>On confidentiality:</strong> Several tools were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published. Where a write-up needed a real figure to make sense, the figure is withheld and said to be withheld.</div>
   </section>
+
+  <div class="sechead" id="glance">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 20.5h17"/><path d="M6.5 17v-5M11 17V7M15.5 17v-8M20 17V4"/></svg>
+    <h2>At a Glance</h2><span class="rule"></span>
+  </div>
+  <p class="sub">For anyone who would rather not read code. Every number here comes from the run logs and reconciliations, nothing projected. Hover any bar or point for the detail.</p>
+
+  <div class="tiles">
+    <div class="tile"><span class="n">808 / 808</span><span class="l">Vendor prepayments reconciled to NetSuite</span><span class="s">✓ zero variance</span></div>
+    <div class="tile"><span class="n">3,310</span><span class="l">Customer balances tied before ledgers went out</span><span class="s">✓ zero variance</span></div>
+    <div class="tile"><span class="n">130 / 130</span><span class="l">Bills in the first eight-brand batch</span><span class="s">✓ tied to the rupee</span></div>
+    <div class="tile"><span class="n">208 / 208</span><span class="l">Fixed-asset rows accounted for</span><span class="s">✓ 194 clean, 14 with a reason</span></div>
+    <div class="tile"><span class="n">260</span><span class="l">Bank journal entries posted</span><span class="s">✓ reconciled one for one</span></div>
+    <div class="tile"><span class="n">40,553</span><span class="l">Company rows read off scanned notices</span><span class="s">✓ 130 left for a person</span></div>
+  </div>
+
+  <div class="card wide viz">
+    <p class="cap">How one purchase bill travels, invoice to NetSuite.</p>
+    <ol class="flow">
+      <li><b>Hub uploads the invoice</b><span>goods-received file with PDF links</span></li>
+      <li><b>Download</b><span>already booked? skipped here</span></li>
+      <li><b>Read the tax</b><span>free text read → AI on scans → portal figure as backup</span></li>
+      <li><b>Check it</b><span>right file by the QR · tax maths · invoice total · QR total, all within ₹1</span></li>
+      <li class="gate"><b>Gate</b><span>one failing row blocks the whole import</span></li>
+      <li><b>NetSuite import</b><span>bills + PDFs attached, results read back</span></li>
+      <li><b>Booked ledger</b><span>the record that stops a second booking</span></li>
+    </ol>
+    <div class="flow-side"><span class="who">Person</span> Anything that fails a check goes to <b>REVIEW</b>, turns red, and waits for me: type the amount off the scan, or chase the hub for the right PDF. Then it goes back through the same checks. The import into NetSuite is also a person's click, on purpose.</div>
+  </div>
+
+  <div class="viz-grid">
+    <figure class="card viz">
+      <figcaption><b>How often the AI read the tax right</b><span>730 bills across all eight brands, scored against an answer key it never saw</span></figcaption>
+      <div class="chart" id="chAcc" role="img" aria-label="Of 730 bills: 459 right, 17 sent to a person, 1 wrong, 253 with no independent key to score against"></div>
+      <div class="legend" id="lgAcc"></div>
+      <details><summary>Show as a table</summary><table class="log"><tr><th>Result</th><th>Bills</th></tr><tr><td>Right first time</td><td>459</td></tr><tr><td>Sent to a person</td><td>17</td></tr><tr><td>Wrong</td><td>1</td></tr><tr><td>No key to score against</td><td>253</td></tr></table></details>
+      <p class="foot">The one wrong read was caught before booking. The 253 aren't counted as right... no key, no claim.</p>
+    </figure>
+
+    <figure class="card viz">
+      <figcaption><b>Invoices still chasing a PDF</b><span>open items on the missing-PDF list, first week of daily runs</span></figcaption>
+      <div class="chart" id="chChase" role="img" aria-label="Open items fell from 79 on 28 September to 10 on 3 October"></div>
+      <details><summary>Show as a table</summary><table class="log"><tr><th>Date</th><th>Open</th></tr><tr><td>28 Sep</td><td>79</td></tr><tr><td>29 Sep</td><td>35</td></tr><tr><td>30 Sep</td><td>26</td></tr><tr><td>1 Oct</td><td>11</td></tr><tr><td>2 Oct</td><td>14</td></tr><tr><td>3 Oct</td><td>10</td></tr></table></details>
+      <p class="foot">2 October went up, not down: invoices already in NetSuite but missing from my ledger were showing as open. A ledger sync fixed it.</p>
+    </figure>
+  </div>
+
+  <figure class="card wide viz">
+    <figcaption><b>Hours per job, by hand and automated</b><span>the same job, timed both ways</span></figcaption>
+    <div class="legend" id="lgHrs"></div>
+    <div class="chart" id="chHrs" role="img" aria-label="Strike-off notices, 972 pages: 68 hours by hand, under 2 automated. Prepayment knock-off, one brand batch: about 6.5 hours by hand, about 40 minutes automated. GST reconciliation, one client month: 5 hours by hand, under 30 minutes automated."></div>
+    <details><summary>Show as a table</summary><table class="log"><tr><th>Job</th><th>By hand</th><th>Automated</th></tr><tr><td>Strike-off notices, 972 pages</td><td>~68 h (5 min a page)</td><td>under 2 h</td></tr><tr><td>Prepayment knock-off, one brand batch</td><td>6 to 7 h</td><td>~40 min, unattended</td></tr><tr><td>GST reconciliation, one client month</td><td>~5 h</td><td>under 30 min</td></tr></table></details>
+    <p class="foot">Automated time is the machine running, mostly unattended. The checking afterwards still takes a person, and that time isn't in these bars.</p>
+  </figure>
 
   <div class="sechead" id="story">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5.8A2.3 2.3 0 0 1 6.3 3.5H20v15H6.3A2.3 2.3 0 0 0 4 20.8"/><path d="M8 7.5h8M8 11.5h6"/></svg>
@@ -803,5 +909,95 @@
     <span>· CA Finalist · Accounts, GST &amp; Finance Automation</span>
   </footer>
 </div>
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (t, a = {}, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+  const tip = document.createElement('div'); tip.className = 'tip'; tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip);
+  const show = (e, html) => { tip.innerHTML = html; tip.style.opacity = 1; move(e); };
+  const move = e => { const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + 'px'; tip.style.top = (e.clientY + 14) + 'px'; };
+  const hide = () => tip.style.opacity = 0;
+  const hover = (node, html) => {
+    node.addEventListener('pointerenter', e => show(e, html)); node.addEventListener('pointermove', move);
+    node.addEventListener('pointerleave', hide); node.setAttribute('tabindex', '0');
+    node.addEventListener('focus', () => { const r = node.getBoundingClientRect(); show({clientX: r.left, clientY: r.bottom}, html); });
+    node.addEventListener('blur', hide);
+  };
+  const legend = (id, items) => { document.getElementById(id).innerHTML = items.map(([c, t]) => `<span><i style="background:${c}"></i>${t}</span>`).join(''); };
+
+  // 1. part-to-whole: one stacked bar, 2px surface gaps, direct labels under the larger parts
+  function stack(id, parts) {
+    const box = document.getElementById(id), W = box.clientWidth || 480, H = 64, total = parts.reduce((s, p) => s + p.v, 0);
+    const svg = el('svg', {viewBox: `0 0 ${W} ${H}`, width: '100%', height: H}, box);
+    let x = 0;
+    parts.forEach(p => {
+      const w = Math.max(p.v / total * W - 2, 2);
+      const r = el('rect', {x, y: 6, width: w, height: 26, rx: 4, fill: p.c}, svg);
+      hover(r, `<b>${p.t}</b><br>${p.v} of ${total} bills (${(p.v / total * 100).toFixed(1)}%)`);
+      if (p.v / total > 0.12) el('text', {x: x + 2, y: 52, class: 'lab'}, svg).textContent = `${p.v} ${p.short}`;
+      x += w + 2;
+    });
+  }
+  stack('chAcc', [
+    {v: 459, c: '#0ca30c', t: 'Right first time', short: 'right'},
+    {v: 17, c: '#fab219', t: 'Sent to a person', short: 'to a person'},
+    {v: 1, c: '#d03b3b', t: 'Wrong (caught before booking)', short: 'wrong'},
+    {v: 253, c: '#3a485c', t: 'No independent key to score against', short: 'no key'},
+  ]);
+  legend('lgAcc', [['#0ca30c', '✓ Right · 459'], ['#fab219', '! To a person · 17'], ['#d03b3b', '✕ Wrong · 1'], ['#3a485c', 'No key · 253']]);
+
+  // 2. one series over time: 2px line, markers, crosshair-free point tips with big hit targets
+  function line(id, pts) {
+    const box = document.getElementById(id), W = box.clientWidth || 480, H = 210, L = 34, R = 14, T = 14, B = 28;
+    const svg = el('svg', {viewBox: `0 0 ${W} ${H}`, width: '100%', height: H}, box);
+    const max = 80, xs = i => L + i * (W - L - R) / (pts.length - 1), ys = v => T + (1 - v / max) * (H - T - B);
+    [0, 20, 40, 60, 80].forEach(v => {
+      el('line', {x1: L, x2: W - R, y1: ys(v), y2: ys(v), class: 'grid'}, svg);
+      el('text', {x: L - 8, y: ys(v) + 4, class: 'ax', 'text-anchor': 'end'}, svg).textContent = v;
+    });
+    el('polyline', {points: pts.map((p, i) => `${xs(i)},${ys(p.v)}`).join(' '), fill: 'none', stroke: '#3987e5', 'stroke-width': 2, 'stroke-linejoin': 'round'}, svg);
+    pts.forEach((p, i) => {
+      el('text', {x: xs(i), y: H - 8, class: 'ax', 'text-anchor': 'middle'}, svg).textContent = p.d;
+      el('circle', {cx: xs(i), cy: ys(p.v), r: 4.5, fill: '#3987e5', stroke: '#151b24', 'stroke-width': 2}, svg);
+      if (i === 0 || i === pts.length - 1) el('text', {x: xs(i) + (i ? -8 : 8), y: ys(p.v) - 10, class: 'lab', 'text-anchor': i ? 'end' : 'start'}, svg).textContent = p.v;
+      const hit = el('circle', {cx: xs(i), cy: ys(p.v), r: 14, fill: 'transparent'}, svg);
+      hover(hit, `<b>${p.d}</b><br>${p.v} open${p.n ? '<br>' + p.n : ''}`);
+    });
+  }
+  line('chChase', [
+    {d: '28 Sep', v: 79, n: 'first full run'}, {d: '29 Sep', v: 35}, {d: '30 Sep', v: 26},
+    {d: '1 Oct', v: 11}, {d: '2 Oct', v: 14, n: 'booked-but-not-in-ledger showing as open; synced'}, {d: '3 Oct', v: 10},
+  ]);
+
+  // 3. grouped horizontal bars, one axis (hours)
+  function hbars(id, rows, series) {
+    const box = document.getElementById(id), W = box.clientWidth || 900, narrow = W < 560;
+    const LBL = narrow ? 0 : 250, R = 70, bh = 14, gap = 2, groupH = (narrow ? 22 : 0) + series.length * (bh + gap) + 18;
+    const H = rows.length * groupH + 24, max = 70, xs = v => LBL + v / max * (W - LBL - R);
+    const svg = el('svg', {viewBox: `0 0 ${W} ${H}`, width: '100%', height: H}, box);
+    [0, 10, 20, 30, 40, 50, 60, 70].forEach(v => {
+      el('line', {x1: xs(v), x2: xs(v), y1: 0, y2: H - 20, class: 'grid'}, svg);
+      el('text', {x: xs(v), y: H - 4, class: 'ax', 'text-anchor': 'middle'}, svg).textContent = v + (v ? '' : ' h');
+    });
+    rows.forEach((r, i) => {
+      const y0 = i * groupH + (narrow ? 22 : 4);
+      el('text', {x: narrow ? 0 : LBL - 12, y: narrow ? y0 - 7 : y0 + bh + 2, class: 'cat', 'text-anchor': narrow ? 'start' : 'end'}, svg).textContent = r.t;
+      series.forEach((s, j) => {
+        const v = r.v[j], y = y0 + j * (bh + gap), w = Math.max(xs(v) - LBL, 3);
+        const b = el('rect', {x: LBL, y, width: w, height: bh, rx: 4, fill: s.c}, svg);
+        hover(b, `<b>${r.t}</b><br>${s.t}: ${r.lbl[j]}`);
+        el('text', {x: LBL + w + 6, y: y + bh - 3, class: 'lab'}, svg).textContent = r.lbl[j];
+      });
+    });
+  }
+  const S = [{t: 'Automated', c: '#3987e5'}, {t: 'By hand', c: '#d95926'}];
+  hbars('chHrs', [
+    {t: 'Strike-off notices, 972 pages', v: [2, 68], lbl: ['under 2 h', '~68 h']},
+    {t: 'Prepayment knock-off, one brand', v: [0.67, 6.5], lbl: ['~40 min', '6–7 h']},
+    {t: 'GST reco, one client month', v: [0.5, 5], lbl: ['under 30 min', '~5 h']},
+  ], S);
+  legend('lgHrs', S.map(s => [s.c, s.t]));
+})();
+</script>
 </body>
 </html>

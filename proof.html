@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proof · Chandan Panda</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d1118'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='15' text-anchor='middle' fill='%2375a7ff'%3ECP%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Proof · Chandan Panda">
+<link rel="canonical" href="https://chandanpanda615-lab.github.io/projects/proof.html">
 <meta name="description" content="Run the purchase-bill gates and the FIFO prepayment knock-off yourself, on made-up invoices, and read the code behind the portfolio.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -302,6 +305,36 @@
   .mode legend{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;padding:0 6px}
   .mode input{accent-color:var(--accent);margin-right:6px}
   small{color:var(--muted)}
+
+  .flow{list-style:none;padding:0;margin:4px 0 14px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:22px}
+  .flow li{position:relative;background:var(--surface-2);border:1px solid var(--line-2);border-radius:11px;padding:11px}
+  .flow li b{display:block;font-size:.86rem;margin-bottom:6px}
+  .flow li span{display:block;color:var(--muted);font-size:.76rem;line-height:1.4}
+  .flow li code{display:inline-block;margin-top:4px;font-size:.66rem;overflow-wrap:anywhere;white-space:normal}
+  .flow li:not(:last-child)::after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:var(--accent);font-weight:700}
+  .flow li.gate{border-color:rgba(242,189,99,.55);background:rgba(242,189,99,.07)}
+  .flow li.person{border-style:dashed;border-color:rgba(242,189,99,.55)}
+  .side{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .side div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.8rem;color:var(--muted)}
+  .side div b{display:block;color:var(--text);font-size:.84rem;margin-bottom:4px}
+  .side code{font-size:.7rem}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0 0;font-size:.82rem;color:var(--muted)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .tmwrap{overflow-x:auto}
+  .tmap{display:block;min-width:640px}
+  .tmap .grp{fill:var(--surface-2);stroke:var(--line-2)}
+  .tmap .gl{fill:var(--text);font:600 12px Inter,sans-serif}
+  .tmap .fl{fill:#fff;font:600 11px "JetBrains Mono",monospace;pointer-events:none}
+  .tmap .fn{fill:rgba(255,255,255,.85);font:500 10px Inter,sans-serif;pointer-events:none}
+  .tmap a rect{transition:opacity .15s}
+  .tmap a:hover rect,.tmap a:focus rect{opacity:.8}
+  .tmap a:focus{outline:none}
+  .tmap a:focus rect{stroke:var(--gold);stroke-width:2}
+  @media(max-width:900px){
+    .flow{grid-template-columns:1fr;gap:20px}
+    .flow li:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-19px;transform:translateX(-50%)}
+    .side{grid-template-columns:1fr 1fr}
+  }
   @media(max-width:760px){.split{grid-template-columns:1fr}}
 </style>
 </head>
@@ -392,9 +425,151 @@
 
   <div class="sechead" id="code">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 7-5 5 5 5M15.5 7l5 5-5 5"/></svg>
-    <h2>3 · The code behind the portfolio</h2><span class="rule"></span>
+    <h2>3 · The code, as pictures</h2><span class="rule"></span>
   </div>
-  <p class="sub">Public, cleaned of client names, GSTINs, hostnames and invoice numbers. Each line says what a reader can check in it.</p>
+  <p class="sub">If you'd rather not open a repository, these two pictures are the code. The first is the daily run, with the script that does each step. The second is every script, sized by how much code it holds. Click any box to read that file.</p>
+
+  <div class="card wide">
+    <p class="cap">The daily run, step by step, and which script does it.</p>
+    <ol class="flow">
+      <li><b>1 · Get the PDFs</b><span>today's goods-received file, already-booked skipped</span><span><a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/download_sup_pdfs.py"><code>download_sup_pdfs.py</code></a></span></li>
+      <li><b>2 · Daily workbook</b><span>one row per invoice, right vendor per hub</span><span><a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/build_master_workbook.py"><code>build_master_workbook.py</code></a> <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/build_entry_workbook.py"><code>build_entry_workbook.py</code></a></span></li>
+      <li><b>3 · Read &amp; check tax</b><span>text, then AI on scans; QR and maths checks</span><span><a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/fill_tax_from_pdfs.py"><code>fill_tax_from_pdfs.py</code></a></span></li>
+      <li class="gate"><b>4 · Gate</b><span>import files only if every row passes</span><span><a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/generate_master_csvs.py"><code>generate_master_csvs.py</code></a> <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/generate_import_csvs.py"><code>generate_import_csvs.py</code></a></span></li>
+      <li class="person"><b>5 · NetSuite import</b><span>a person uploads the files and reads the results</span></li>
+      <li><b>6 · Booked ledger</b><span>bills recorded, PDFs filed</span><span><a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/mark_booked.py"><code>mark_booked.py</code></a></span></li>
+      <li><b>7 · Archive</b><span>the day's batch to a dated folder</span><span><a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/archive_batch.py"><code>archive_batch.py</code></a></span></li>
+    </ol>
+    <div class="side">
+      <div><b>Daily reconciliation</b>goods received vs NetSuite <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/2_Reconciliation/reconcile.py"><code>reconcile.py</code></a></div>
+      <div><b>Chase list</b>missing PDFs, per hub <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/missing_tracker.py"><code>missing_tracker.py</code></a></div>
+      <div><b>Portal recovery</b>late PDFs straight from the portal <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/CDMS_Tool/download_invoices.py"><code>download_invoices.py</code></a></div>
+      <div><b>One index</b>every invoice seen, in SQLite <a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/invoice_db.py"><code>invoice_db.py</code></a></div>
+    </div>
+  </div>
+
+  <div class="card wide">
+    <p class="cap">Every public script, sized by lines of code. 33 scripts, 8,522 lines.</p>
+    <div class="tmwrap">
+<svg viewBox="0 0 1000 560" width="100%" role="img" aria-label="Map of the public code: 33 Python scripts, 8,522 lines, grouped by project. The purchase-bill pipeline is the largest." class="tmap">
+<g><rect x="1.5" y="1.5" width="362.9" height="557.0" rx="6" class="grp"/>
+<text x="9.5" y="16.5" class="gl">Purchase bills → NetSuite · 3,118 lines</text>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/fill_tax_from_pdfs.py" data-tip="fill_tax_from_pdfs.py · 944 lines · reads the tax off each invoice: free text first, AI on scans, QR and maths checks"><rect x="5.5" y="24.5" width="354.9" height="159.1" rx="4" fill="#3987e5"><title>fill_tax_from_pdfs.py · 944 lines · reads the tax off each invoice: free text first, AI on scans, QR and maths checks</title></rect>
+<text x="11.5" y="40.5" class="fl">fill_tax_from_pdfs.py</text>
+<text x="11.5" y="55.5" class="fn">944 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/build_entry_workbook.py" data-tip="build_entry_workbook.py · 255 lines · one row per invoice in the daily workbook, routed to the right vendor"><rect x="5.5" y="185.6" width="128.2" height="117.3" rx="4" fill="#3987e5"><title>build_entry_workbook.py · 255 lines · one row per invoice in the daily workbook, routed to the right vendor</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/2_Reconciliation/reconcile.py" data-tip="reconcile.py · 228 lines · daily goods-received vs NetSuite reconciliation"><rect x="135.7" y="185.6" width="114.4" height="117.3" rx="4" fill="#3987e5"><title>reconcile.py · 228 lines · daily goods-received vs NetSuite reconciliation</title></rect>
+<text x="141.7" y="201.6" class="fl">reconcile.py</text>
+<text x="141.7" y="216.6" class="fn">228 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/generate_master_csvs.py" data-tip="generate_master_csvs.py · 216 lines · the gate: writes NetSuite import files only if every row passes"><rect x="252.1" y="185.6" width="108.3" height="117.3" rx="4" fill="#3987e5"><title>generate_master_csvs.py · 216 lines · the gate: writes NetSuite import files only if every row passes</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/generate_import_csvs.py" data-tip="generate_import_csvs.py · 201 lines · NetSuite header and expense lines, GST and TDS"><rect x="5.5" y="304.8" width="88.7" height="132.9" rx="4" fill="#3987e5"><title>generate_import_csvs.py · 201 lines · NetSuite header and expense lines, GST and TDS</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/invoice_db.py" data-tip="invoice_db.py · 174 lines · one SQLite index of every invoice seen"><rect x="5.5" y="439.7" width="88.7" height="114.8" rx="4" fill="#3987e5"><title>invoice_db.py · 174 lines · one SQLite index of every invoice seen</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/build_master_workbook.py" data-tip="build_master_workbook.py · 166 lines · builds the daily Master workbook from the GRN file"><rect x="96.2" y="304.8" width="109.8" height="88.4" rx="4" fill="#3987e5"><title>build_master_workbook.py · 166 lines · builds the daily Master workbook from the GRN file</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/missing_tracker.py" data-tip="missing_tracker.py · 153 lines · the missing-PDF chase list, per hub"><rect x="96.2" y="395.3" width="109.8" height="81.3" rx="4" fill="#3987e5"><title>missing_tracker.py · 153 lines · the missing-PDF chase list, per hub</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/mark_booked.py" data-tip="mark_booked.py · 143 lines · writes booked bills to the ledger, files the PDFs"><rect x="96.2" y="478.6" width="109.8" height="75.9" rx="4" fill="#3987e5"><title>mark_booked.py · 143 lines · writes booked bills to the ledger, files the PDFs</title></rect>
+<text x="102.2" y="494.6" class="fl">mark_booked.py</text>
+<text x="102.2" y="509.6" class="fn">143 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/download_from_links.py" data-tip="download_from_links.py · 125 lines · downloads invoice PDFs from the GRN file links"><rect x="208.0" y="304.8" width="77.1" height="94.2" rx="4" fill="#3987e5"><title>download_from_links.py · 125 lines · downloads invoice PDFs from the GRN file links</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/CDMS_Tool/download_invoices.py" data-tip="download_invoices.py · 119 lines · recovers late PDFs from the distribution portal"><rect x="287.1" y="304.8" width="73.3" height="94.2" rx="4" fill="#3987e5"><title>download_invoices.py · 119 lines · recovers late PDFs from the distribution portal</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/download_sup_pdfs.py" data-tip="download_sup_pdfs.py · 112 lines · step 1: PDFs for the day, skipping booked ones"><rect x="208.0" y="401.1" width="85.3" height="76.1" rx="4" fill="#3987e5"><title>download_sup_pdfs.py · 112 lines · step 1: PDFs for the day, skipping booked ones</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/CDMS_Tool/cdms_token.py" data-tip="cdms_token.py · 86 lines · keeps the portal login token fresh"><rect x="295.3" y="401.1" width="65.0" height="76.1" rx="4" fill="#3987e5"><title>cdms_token.py · 86 lines · keeps the portal login token fresh</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/estimate_cost.py" data-tip="estimate_cost.py · 77 lines · prices an AI run before it starts"><rect x="208.0" y="479.2" width="58.6" height="75.3" rx="4" fill="#3987e5"><title>estimate_cost.py · 77 lines · prices an AI run before it starts</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/status.py" data-tip="status.py · 76 lines · where today&#x27;s batch stands"><rect x="268.7" y="479.2" width="57.9" height="75.3" rx="4" fill="#3987e5"><title>status.py · 76 lines · where today&#x27;s batch stands</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/netsuite-purchase-automation/0_Scripts/archive_batch.py" data-tip="archive_batch.py · 43 lines · moves a finished batch to a dated archive"><rect x="328.5" y="479.2" width="31.9" height="75.3" rx="4" fill="#3987e5"><title>archive_batch.py · 43 lines · moves a finished batch to a dated archive</title></rect>
+</a>
+</g>
+<g><rect x="367.4" y="1.5" width="304.0" height="557.0" rx="6" class="grp"/>
+<text x="375.4" y="16.5" class="gl">FAR ↔ invoices · 2,616 lines</text>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/far_pdf_map.py" data-tip="far_pdf_map.py · 633 lines · maps asset lines to invoice PDFs"><rect x="371.4" y="24.5" width="171.4" height="219.3" rx="4" fill="#d95926"><title>far_pdf_map.py · 633 lines · maps asset lines to invoice PDFs</title></rect>
+<text x="377.4" y="40.5" class="fl">far_pdf_map.py</text>
+<text x="377.4" y="55.5" class="fn">633 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/far_own_recon.py" data-tip="far_own_recon.py · 455 lines · the FAR tie-out"><rect x="544.7" y="24.5" width="122.6" height="219.3" rx="4" fill="#d95926"><title>far_own_recon.py · 455 lines · the FAR tie-out</title></rect>
+<text x="550.7" y="40.5" class="fl">far_own_recon.py</text>
+<text x="550.7" y="55.5" class="fn">455 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/far_oracle_map.py" data-tip="far_oracle_map.py · 406 lines · asset lines to Oracle AP invoices"><rect x="371.4" y="245.8" width="153.3" height="156.4" rx="4" fill="#d95926"><title>far_oracle_map.py · 406 lines · asset lines to Oracle AP invoices</title></rect>
+<text x="377.4" y="261.8" class="fl">far_oracle_map.py</text>
+<text x="377.4" y="276.8" class="fn">406 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/far_pdf_link.py" data-tip="far_pdf_link.py · 373 lines · links asset rows to serial numbers"><rect x="526.7" y="245.8" width="140.7" height="156.4" rx="4" fill="#d95926"><title>far_pdf_link.py · 373 lines · links asset rows to serial numbers</title></rect>
+<text x="532.7" y="261.8" class="fl">far_pdf_link.py</text>
+<text x="532.7" y="276.8" class="fn">373 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/fusion_attach.py" data-tip="fusion_attach.py · 215 lines · downloads invoice PDFs from Oracle Fusion"><rect x="371.4" y="404.2" width="83.5" height="150.3" rx="4" fill="#d95926"><title>fusion_attach.py · 215 lines · downloads invoice PDFs from Oracle Fusion</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/pdf_check.py" data-tip="pdf_check.py · 186 lines · checks every PDF opens and is the right invoice"><rect x="456.9" y="404.2" width="133.7" height="81.1" rx="4" fill="#d95926"><title>pdf_check.py · 186 lines · checks every PDF opens and is the right invoice</title></rect>
+<text x="462.9" y="420.2" class="fl">pdf_check.py</text>
+<text x="462.9" y="435.2" class="fn">186 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/pdf_parse.py" data-tip="pdf_parse.py · 155 lines · text-layer invoice parser"><rect x="456.9" y="487.3" width="133.7" height="67.2" rx="4" fill="#d95926"><title>pdf_parse.py · 155 lines · text-layer invoice parser</title></rect>
+<text x="462.9" y="503.3" class="fl">pdf_parse.py</text>
+<text x="462.9" y="518.3" class="fn">155 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/gemini_extract.py" data-tip="gemini_extract.py · 119 lines · AI read for scanned invoices"><rect x="592.6" y="404.2" width="74.8" height="91.9" rx="4" fill="#d95926"><title>gemini_extract.py · 119 lines · AI read for scanned invoices</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/far-invoice-reconciliation/crosscheck.py" data-tip="crosscheck.py · 74 lines · IT register cross-check"><rect x="592.6" y="498.1" width="74.8" height="56.4" rx="4" fill="#d95926"><title>crosscheck.py · 74 lines · IT register cross-check</title></rect>
+</a>
+</g>
+<g><rect x="674.3" y="1.5" width="324.2" height="272.8" rx="6" class="grp"/>
+<text x="682.3" y="16.5" class="gl">GST reco · 1,373 lines</text>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/gst-reconciliation/gst_recon_app.py" data-tip="gst_recon_app.py · 753 lines · the same reco as a Streamlit app"><rect x="678.3" y="24.5" width="172.5" height="245.8" rx="4" fill="#199e70"><title>gst_recon_app.py · 753 lines · the same reco as a Streamlit app</title></rect>
+<text x="684.3" y="40.5" class="fl">gst_recon_app.py</text>
+<text x="684.3" y="55.5" class="fn">753 lines</text>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/gst-reconciliation/gst_recon.py" data-tip="gst_recon.py · 620 lines · GSTR-2B vs books, GSTR-1 vs sales, both vs 3B"><rect x="852.8" y="24.5" width="141.7" height="245.8" rx="4" fill="#199e70"><title>gst_recon.py · 620 lines · GSTR-2B vs books, GSTR-1 vs sales, both vs 3B</title></rect>
+<text x="858.8" y="40.5" class="fl">gst_recon.py</text>
+<text x="858.8" y="55.5" class="fn">620 lines</text>
+</a>
+</g>
+<g><rect x="674.3" y="277.3" width="147.5" height="281.2" rx="6" class="grp"/>
+<text x="682.3" y="292.3" class="gl">TDS challans</text>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/tds-challan-extractor/tds_challan_extractor.py" data-tip="tds_challan_extractor.py · 651 lines · TDS challan PDFs to Excel"><rect x="678.3" y="300.3" width="139.5" height="254.2" rx="4" fill="#c98500"><title>tds_challan_extractor.py · 651 lines · TDS challan PDFs to Excel</title></rect>
+</a>
+</g>
+<g><rect x="824.9" y="277.3" width="173.6" height="127.2" rx="6" class="grp"/>
+<text x="832.9" y="292.3" class="gl">PR/PO extractor</text>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/po-extractor/po_extractor.py" data-tip="po_extractor.py · 350 lines · purchase-order PDFs to Excel with arithmetic checks"><rect x="828.9" y="300.3" width="165.6" height="100.2" rx="4" fill="#d55181"><title>po_extractor.py · 350 lines · purchase-order PDFs to Excel with arithmetic checks</title></rect>
+<text x="834.9" y="316.3" class="fl">po_extractor.py</text>
+<text x="834.9" y="331.3" class="fn">350 lines</text>
+</a>
+</g>
+<g><rect x="824.9" y="407.5" width="104.1" height="151.0" rx="6" class="grp"/>
+<text x="832.9" y="422.5" class="gl">Bank JVs</text>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/bank-jv-automation/post_journal.py" data-tip="post_journal.py · 99 lines · reconciles posted JVs back to the bank sheet"><rect x="828.9" y="430.5" width="96.1" height="47.7" rx="4" fill="#9085e9"><title>post_journal.py · 99 lines · reconciles posted JVs back to the bank sheet</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/bank-jv-automation/make_journal_csv.py" data-tip="make_journal_csv.py · 87 lines · bank sheet to NetSuite journal import"><rect x="828.9" y="480.2" width="54.1" height="74.3" rx="4" fill="#9085e9"><title>make_journal_csv.py · 87 lines · bank sheet to NetSuite journal import</title></rect>
+</a>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/bank-jv-automation/jv_csv_maker.py" data-tip="jv_csv_maker.py · 65 lines · the one-click version for a colleague"><rect x="885.0" y="480.2" width="39.9" height="74.3" rx="4" fill="#9085e9"><title>jv_csv_maker.py · 65 lines · the one-click version for a colleague</title></rect>
+</a>
+</g>
+<g><rect x="932.0" y="407.5" width="66.5" height="151.0" rx="6" class="grp"/>
+<text x="940.0" y="422.5" class="gl"></text>
+<a href="https://github.com/chandanpanda615-lab/automation/blob/main/customer-ledger-check/make_ledgers.py" data-tip="make_ledgers.py · 163 lines · one ledger per customer, balances tied"><rect x="936.0" y="430.5" width="58.5" height="124.0" rx="4" fill="#008300"><title>make_ledgers.py · 163 lines · one ledger per customer, balances tied</title></rect>
+</a>
+</g>
+</svg>
+<div class="legend"><span><i style="background:#3987e5"></i>Purchase bills → NetSuite</span><span><i style="background:#d95926"></i>FAR ↔ invoices</span><span><i style="background:#199e70"></i>GST reco</span><span><i style="background:#c98500"></i>TDS challans</span><span><i style="background:#d55181"></i>PR/PO extractor</span><span><i style="background:#008300"></i>Customer ledgers</span><span><i style="background:#9085e9"></i>Bank JVs</span></div>
+    </div>
+    <p class="hint" style="margin-top:10px">The purchase-bill pipeline is the biggest block, and <code>fill_tax_from_pdfs.py</code> the biggest file in it. That's where the reading and checking live, so that's where the code went. Hover a box to see what the file does.</p>
+  </div>
+
+  <p class="sub">The same code as a list. Public, cleaned of client names, GSTINs, hostnames and invoice numbers. Each line says what a reader can check in it.</p>
   <div class="mini">
     <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/netsuite-purchase-automation">Purchase bill pipeline</a></b><span class="d">Download, tax read, QR check, gates, NetSuite import files, booked ledger, daily GRN reconciliation, missing-PDF chase list. The offline self-test runs with <code>python fill_tax_from_pdfs.py --selftest</code>, no API and no files needed.</span><span class="t">A1 · A3</span></div>
     <div class="row"><b><a href="https://github.com/chandanpanda615-lab/automation/tree/main/customer-ledger-check">Customer ledgers</a></b><span class="d">One saved-search export into a ledger per customer, balances tied before anything is sent.</span><span class="t">A4</span></div>
