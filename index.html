@@ -277,17 +277,18 @@
 <div class="wrap">
   <header>
     <h1>Chandan Panda</h1>
-    <div class="tag"><b>AI &amp; Automation for Audit, Tax &amp; Finance</b> · Chartered Accountant (Finalist)</div>
+    <div class="tag"><b>AI &amp; Automation for Accounts, Audit, Tax &amp; Finance</b> · Chartered Accountant (Finalist)</div>
 
     <div class="stats">
-      <div class="stat"><span class="n">11</span><span class="l">Built &amp; in use</span></div>
+      <div class="stat"><span class="n">1 → 8</span><span class="l">Brands on the booking pipeline</span></div>
+      <div class="stat"><span class="n">~2,400</span><span class="l">Purchase bills / month in scope</span></div>
+      <div class="stat"><span class="n">808 / 808</span><span class="l">Prepayments reconciled</span></div>
       <div class="stat"><span class="n">11</span><span class="l">Experiments</span></div>
-      <div class="stat"><span class="n">700+</span><span class="l">Invoices / month</span></div>
-      <div class="stat"><span class="n">3–4</span><span class="l">Desks running it</span></div>
     </div>
 
     <nav class="jump" aria-label="Sections">
       <a href="#story">My story</a>
+      <a href="#accounts">Accounts work</a>
       <a href="#work">Selected work</a>
       <a href="#experiments">Experiments</a>
       <a href="#also">Also built</a>
@@ -297,8 +298,9 @@
   </header>
 
   <section class="intro">
-    <p class="lead">I'm a CA who builds production automation for the audit work most firms still do by hand — and actually runs it on live engagements.</p>
-    <p>The thread across everything below: <strong>domain expertise turned into software.</strong> I don't write generic scripts — I encode audit methodology, ICAI standards, and tax law into tools that hold up against messy, real-world data. Every project on this page is <strong>built and in real use</strong> unless explicitly marked <em>in progress</em>.</p>
+    <p class="lead">I'm a CA Final student who builds automation for the accounts and audit work most teams still do by hand... and runs it on the live books, every day.</p>
+    <p>The thread across everything below: <strong>domain expertise turned into software.</strong> I don't write generic scripts — I encode audit methodology, ICAI standards, and tax law into tools that hold up against messy, real-world data. Every project on this page is <strong>built and in real use</strong> unless its badge says otherwise.</p>
+    <p>The newest work comes from the day job in accounts. Purchase bills, vendor prepayments, customer ledgers and fixed assets, booked and reconciled in NetSuite. It started in August with one brand. Since October it carries eight.</p>
     <p>The second half of the page is the part nobody pays me for. Experiments, mostly run from the terminal, mostly at night. A few became tools I use every day. Others taught me exactly where this technology falls over — which turned out to be worth more.</p>
     <div class="note"><strong>On confidentiality:</strong> Several tools were built for live audit engagements. Descriptions are deliberately generic — no client names, data, or proprietary code is published. Where a write-up needed a real figure to make sense, the figure is withheld and said to be withheld.</div>
   </section>
@@ -331,6 +333,94 @@
     </article>
   </div>
   <p class="story-close"><strong>The goal has changed.</strong> I no longer want code that merely runs. I want to understand why it works, how to check it and when a person still needs to stay in the loop.</p>
+
+  <div class="sechead" id="accounts">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.8" width="16" height="18.4" rx="2"/><path d="M8 7.5h8M8 11.5h8M8 15.5h4.5"/></svg>
+    <h2>Accounting Operations</h2><span class="rule"></span>
+  </div>
+  <p class="sub">The day job. Purchase bills, prepayments, ledgers and assets in NetSuite, for a distribution business with hubs across three states. Brand, vendor, customer and hub names are withheld, and so are rupee amounts. Counts are real.</p>
+  <div class="grid">
+
+    <div class="card wide"><span class="num">A1</span>
+      <h3>Purchase bills into NetSuite, from one brand to eight<span class="badge b-live">in use daily</span></h3>
+      <p>Every day the hubs receive goods from FMCG brands and upload the supplier invoices. Each one has to become a purchase bill in NetSuite with the right GST split, TDS under 194Q, the right vendor for that hub and that brand, and the PDF attached. By hand that means open the PDF, read the tax table, type it, check it, attach it, next... fifty to ninety bills a day, always running a day or three behind.</p>
+      <p>The pipeline started in August with one brand across ten hubs. On 6 October the other team stopped keying the distribution brands and all of it moved onto the pipeline. Eight brands now, about 2,400 bills a month in scope, run through a nine-step daily harness that can stop and resume at any step.</p>
+
+      <p class="cap">How one bill gets through.</p>
+      <div class="tw">
+      <table class="log">
+        <tr><th>Step</th><th>What happens</th></tr>
+        <tr><td>Download</td><td>PDFs pulled from the links in the day's goods-received file. Anything already in the booked ledger is skipped before it costs anything.</td></tr>
+        <tr><td>Read the tax</td><td>Free text read first, accepted only if five maths checks pass. Scans go to Gemini under a per-batch budget cap, and every answer is saved, so no PDF is ever paid for twice. The portal's own tax split is a backup, used only when it agrees with the QR total.</td></tr>
+        <tr><td>Check the e-invoice QR</td><td>The signed QR carries the invoice number, date and total. A PDF that belongs to some other invoice gets caught here. In one early batch, 15 of a single hub's 26 PDFs were the wrong file.</td></tr>
+        <tr><td>Gate</td><td>Anything that fails goes to REVIEW and turns red. Export is all or nothing: one failing row blocks the import file, and the totals must agree within ₹1.</td></tr>
+        <tr><td>Import and ledger</td><td>CSV import with a zip of PDFs, results read back, bills written to the booked ledger, PDFs filed. The ledger is what stops a bill being booked twice.</td></tr>
+      </table>
+      </div>
+
+      <p class="cap">The traps only live data showed me.</p>
+      <div class="tw">
+      <table class="log">
+        <tr><th>What looked fine</th><th>What it actually was</th></tr>
+        <tr><td>Invoice numbers ending <code>-26</code>, <code>/2026</code>, <code>_2026</code></td><td>The upload adds a year suffix that NetSuite never stores. Without normalising both sides, a booked bill looks unbooked and goes in again.</td></tr>
+        <tr><td><code>0123456789</code> and <code>123456789</code> (number changed)</td><td>The same invoice, one with a leading zero. It got booked twice on 8 October. The ledger key now strips leading zeros, and 806 saved answers were re-judged after the fix with no regressions.</td></tr>
+        <tr><td>A posting period of September, set once</td><td>NetSuite rejected 17 bills dated 1 October. The period now comes from each bill's own date.</td></tr>
+        <tr><td>Bills another team had keyed by hand</td><td>Not in my ledger, so the pipeline would have booked them again. The full June to October NetSuite export now loads into the ledger before any run.</td></tr>
+      </table>
+      </div>
+
+      <p class="cap">How I know the numbers are right.</p>
+      <p>An answer key the model never sees, built only from bills where the portal figure and the QR total agree. On 8 October all 473 booked amounts that had a key matched it. Across 730 bills from all eight brands, Gemini's first read was right on 459, wrong on one, and 17 needed a person. The rest had no independent key, and I don't count what I can't check. The first batch after go-live, 130 bills, reconciled to NetSuite to the rupee.</p>
+      <p>The mistake worth writing down. An AI agent ran the ledger script with a <code>--selftest</code> flag that didn't exist. The script ignored the flag and ran for real... 130 bills marked booked, PDFs moved, chase list trimmed. Reversed in the same minute, files regenerated byte-identical. Four scripts that change state are now off limits to agents. That's a rule, not a fix, and I know the difference.</p>
+
+      <p class="impact">⟶ One brand to eight. Reading a PDF costs roughly 30 to 45 paise.</p>
+      <div class="scope"><strong>Honest scope.</strong> There is still a person in the middle. REVIEW rows, image-only invoices and wrong links get typed or chased by hand, and the NetSuite import is manual on purpose. The pipeline does the reading, checking and paperwork. It does not decide anything it can't prove.</div>
+      <div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span><span>PyMuPDF</span><span>zxing-cpp</span><span>Gemini 2.5 Flash</span><span>SQLite</span><span>Playwright</span><span>NetSuite</span></div>
+    </div>
+
+    <div class="card wide"><span class="num">A2</span>
+      <h3>Vendor prepayments, applied by a bot, oldest bill first<span class="badge b-live">in use</span></h3>
+      <p>Advances paid to distributors have to be knocked off against their open bills in NetSuite, oldest first. NetSuite won't take this by CSV import and SOAP is on its way out, so the only door left was the screen itself. About six to seven hours of clicking per batch.</p>
+      <p>So a Playwright bot works the Apply screen on the AP login. Dry run by default, which does everything except Save. Live mode asks for YES, saves each row on its own, writes the application number back to the Excel, and a re-run skips what's done.</p>
+      <p>My first plan missed two business rules... a prepayment is tied to a bill by reference number, not only vendor and date, and FIFO runs per hub, not per vendor, because one vendor spans ten hubs. One more I found the hard way: the screen shows 100 bills a page, so a vendor with 150 open bills had its oldest on page two, where the bot couldn't see it. It now works out the page and switches. If it still can't keep FIFO, it skips the prepayment instead of applying it out of order.</p>
+      <p class="impact">⟶ September: 808 prepayments across five brands, reconciled 808 of 808 to the NetSuite export with zero variance. FIFO re-checked read-only on 39 vendors, no failures.</p>
+      <div class="scope"><strong>Honest scope.</strong> When the period was locked mid-run, 54 rows stopped with "header not set". That's the bot refusing, which is what it should do. Prepayments sitting on old vendor codes still need moving by hand; a bot shouldn't change master data.</div>
+      <div class="stack"><span>Python</span><span>Playwright</span><span>NetSuite</span><span>openpyxl</span></div>
+    </div>
+
+    <div class="card"><span class="num">A3</span>
+      <h3>Goods received vs NetSuite, every day<span class="badge b-live">in use daily</span></h3>
+      <p>Each hub's goods-received list against what is booked in NetSuite. Gaps go to a missing-PDF chase list, split by hub, with the links, ready to send to the hub.</p>
+      <p>A bug caught on the way: the filter looked for "GRAND TOTAL" in the item name when it sat in the item code, so the totals row was being added into taxable value.</p>
+      <p class="impact">⟶ Open chase items went from about 79 to 10 in a week.</p>
+      <div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span></div>
+    </div>
+
+    <div class="card"><span class="num">A4</span>
+      <h3>Customer ledgers, checked twice before they go out<span class="badge b-live">in use</span></h3>
+      <p>215 retailer codes each need their own ledger. Built from two NetSuite saved-search exports, about 71,000 transaction rows. Balance at the cutoff is checked against the reco, balance today against NetSuite. A ledger that fails goes to Hold, not To_Send, and comes back on the next run.</p>
+      <p>Four balances didn't match on day one. The saved search filtered one receivables account; the dashboard counts all of them.</p>
+      <p class="impact">⟶ 3,310 customer balances tied, zero variance. A colleague runs it with no Python installed... one double-click.</p>
+      <div class="scope"><strong>Known gap.</strong> A customer missing from the name mapping drops out silently if the total still ties. Noted, not fixed yet.</div>
+      <div class="stack"><span>Python</span><span>pandas</span><span>NetSuite</span><span>portable Python</span></div>
+    </div>
+
+    <div class="card"><span class="num">A5</span>
+      <h3>Fixed asset register, proved row by row<span class="badge b-live">delivered</span></h3>
+      <p>208 asset additions, each to be tied to an AP invoice, its PDF and the serial numbers in the IT register. The invoices came out of Oracle Fusion by driving a browser, because the REST API rejected the SSO session.</p>
+      <p class="impact">⟶ 194 rows clean, 14 doubtful with a reason each, tie-out passed. 691 of 713 IT register rows linked; each of the 22 left has a reason.</p>
+      <div class="stack"><span>Python</span><span>PyMuPDF</span><span>Gemini</span><span>Playwright</span></div>
+    </div>
+
+    <div class="card"><span class="num">A6</span>
+      <h3>40,000 companies off scanned ROC notices<span class="badge b-live">delivered</span></h3>
+      <p>A team had spent three to four days screenshotting scanned strike-off notices into a chatbot and copying rows back. Twelve PDFs, about 40,000 companies. A cheap vision model reads them, then every CIN and name is checked locally against the MCA company master. No web scraping.</p>
+      <p class="impact">⟶ 40,553 rows, 130 left for a person. 972 pages in under two hours for about $2.60, against roughly 68 hours by hand.</p>
+      <p>A zoomed re-read I built to settle disputes was wrong 24% of the time against the registry. Switched off, kept as reference only.</p>
+      <div class="stack"><span>Python</span><span>vision LLM</span><span>MCA master data</span><span>difflib</span></div>
+    </div>
+
+  </div>
 
   <div class="sechead" id="work">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7l2.85 5.9 6.4.92-4.63 4.5 1.1 6.38L12 17.4l-5.72 3l1.1-6.38-4.63-4.5 6.4-.92z"/></svg>
@@ -654,6 +744,10 @@
   <p class="sub">Smaller production tools that quietly save hours.</p>
   <div class="mini">
     <div class="row"><b>MarkItDown Converter (web app)</b><span class="d">PDF and Excel to clean text, so a model reads structure instead of a collapsed table. <a href="https://markitdown-converter-chandan.streamlit.app/">Live app →</a></span><span class="t">Python · Streamlit</span></div>
+    <div class="row"><b>Bill-Discounting JV Maker</b><span class="d">Bank bill-discounting tracker to NetSuite journal import, JV numbers written back to the Excel. 260 JVs posted across three bank batches, reconciled one for one. Packaged as an .exe for a colleague.</span><span class="t">Python · NetSuite</span></div>
+    <div class="row"><b>Oracle Fusion Attachment Downloader</b><span class="d">Invoice PDFs off Oracle Fusion when the API refuses the SSO session. 82 of 87 on the first run, the rest after a filename fix.</span><span class="t">Python · Playwright</span></div>
+    <div class="row"><b>Portal PDF Recovery</b><span class="d">Fetches invoice PDFs the hubs uploaded late, straight from the distribution portal, and refreshes its own access token.</span><span class="t">Python · REST API</span></div>
+    <div class="row"><b>TDS Master vs Income-tax Act 2025</b><span class="d">Every row of the NetSuite TDS list checked against the new Act's sections, payment codes and rates. 25 to fix, 15 to inactivate, 3 to add.</span><span class="t">Excel · tax law</span></div>
     <div class="row"><b>AI Work-Journal Generator</b><span class="d">Rough notes → structured, timestamped work log auto-saved as HTML &amp; PDF.</span><span class="t">Python · Gemini</span></div>
     <div class="row"><b>Smart Prompt Builder (RTDCFF Skill)</b><span class="d">Claude Skill enforcing Role-Task-Don't-Context-Format-Focus on every prompt task.</span><span class="t">Claude Skills</span></div>
     <div class="row"><b>Leave Reconciliation Script</b><span class="d">Cross-checks HR system data vs physical leave registers; flags unrecorded leaves.</span><span class="t">Python · pandas</span></div>
@@ -666,6 +760,7 @@
   </div>
   <p class="sub">Working prototypes I'm iterating toward production. (Honest status — not abandoned.)</p>
   <div class="mini">
+    <div class="row"><b>Electronics Distributor Booking</b><span class="d">The same gates for phone and laptop distributors, with their own traps: multi-GSTIN vendors, a blended tax rate outside the slabs, portal calls that time out on huge serial lists. Built and reviewed; open bills wait on GSTIN and vendor-setup decisions.</span><span class="t">built · not live</span></div>
     <div class="row"><b>CA Inter Prediction Engine</b><span class="d">Parses 21 PDFs to predict high-probability exam questions + HTML/Excel output. Finishing the MCQ extraction path.</span><span class="t">85%</span></div>
     <div class="row"><b>LPG / BBPS Bulk ID Fetcher</b><span class="d">Bulk-verifies consumer IDs via BBPS APIs, sorts eligible vs ineligible to Excel.</span><span class="t">90%</span></div>
     <div class="row"><b>GSTR-3B Cell-Address Extractor</b><span class="d">Pulls tax data from merged-cell, multi-linked templates via cached cell coordinates.</span><span class="t">80%</span></div>
@@ -680,6 +775,7 @@
     </div>
     <ul>
       <li><strong>Real-world data resilience</strong> — merged cells, multi-format files, regional scripts, phone-camera scans, broken government PDFs.</li>
+      <li><strong>Accounting rules as code</strong>: GST slabs, IGST against CGST and SGST from the GSTIN state, TDS under 194Q, posting periods, FIFO knock-off, a ledger that refuses to book the same bill twice.</li>
       <li><strong>Domain logic as code</strong> — CEAVOP assertions, ICAI standards, GST matching rules, statutory citations.</li>
       <li><strong>Modern AI engineering</strong> — RAG pipelines, MCP connectors, reusable Claude Skills, local open-weight models, vision &amp; embedding models.</li>
       <li><strong>End-to-end delivery</strong> — from raw PDF/Excel input to Excel reports, HTML dashboards, decks &amp; alerts.</li>
@@ -690,7 +786,7 @@
   <footer>
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="m3.4 6.4 8.6 6.2 8.6-6.2"/></svg>
     <a href="mailto:chandanpanda615@gmail.com">chandanpanda615@gmail.com</a>
-    <span>· CA Finalist · Embedded Audit Automation Specialist</span>
+    <span>· CA Finalist · Accounts, GST &amp; Finance Automation</span>
   </footer>
 </div>
 </body>
