@@ -1,10 +1,13 @@
 # Chandan Panda — AI & Automation for Accounts, Audit, Tax & Finance
 
+![Chandan Panda, finance automation portfolio](og.png)
+
 **CA Final student** who builds automation for the accounts and audit work most teams
 still do by hand... and runs it on the live books, every day.
 
 🔗 **Live showcase:** https://chandanpanda615-lab.github.io/projects/
 🧪 **Try it yourself:** https://chandanpanda615-lab.github.io/projects/proof.html — run the booking gates and the FIFO knock-off on made-up invoices
+⚖️ **GST demo:** https://chandanpanda615-lab.github.io/projects/gst.html — match a sales register against the e-invoice portal, same rules as the Python tool
 💻 **The code:** https://github.com/chandanpanda615-lab/automation — cleaned of client data
 
 The thread across everything: **domain expertise turned into software.** Not generic

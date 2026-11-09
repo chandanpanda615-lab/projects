@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GST Reconciliation · Chandan Panda</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230F766E'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='15' text-anchor='middle' fill='%23ffffff'%3ECP%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="GST Reconciliation · Chandan Panda">
+<meta property="og:description" content="Run the GSTR-1 reconciliation yourself: sales register vs e-invoice portal, on made-up invoices, with the same matching rules as the Python tool.">
+<meta property="og:image" content="https://chandanpanda615-lab.github.io/projects/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chandanpanda615-lab.github.io/projects/og.png">
+<meta name="theme-color" content="#0F766E">
+<link rel="canonical" href="https://chandanpanda615-lab.github.io/projects/gst.html">
+<meta name="description" content="Run the GSTR-1 reconciliation yourself: sales register vs e-invoice portal, on made-up invoices, with the same matching rules as the Python tool.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="back"><a href="index.html#work">← Back to the portfolio</a></p>
+    <h1>GST Reconciliation</h1>
+    <div class="tag"><b>Sales register vs e-invoice portal, for the GSTR-1 working</b> · about 5 hours by hand, under 30 minutes with the tool</div>
+  </header>
+
+  <section class="intro">
+    <p class="lead">Every month, before GSTR-1 is filed, each invoice in the books has to be found on the e-invoice portal with the same taxable value and the same tax.</p>
+    <p>By hand that means two spreadsheets side by side, a VLOOKUP that breaks on <code>INV/2025/001</code> vs <code>INV-2025-001</code>, and a person squinting at the leftovers. The tool cleans the numbers, matches them, scores the near misses, and writes one colour-coded workbook: a summary, then B2B, credit notes and HSN.</p>
+    <div class="note"><strong>What this is, honestly.</strong> The matching below is a JavaScript copy of <a href="https://github.com/chandanpanda615-lab/automation/blob/main/gst-reconciliation/gst_recon.py"><code>reconcile_invoices()</code></a> in the public Python. The invoices and GSTINs are made up. Change any cell and run it again.</div>
+  </section>
+
+  <div class="sechead" id="flow">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 12h16M4 18h7"/><path d="m17 15 3 3-3 3"/></svg>
+    <h2>How one invoice gets matched</h2><span class="rule"></span>
+  </div>
+  <p class="sub">The same five steps run for B2B invoices and for credit notes. HSN summary lines are matched by HSN code instead.</p>
+  <div class="card wide">
+    <ol class="flow f5">
+      <li><b>1 · Load both sides</b><span>sales register from the books, B2B sheet from the e-invoice portal; total rows dropped</span></li>
+      <li><b>2 · Clean the number</b><span>spaces, <code>-</code> and <code>/</code> removed, upper case: <code>inv/2025/001</code> → <code>INV2025001</code></span></li>
+      <li><b>3 · Exact match</b><span>same cleaned number on both sides</span></li>
+      <li class="gate"><b>4 · Near miss</b><span>no exact match? best look-alike on the portal, scored 0 to 100. 80 or more counts as a fuzzy match</span></li>
+      <li><b>5 · Compare tax</b><span>taxable, IGST, CGST and SGST, books minus portal. Any difference is a mismatch</span></li>
+    </ol>
+    <div class="flow-side"><span class="who">Person</span> Fuzzy matches and mismatches are flagged amber, missing invoices red. A person checks those before filing. Leftover portal invoices mean the books are missing something.</div>
+  </div>
+
+  <div class="sechead" id="try">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.1 8.4-7.5 9.8-4.4-1.4-7.5-5.2-7.5-9.8V5.8z"/><path d="m8.6 12 2.4 2.4 4.6-4.8"/></svg>
+    <h2>Try it</h2><span class="rule"></span>
+  </div>
+  <p class="sub">One made-up month. Seven invoices in the books, seven on the portal. Every cell is editable.</p>
+
+  <div class="card wide">
+    <p class="cap">Books · sales register</p>
+    <div class="tw"><table class="log demo" id="books">
+      <thead><tr><th>Invoice no</th><th>Customer GSTIN</th><th>Taxable ₹</th><th>IGST ₹</th><th>CGST ₹</th><th>SGST ₹</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+
+    <p class="cap">Portal · e-invoice B2B</p>
+    <div class="tw"><table class="log demo" id="portal">
+      <thead><tr><th>Invoice no</th><th>Recipient GSTIN</th><th>Taxable ₹</th><th>IGST ₹</th><th>CGST ₹</th><th>SGST ₹</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+
+    <div class="btns">
+      <button type="button" id="run">Run the reconciliation</button>
+      <button type="button" class="ghost" id="reset">Reset the example</button>
+    </div>
+    <div id="out" aria-live="polite"></div>
+  </div>
+
+  <div class="card wide" style="margin-top:16px">
+    <p class="cap">What each result means</p>
+    <div class="tw"><table class="log">
+      <tr><th>Result</th><th>Rule</th><th>What a person does</th></tr>
+      <tr><td><span class="pill p-pass">Matched</span></td><td>Same cleaned number, all four amounts equal.</td><td>Nothing.</td></tr>
+      <tr><td><span class="pill p-review">Amount mismatch</span></td><td>Same number, some amount differs.</td><td>Find which side is wrong: a missed discount, a rate, a typo.</td></tr>
+      <tr><td><span class="pill p-review">Fuzzy match</span></td><td>No exact number, but a portal number scores 80+ on look-alike.</td><td>Confirm it is the same invoice (often a typo, a dropped zero, O for 0).</td></tr>
+      <tr><td><span class="pill p-miss">Missing in portal</span></td><td>In the books, nothing on the portal close enough.</td><td>Was the e-invoice generated? If not, it must be before filing.</td></tr>
+      <tr><td><span class="pill p-miss">Missing in books</span></td><td>On the portal, never matched to a books invoice.</td><td>An invoice raised but not booked, or booked under another number.</td></tr>
+    </table></div>
+  </div>
+
+  <footer>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="m3.4 6.4 8.6 6.2 8.6-6.2"/></svg>
+    <a href="mailto:chandanpanda615@gmail.com">chandanpanda615@gmail.com</a>
+    <span>· <a href="index.html">Portfolio</a> · <a href="proof.html">Proof page</a></span>
+  </footer>
+</div>
+
+<script>
+const r2 = x => Math.round((x + Number.EPSILON) * 100) / 100;
+const num = s => { const v = parseFloat(String(s).replace(/,/g, '')); return isNaN(v) ? 0 : r2(v); };   // fmt_inr()
+const inr = x => (x < 0 ? '−₹' : '₹') + Math.abs(r2(x)).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const COLS = ['inv', 'gstin', 'tax', 'igst', 'cgst', 'sgst'];
+const BOOKS = [
+  ['INV/2025/001', '29ABCDE1234F1Z5', '100000', '', '9000', '9000'],
+  ['INV/2025/002', '27FGHIJ5678K1Z2', '50000', '9000', '', ''],
+  ['INV / 2025 / 003', '29LMNOP4321Q1Z8', '24000', '', '600', '600'],
+  ['INV/2025/007', '29ABCDE1234F1Z5', '18500', '', '1665', '1665'],
+  ['INV/2025/0045', '33RSTUV8765W1Z1', '64000', '11520', '', ''],
+  ['INV/2025/010', '29LMNOP4321Q1Z8', '30000', '', '2700', '2700'],
+  ['INV/2025/006', '27FGHIJ5678K1Z2', '12000', '2160', '', ''],
+];
+const PORTAL = [
+  ['INV2025003', '29LMNOP4321Q1Z8', '24000', '', '600', '600'],
+  ['INV-2025-001', '29ABCDE1234F1Z5', '100000', '', '9000', '9000'],
+  ['INV/2025/045', '33RSTUV8765W1Z1', '64000', '11520', '', ''],
+  ['INV/2025/002', '27FGHIJ5678K1Z2', '52000', '9360', '', ''],
+  ['EXP/2025/014', '07XYZAB2468C1Z9', '41000', '7380', '', ''],
+  ['INV/2025/007', '29ABCDE1234F1Z5', '18500', '', '1665', '1665'],
+  ['INV/2025/01O', '29LMNOP4321Q1Z8', '30000', '', '2700', '2610'],
+];
+
+// normalize_inv(): strip, upper case, drop spaces, '-' and '/'
+const normInv = s => String(s).trim().toUpperCase().replace(/[\s\-\/]/g, '');
+
+// difflib.SequenceMatcher(None, a, b).ratio(): 2 * matched chars / total chars
+function ratio(a, b) {
+  const blocks = (alo, ahi, blo, bhi) => {
+    let bi = alo, bj = blo, bk = 0;
+    for (let i = alo; i < ahi; i++)
+      for (let j = blo; j < bhi; j++) {
+        let k = 0;
+        while (i + k < ahi && j + k < bhi && a[i + k] === b[j + k]) k++;
+        if (k > bk) { bi = i; bj = j; bk = k; }
+      }
+    if (!bk) return 0;
+    return bk + blocks(alo, bi, blo, bj) + blocks(bi + bk, ahi, bj + bk, bhi);
+  };
+  const t = a.length + b.length;
+  return t ? 2 * blocks(0, a.length, 0, b.length) / t : 1;
+}
+// fuzzy_score(): 0-100, truncated like int()
+function fuzzyScore(a, b) {
+  if (!a || !b) return 0;
+  return Math.trunc(ratio(String(a).trim().toUpperCase(), String(b).trim().toUpperCase()) * 100);
+}
+
+const amounts = r => ({tax: num(r.tax), igst: num(r.igst), cgst: num(r.cgst), sgst: num(r.sgst)});
+function compare(b, p) {
+  const d = {tax: r2(b.tax - p.tax), igst: r2(b.igst - p.igst), cgst: r2(b.cgst - p.cgst), sgst: r2(b.sgst - p.sgst)};
+  d.total = r2(d.tax + d.igst + d.cgst + d.sgst);
+  return d;
+}
+
+// reconcile_invoices(): exact on the cleaned number, then best fuzzy >= 80, leftovers both ways
+function reconcile(books, portal) {
+  const pmap = new Map();
+  portal.forEach(r => pmap.set(normInv(r.inv), r));
+  const out = [];
+  for (const br of books) {
+    const key = normInv(br.inv);
+    if (!key) continue;
+    const b = amounts(br);
+    if (pmap.has(key)) {
+      const pr = pmap.get(key), d = compare(b, amounts(pr));
+      out.push({b: br.inv, p: pr.inv, type: 'Exact', d, s: d.total === 0 ? 'Matched' : 'Amount mismatch'});
+      pmap.delete(key);
+      continue;
+    }
+    let best = 0, bestKey = null;
+    for (const k of pmap.keys()) { const sc = fuzzyScore(key, k); if (sc > best) { best = sc; bestKey = k; } }
+    if (best >= 80) {
+      const pr = pmap.get(bestKey), d = compare(b, amounts(pr));
+      out.push({b: br.inv, p: pr.inv, type: `Fuzzy (${best}%)`, d, s: d.total === 0 ? 'Fuzzy match' : 'Fuzzy + amount mismatch'});
+      pmap.delete(bestKey);
+    } else {
+      const d = {...b}; d.total = r2(b.tax + b.igst + b.cgst + b.sgst);
+      out.push({b: br.inv, p: '—', type: '—', d, s: 'Missing in portal'});
+    }
+  }
+  for (const pr of pmap.values()) {
+    const p = amounts(pr), d = {tax: -p.tax, igst: -p.igst, cgst: -p.cgst, sgst: -p.sgst};
+    d.total = -r2(p.tax + p.igst + p.cgst + p.sgst);
+    out.push({b: '—', p: pr.inv, type: '—', d, s: 'Missing in books'});
+  }
+  return out;
+}
+
+const pillOf = s => s === 'Matched' ? 'pass' : s.startsWith('Missing') ? 'miss' : 'review';
+const cell = v => v === 0 ? '<td>—</td>' : `<td style="white-space:nowrap"><b>${inr(v)}</b></td>`;
+
+function fillTable(id, rows) {
+  document.querySelector(`#${id} tbody`).innerHTML = rows.map(r => '<tr>' + r.map((c, i) =>
+    `<td><input value="${esc(c)}" data-col="${COLS[i]}" aria-label="${COLS[i]}" spellcheck="false"></td>`).join('') + '</tr>').join('');
+}
+function readTable(id) {
+  return [...document.querySelectorAll(`#${id} tbody tr`)].map(tr => {
+    const o = {}; tr.querySelectorAll('input').forEach(i => o[i.dataset.col] = i.value); return o;
+  });
+}
+
+function run() {
+  const res = reconcile(readTable('books'), readTable('portal'));
+  const n = s => res.filter(x => pillOf(x.s) === s).length;
+  let h = `<div class="tiles">
+    <div class="tile"><span class="n">${n('pass')}</span><span class="l">Matched</span><span class="s">✓ nothing to do</span></div>
+    <div class="tile"><span class="n">${n('review')}</span><span class="l">Mismatch or fuzzy</span><span class="s warn">! a person checks</span></div>
+    <div class="tile"><span class="n">${n('miss')}</span><span class="l">Missing one side</span><span class="s miss">✕ fix before filing</span></div>
+  </div>`;
+  h += '<div class="tw"><table class="log"><tr><th>Books → portal</th><th>Match</th><th>Taxable diff</th><th>IGST diff</th><th>CGST diff</th><th>SGST diff</th><th>Total diff</th><th>Result</th></tr>';
+  res.forEach(x => {
+    h += `<tr><td><code>${esc(x.b)}</code><br><small>→ ${esc(x.p)}</small></td><td style="white-space:nowrap">${esc(x.type)}</td>` +
+         cell(x.d.tax) + cell(x.d.igst) + cell(x.d.cgst) + cell(x.d.sgst) + cell(x.d.total) +
+         `<td><span class="pill p-${pillOf(x.s)}">${esc(x.s)}</span></td></tr>`;
+  });
+  h += '</table></div>';
+  const open = n('review') + n('miss');
+  h += open
+    ? `<p class="verdict bad">${open} of ${res.length} lines need a person before GSTR-1 goes in. In the workbook they are amber and red, on their own sheet.</p>`
+    : `<p class="verdict good">All ${res.length} invoices tie, books to portal, to the paisa.</p>`;
+  document.getElementById('out').innerHTML = h;
+}
+function reset() { fillTable('books', BOOKS); fillTable('portal', PORTAL); run(); }
+document.getElementById('run').onclick = run;
+document.getElementById('reset').onclick = reset;
+reset();
+</script>
+</body>
+</html>

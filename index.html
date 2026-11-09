@@ -9,327 +9,40 @@
 <meta property="og:title" content="Chandan Panda · Automation for Accounts, Audit, Tax &amp; Finance">
 <meta property="og:description" content="Purchase bills into NetSuite across eight brands, 808/808 prepayments reconciled, live demos you can try.">
 <meta property="og:url" content="https://chandanpanda615-lab.github.io/projects/">
+<meta property="og:image" content="https://chandanpanda615-lab.github.io/projects/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Chandan Panda, CA Finalist. Finance automation portfolio: eight brands on a purchase-bill pipeline, 808 of 808 prepayments reconciled.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Chandan Panda · Automation for Accounts, Audit, Tax &amp; Finance">
+<meta name="twitter:description" content="Eight brands on a purchase-bill pipeline, 808 of 808 prepayments reconciled, and demos you can run in the browser.">
+<meta name="twitter:image" content="https://chandanpanda615-lab.github.io/projects/og.png">
+<meta name="author" content="Chandan Panda">
+<meta name="theme-color" content="#0F766E">
 <link rel="canonical" href="https://chandanpanda615-lab.github.io/projects/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d1118'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='15' text-anchor='middle' fill='%2375a7ff'%3ECP%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230F766E'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='15' text-anchor='middle' fill='%23ffffff'%3ECP%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0d1118;
-    --surface:#151b24;
-    --surface-2:#1a2330;
-    --line:#293445;
-    --line-2:#3a485c;
-    --text:#f1f5f9;
-    --muted:#a7b3c4;
-    --accent:#75a7ff;
-    --accent-2:#47c9bb;
-    --gold:#f2bd63;
-    --green:#70d69a;
-    --chip:#202a38;
-    --r:14px;
-    --sp:20px;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-
-  body{
-    margin:0;color:var(--text);
-    font:16px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    font-feature-settings:"cv05","ss01";
-    background:
-      radial-gradient(1100px 620px at 12% -12%, rgba(117,167,255,.17), transparent 62%),
-      radial-gradient(820px 520px at 92% 2%, rgba(71,201,187,.11), transparent 60%),
-      radial-gradient(760px 620px at 60% 108%, rgba(242,189,99,.06), transparent 60%),
-      var(--bg);
-    background-attachment:fixed;
-  }
-  /* faint engineering grid, sits behind everything */
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.021) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.021) 1px, transparent 1px);
-    background-size:56px 56px;
-    mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
-    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
-  }
-  .wrap{max-width:1060px;margin:0 auto;padding:44px 20px 64px;position:relative;z-index:1}
-
-  a{color:var(--accent);text-decoration:none}
-  a:hover{color:var(--accent-2);text-decoration:underline;text-underline-offset:3px}
-  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
-
-  /* ---------- masthead ---------- */
-  header{padding:8px 0 4px}
-  header h1{
-    font-size:clamp(2.1rem,5vw,2.8rem);margin:0 0 10px;letter-spacing:-.033em;font-weight:700;
-    background:linear-gradient(102deg,#fff 8%,#cfe0ff 48%,#8fbaff 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  header .tag{color:var(--muted);font-size:1.03rem;max-width:62ch}
-  header .tag b{color:var(--text);font-weight:600}
-
-  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
-  .stat{
-    flex:1 1 128px;padding:12px 14px;border-radius:12px;
-    background:linear-gradient(180deg,var(--surface-2),var(--surface));
-    border:1px solid var(--line);
-  }
-  .stat .n{display:block;font-size:1.32rem;font-weight:700;letter-spacing:-.02em;color:var(--text)}
-  .stat .l{display:block;font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
-
-  nav.jump{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
-  nav.jump a{
-    font-size:.83rem;font-weight:500;color:var(--muted);
-    padding:6px 13px;border-radius:999px;border:1px solid var(--line);
-    background:var(--chip);transition:color .2s,border-color .2s,background .2s;
-  }
-  nav.jump a:hover{color:var(--text);border-color:var(--line-2);background:var(--surface-2);text-decoration:none}
-
-  /* ---------- intro ---------- */
-  .intro{
-    margin:30px 0 0;padding:24px;border-radius:var(--r);
-    background:linear-gradient(180deg,var(--surface-2),var(--surface));
-    border:1px solid var(--line);position:relative;overflow:hidden;
-  }
-  .intro::before{
-    content:"";position:absolute;inset:0 0 auto;height:1px;
-    background:linear-gradient(90deg,transparent,rgba(91,157,255,.75),rgba(56,189,248,.35),transparent);
-  }
-  .intro p{margin:0 0 13px}.intro p:last-child{margin:0}
-  .lead{font-weight:600;font-size:1.1rem;letter-spacing:-.011em}
-  .note{
-    font-size:.9rem;color:var(--muted);border-left:3px solid var(--accent);
-    padding:12px 16px;background:rgba(91,157,255,.055);
-    border-radius:0 10px 10px 0;margin-top:18px;
-  }
-  .note strong{color:var(--text)}
-
-  /* ---------- learning story ---------- */
-  .story-grid{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:story}
-  .story-step{
-    counter-increment:story;position:relative;padding:21px 22px 20px 66px;
-    border:1px solid var(--line);border-radius:var(--r);
-    background:linear-gradient(145deg,rgba(26,35,48,.96),rgba(21,27,36,.96));
-  }
-  .story-step::before{
-    content:"0" counter(story);position:absolute;left:20px;top:20px;
-    color:var(--accent-2);font:600 .78rem/1 "JetBrains Mono",ui-monospace,monospace;
-    letter-spacing:.04em;
-  }
-  .story-step::after{
-    content:"";position:absolute;left:48px;top:18px;bottom:18px;width:1px;
-    background:linear-gradient(var(--accent),rgba(71,201,187,.15));
-  }
-  .story-step .when{
-    display:block;margin-bottom:6px;color:var(--accent-2);font-size:.73rem;
-    font-weight:700;letter-spacing:.09em;text-transform:uppercase;
-  }
-  .story-step h3{margin:0 0 8px;font-size:1.02rem;letter-spacing:-.012em}
-  .story-step p{margin:0;color:var(--muted);font-size:.925rem}
-  .story-step strong{color:var(--text);font-weight:600}
-  .story-close{
-    margin:16px 0 0;padding:15px 18px;border-left:3px solid var(--accent-2);
-    border-radius:0 10px 10px 0;background:rgba(71,201,187,.065);
-    color:var(--muted);font-size:.93rem;
-  }
-  .story-close strong{color:var(--text)}
-
-  /* ---------- section headers ---------- */
-  .sechead{display:flex;align-items:center;gap:11px;margin:56px 0 4px}
-  .sechead svg{width:19px;height:19px;flex:none;stroke:var(--accent);fill:none;
-    stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-  h2{margin:0;font-size:1.42rem;letter-spacing:-.021em;font-weight:600}
-  .sechead .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent)}
-  .sub{color:var(--muted);margin:0 0 20px;font-size:.95rem;max-width:76ch}
-
-  /* ---------- cards ---------- */
-  .grid{display:grid;gap:16px}
-  .card{
-    background:linear-gradient(180deg,var(--surface-2),var(--surface));
-    border:1px solid var(--line);border-radius:var(--r);
-    padding:20px 22px;position:relative;overflow:hidden;
-    transition:border-color .22s ease,transform .22s ease,box-shadow .22s ease;
-  }
-  .card:hover{
-    border-color:rgba(91,157,255,.5);transform:translateY(-3px);
-    box-shadow:0 14px 34px -18px rgba(0,0,0,.85),0 0 0 1px rgba(91,157,255,.09);
-  }
-  .card .num{
-    position:absolute;top:15px;right:18px;font-size:.74rem;color:var(--muted);
-    font-weight:700;opacity:.45;font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:.04em;
-  }
-  .card h3{margin:0 0 9px;font-size:1.07rem;padding-right:34px;letter-spacing:-.014em;font-weight:600;line-height:1.42}
-  .card p{margin:0 0 10px;font-size:.945rem}
-  .card .impact{
-    color:var(--gold);font-size:.88rem;font-weight:600;margin:14px 0 12px;
-    padding:9px 13px;background:rgba(245,181,68,.07);
-    border:1px solid rgba(245,181,68,.19);border-radius:9px;
-  }
-  .stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-  .stack span{
-    background:var(--chip);color:var(--muted);font-size:.755rem;
-    padding:4px 10px;border-radius:999px;border:1px solid var(--line);
-    font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:-.01em;
-  }
-  .badge{
-    display:inline-block;font-size:.685rem;font-weight:700;padding:3px 9px;
-    border-radius:999px;margin-left:8px;vertical-align:middle;
-    letter-spacing:.035em;text-transform:uppercase;white-space:nowrap;
-  }
-  .b-live{background:rgba(74,222,128,.12);color:#5fd38a;border:1px solid rgba(74,222,128,.28)}
-  .b-wip{background:rgba(245,181,68,.12);color:var(--gold);border:1px solid rgba(245,181,68,.28)}
-  .b-exp{background:rgba(91,157,255,.13);color:#8dbaff;border:1px solid rgba(91,157,255,.3)}
-
-  /* featured long-form cards */
-  .card.wide{grid-column:1/-1;padding:24px 26px}
-  .card.wide::before{
-    content:"";position:absolute;inset:0 0 auto;height:2px;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2) 42%,transparent 88%);
-    opacity:.85;
-  }
-  .card p.cap{
-    margin:22px 0 8px;font-weight:600;font-size:.935rem;color:var(--text);
-    letter-spacing:-.01em;padding-left:12px;border-left:2px solid var(--accent);
-  }
-
-  /* ---------- tables ---------- */
-  .tw{overflow-x:auto;margin:0 0 14px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.2)}
-  table.log{width:100%;border-collapse:collapse;font-size:.875rem;min-width:540px}
-  table.log th{
-    text-align:left;color:var(--muted);font-weight:600;font-size:.74rem;
-    text-transform:uppercase;letter-spacing:.06em;
-    padding:11px 16px;border-bottom:1px solid var(--line-2);
-    background:rgba(255,255,255,.022);white-space:nowrap;
-  }
-  table.log td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text)}
-  table.log tr:last-child td{border-bottom:none}
-  table.log tbody tr,table.log tr{transition:background .16s ease}
-  table.log tr:hover td{background:rgba(91,157,255,.045)}
-  table.log td.ok{color:var(--green);white-space:nowrap;font-weight:600}
-  table.log td:first-child{color:var(--muted)}
-  table.log td strong{color:var(--text)}
-
-  code{
-    background:rgba(91,157,255,.09);border:1px solid rgba(91,157,255,.18);
-    border-radius:5px;padding:1.5px 6px;font-size:.83em;color:#a8c8ff;
-    font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;
-  }
-  .scope{
-    font-size:.875rem;color:var(--muted);border:1px solid rgba(245,181,68,.22);
-    border-left:3px solid var(--gold);
-    padding:13px 16px;background:rgba(245,181,68,.05);
-    border-radius:0 10px 10px 0;margin:14px 0 12px;
-  }
-  .scope strong{color:var(--gold)}
-  /* at a glance */
-  .tiles{display:grid;gap:12px;grid-template-columns:repeat(3,1fr);margin:0 0 16px}
-  .tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
-  .tile .n{display:block;font-size:1.6rem;font-weight:700;letter-spacing:-.02em}
-  .tile .l{display:block;color:var(--muted);font-size:.86rem;margin:2px 0 8px}
-  .tile .s{font-size:.8rem;font-weight:600;color:var(--green)}
-  .viz-grid{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin:16px 0}
-  figure.viz{margin:0}
-  .viz figcaption b{display:block;font-size:1rem}
-  .viz figcaption span{display:block;color:var(--muted);font-size:.84rem;margin:2px 0 12px}
-  .chart{width:100%}
-  .chart svg{display:block;overflow:visible}
-  .chart rect,.chart circle{cursor:default}
-  .chart rect:focus,.chart circle:focus{outline:2px solid var(--gold);outline-offset:2px}
-  .chart .grid{stroke:var(--line);stroke-width:1}
-  .chart .ax{fill:var(--muted);font:500 11px Inter,sans-serif}
-  .chart .lab{fill:var(--text);font:600 12px Inter,sans-serif}
-  .chart .cat{fill:var(--text);font:500 13px Inter,sans-serif}
-  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:8px 0 10px;font-size:.82rem;color:var(--muted)}
-  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-  .viz details{margin:10px 0 0;font-size:.85rem}
-  .viz details summary{cursor:pointer;color:var(--accent)}
-  .viz details table.log{min-width:0;margin-top:8px}
-  .viz .foot{color:var(--muted);font-size:.84rem;margin:10px 0 0}
-  .tip{position:fixed;z-index:20;pointer-events:none;opacity:0;transition:opacity .12s;background:#0b0f15;border:1px solid var(--line-2);
-    border-radius:8px;padding:8px 10px;font-size:.82rem;color:var(--text);max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
-  .flow{list-style:none;padding:0;margin:4px 0 14px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:22px}
-  .flow li{position:relative;background:var(--surface-2);border:1px solid var(--line-2);border-radius:11px;padding:11px 11px}
-  .flow li b{display:block;font-size:.86rem;margin-bottom:4px}
-  .flow li span{display:block;color:var(--muted);font-size:.76rem;line-height:1.4}
-  .flow li:not(:last-child)::after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:var(--accent);font-weight:700}
-  .flow li.gate{border-color:rgba(242,189,99,.55);background:rgba(242,189,99,.07)}
-  .flow-side{border:1px dashed rgba(242,189,99,.55);border-radius:11px;padding:11px 14px;font-size:.88rem;color:var(--muted)}
-  .flow-side b{color:var(--text)}
-  .who{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);
-    border:1px solid rgba(242,189,99,.45);border-radius:999px;padding:2px 8px;margin-right:6px}
-  @media(max-width:900px){
-    .flow{grid-template-columns:1fr;gap:20px}
-    .flow li:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-19px;transform:translateX(-50%)}
-    .tiles{grid-template-columns:1fr 1fr}
-    .viz-grid{grid-template-columns:1fr}
-  }
-  @media(max-width:420px){.tiles{grid-template-columns:1fr}}
-
-  .proof{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
-  .proof a{font-size:.8rem;font-weight:600;padding:5px 10px;border-radius:8px;border:1px solid var(--line-2);text-decoration:none}
-  .proof a:hover{border-color:var(--accent)}
-  .prove{margin:16px 0 0;padding:14px 16px;border-radius:12px;border:1px solid rgba(74,222,128,.28);background:rgba(74,222,128,.06)}
-  .prove strong{color:var(--text)}
-
-  /* ---------- mini rows ---------- */
-  .mini{display:grid;gap:10px;grid-template-columns:1fr}
-  .mini .row{
-    background:linear-gradient(180deg,var(--surface-2),var(--surface));
-    border:1px solid var(--line);border-radius:11px;
-    padding:14px 18px;display:flex;justify-content:space-between;gap:14px;
-    align-items:center;flex-wrap:wrap;transition:border-color .2s ease,transform .2s ease;
-  }
-  .mini .row:hover{border-color:var(--line-2);transform:translateX(3px)}
-  .mini .row b{font-weight:600;letter-spacing:-.01em}
-  .mini .row .d{color:var(--muted);font-size:.9rem;flex:1;min-width:220px}
-  .mini .row .t{
-    color:var(--muted);font-size:.755rem;font-family:"JetBrains Mono",ui-monospace,monospace;
-    background:var(--chip);border:1px solid var(--line);padding:4px 10px;border-radius:999px;white-space:nowrap;
-  }
-
-  /* ---------- closing ---------- */
-  .demo{
-    margin-top:56px;padding:26px;border-radius:var(--r);
-    background:linear-gradient(180deg,var(--surface-2),var(--surface));
-    border:1px solid var(--line);position:relative;overflow:hidden;
-  }
-  .demo::before{
-    content:"";position:absolute;inset:0 0 auto;height:1px;
-    background:linear-gradient(90deg,transparent,rgba(245,181,68,.55),transparent);
-  }
-  .demo .sechead{margin-top:0}
-  .demo ul{margin:14px 0 0;padding-left:20px;color:var(--muted)}
-  .demo li{margin-bottom:9px}
-  .demo li strong{color:var(--text)}
-
-  footer{
-    margin:56px 0 0;padding-top:26px;border-top:1px solid var(--line);
-    color:var(--muted);font-size:.93rem;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
-  }
-  footer svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.7;
-    stroke-linecap:round;stroke-linejoin:round;flex:none}
-
-  @media(min-width:700px){
-    .grid{grid-template-columns:1fr 1fr}
-    .story-grid{grid-template-columns:1fr 1fr}
-  }
-  @media(max-width:560px){
-    .wrap{padding:32px 15px 48px}
-    .card{padding:17px 17px}
-    .card.wide{padding:19px 17px}
-    .stat{flex:1 1 44%}
-  }
-  @media(prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
-    .card:hover,.mini .row:hover{transform:none}
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 </head>
-<body>
+<body id="top">
+<div class="topbar">
+  <div class="in">
+    <a class="mk" href="#top">CP <span>· Chandan Panda</span></a>
+    <nav aria-label="Sections">
+      <a href="#glance">Summary</a>
+      <a href="#accounts">Accounts work</a>
+      <a class="hide-sm" href="#work">Selected work</a>
+      <a class="hide-sm" href="#experiments">Experiments</a>
+      <a href="proof.html">Proof</a>
+      <a class="hide-sm" href="gst.html">GST demo</a>
+      <a class="hide-sm" href="#progress">In progress</a>
+    </nav>
+    <a class="mail" href="mailto:chandanpanda615@gmail.com?subject=CA%20Industrial%20Training">Email me</a>
+  </div>
+</div>
+
 <div class="wrap">
   <header>
     <h1>Chandan Panda</h1>
@@ -339,21 +52,16 @@
       <div class="stat"><span class="n">1 → 8</span><span class="l">Brands on the booking pipeline</span></div>
       <div class="stat"><span class="n">~2,400</span><span class="l">Purchase bills / month in scope</span></div>
       <div class="stat"><span class="n">808 / 808</span><span class="l">Prepayments reconciled</span></div>
-      <div class="stat"><span class="n">11</span><span class="l">Experiments</span></div>
+      <div class="stat"><span class="n">40+</span><span class="l">Tools built so far</span></div>
     </div>
-
-    <nav class="jump" aria-label="Sections">
-      <a href="#glance">At a glance</a>
-      <a href="#story">My story</a>
-      <a href="#accounts">Accounts work</a>
-      <a href="#work">Selected work</a>
-      <a href="proof.html">Proof: try it</a>
-      <a href="#experiments">Experiments</a>
-      <a href="#also">Also built</a>
-      <a href="#progress">In progress</a>
-      <a href="mailto:chandanpanda615@gmail.com">Contact</a>
-    </nav>
   </header>
+
+  <div class="cta">
+    <a href="mailto:chandanpanda615@gmail.com?subject=CA%20Industrial%20Training">Email me about industrial training</a>
+    <a class="ghost" href="https://www.linkedin.com/in/chandan090903/">LinkedIn</a>
+    <a class="ghost" href="proof.html">Run the demo</a>
+    <p class="ask">Looking for a CA Industrial Training placement where finance work gets built, checked and measured, not only closed.</p>
+  </div>
 
   <section class="intro">
     <p class="lead">I'm a CA Final student who builds automation for the accounts and audit work most teams still do by hand... and runs it on the live books, every day.</p>
@@ -416,6 +124,19 @@
     <div class="chart" id="chHrs" role="img" aria-label="Strike-off notices, 972 pages: 68 hours by hand, under 2 automated. Prepayment knock-off, one brand batch: about 6.5 hours by hand, about 40 minutes automated. GST reconciliation, one client month: 5 hours by hand, under 30 minutes automated."></div>
     <details><summary>Show as a table</summary><table class="log"><tr><th>Job</th><th>By hand</th><th>Automated</th></tr><tr><td>Strike-off notices, 972 pages</td><td>~68 h (5 min a page)</td><td>under 2 h</td></tr><tr><td>Prepayment knock-off, one brand batch</td><td>6 to 7 h</td><td>~40 min, unattended</td></tr><tr><td>GST reconciliation, one client month</td><td>~5 h</td><td>under 30 min</td></tr></table></details>
     <p class="foot">Automated time is the machine running, mostly unattended. The checking afterwards still takes a person, and that time isn't in these bars.</p>
+  </figure>
+
+  <figure class="card wide viz">
+    <figcaption><b>Bills in the booked ledger, by invoice month</b><span>the file that stops a second booking, read on 10 November 2026</span></figcaption>
+    <div class="lbars">
+      <div class="lrow"><span class="lt">Jun 2026</span><span class="lb"><i style="width:88.2%"></i></span><span class="lv">2,464</span></div>
+      <div class="lrow"><span class="lt">Jul 2026</span><span class="lb"><i style="width:81.6%"></i></span><span class="lv">2,279</span></div>
+      <div class="lrow"><span class="lt">Aug 2026</span><span class="lb"><i style="width:75.3%"></i></span><span class="lv">2,104</span></div>
+      <div class="lrow"><span class="lt">Sep 2026</span><span class="lb"><i style="width:80.4%"></i></span><span class="lv">2,246</span></div>
+      <div class="lrow"><span class="lt">Oct 2026</span><span class="lb"><i style="width:100%"></i></span><span class="lv">2,793</span></div>
+      <div class="lrow"><span class="lt">Nov 2026</span><span class="lb"><i style="width:18.5%"></i></span><span class="lv">518</span></div>
+    </div>
+    <p class="foot">12,404 rows in the ledger. 9,204 came from a June to October NetSuite export, loaded before the first run so the pipeline would not book what another team had already keyed. 3,200 were written by the runs themselves, from 17 September. November is nine days, not a month. The file holds an invoice number, a hub, and two dates. No vendor, no amount.</p>
   </figure>
 
   <div class="sechead" id="story">
@@ -481,6 +202,27 @@
         <tr><td>Bills another team had keyed by hand</td><td>Not in my ledger, so the pipeline would have booked them again. The full June to October NetSuite export now loads into the ledger before any run.</td></tr>
       </table>
       </div>
+
+      <p class="cap">The gate, on two real mornings.</p>
+      <div class="runpanel">
+        <p class="rh">Preflight, 9 November 2026</p>
+        <pre><span class="ok">[OK]</span>   bills: 6 unique External IDs
+<span class="ok">[OK]</span>   expense lines: 6
+<span class="ok">[OK]</span>   zip attachments: 6/6 match exactly
+<span class="ok">[OK]</span>   tax maths: 6/6
+<span class="ok">[OK]</span>   vendor / GSTIN / dates / period: 6/6
+<span class="ok">[OK]</span>   duplicate guards: 0 in the ledger, 0 in the newest export
+<span class="ok">[OK]</span>   wrong file (md5 + saved QR): 6/6
+
+<span class="big">PREFLIGHT PASSED: 6 bills, 6 lines, 6 attachments.</span></pre>
+      </div>
+      <div class="runpanel bad-panel">
+        <p class="rh">Preflight, same week</p>
+        <pre><span class="bad">[FAIL]</span> preflight: 1
+<span class="big">PREFLIGHT FAILED: 7 bills read. Fix the rows above before importing anything.</span>
+STOPPED at step 'preflight' - read the message above, fix it, run me again.</pre>
+      </div>
+      <p class="aside-line">Same gate both times. The first batch went to NetSuite after a person read the six rows. The second never left the folder. Hub and brand names removed.</p>
 
       <p class="cap">How I know the numbers are right.</p>
       <p>An answer key the model never sees, built only from bills where the portal figure and the QR total agree. On 8 October all 473 booked amounts that had a key matched it. Across 730 bills from all eight brands, Gemini's first read was right on 459, wrong on one, and 17 needed a person. The rest had no independent key, and I don't count what I can't check. The first batch after go-live, 130 bills, reconciled to NetSuite to the rupee.</p>
@@ -627,7 +369,7 @@
       <h3>GST Reconciliation Engine<span class="badge b-live">in use</span></h3>
       <p>Automated three-way matching — GSTR-1 vs 3B vs books — over 700+ invoices/month across .xlsx &amp; .xlsb. Flags mismatches, ITC discrepancies and rounding differences into an exception report.</p>
       <p class="impact">⟶ Cut reconciliation from ~5 hours to under 30 minutes per client/month.</p>
-      <div class="proof"><a href="https://github.com/chandanpanda615-lab/automation/tree/main/gst-reconciliation">Read the code →</a></div>
+      <div class="proof"><a href="gst.html">See it work →</a><a href="https://github.com/chandanpanda615-lab/automation/tree/main/gst-reconciliation">Read the code →</a></div>
       <div class="stack"><span>Python</span><span>pandas</span><span>openpyxl</span></div>
     </div>
 
@@ -783,6 +525,10 @@
       <div class="stack"><span>Firecrawl</span><span>Apify</span><span>Playwright</span><span>Claude in Chrome</span><span>CLI</span></div>
     </div>
 
+    <details class="more">
+      <summary>8 more experiments <span>writing craft, scraping, marking scripts, a phone repair, memory</span></summary>
+      <div class="grid">
+
     <div class="card">
       <h3>/lecture — a podcast into usable notes<span class="badge b-live">in use</span></h3>
       <p>Point it at a notebook holding a lecture or an interview. Two queries go out — one for structure and speakers, one for the questions the host actually asked and the moments worth watching — and one markdown file comes back: a timestamped table of the six to eight segments that earn your time, every notable question in order, the quotes, and what to do with all of it.</p>
@@ -855,6 +601,9 @@
       <div class="stack"><span>claude-mem</span><span>local index</span></div>
     </div>
 
+      </div>
+    </details>
+
   </div>
 
   <div class="sechead" id="also">
@@ -905,8 +654,16 @@
 
   <footer>
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.4"/><path d="m3.4 6.4 8.6 6.2 8.6-6.2"/></svg>
-    <a href="mailto:chandanpanda615@gmail.com">chandanpanda615@gmail.com</a>
-    <span>· CA Finalist · Accounts, GST &amp; Finance Automation</span>
+    <a href="mailto:chandanpanda615@gmail.com?subject=CA%20Industrial%20Training">chandanpanda615@gmail.com</a>
+    <span>·</span>
+    <a href="https://github.com/chandanpanda615-lab">GitHub</a>
+    <span>·</span>
+    <a href="https://www.linkedin.com/in/chandan090903/">LinkedIn</a>
+    <span>·</span>
+    <a href="proof.html">Proof page</a>
+    <span>·</span>
+    <a href="gst.html">GST demo</a>
+    <span>· CA Finalist · Accounts, GST &amp; Finance Automation · open to CA Industrial Training</span>
   </footer>
 </div>
 <script>
@@ -939,12 +696,12 @@
     });
   }
   stack('chAcc', [
-    {v: 459, c: '#0ca30c', t: 'Right first time', short: 'right'},
-    {v: 17, c: '#fab219', t: 'Sent to a person', short: 'to a person'},
-    {v: 1, c: '#d03b3b', t: 'Wrong (caught before booking)', short: 'wrong'},
-    {v: 253, c: '#3a485c', t: 'No independent key to score against', short: 'no key'},
+    {v: 459, c: '#15803D', t: 'Right first time', short: 'right'},
+    {v: 17, c: '#D97706', t: 'Sent to a person', short: 'to a person'},
+    {v: 1, c: '#B91C1C', t: 'Wrong (caught before booking)', short: 'wrong'},
+    {v: 253, c: '#CFC8BC', t: 'No independent key to score against', short: 'no key'},
   ]);
-  legend('lgAcc', [['#0ca30c', '✓ Right · 459'], ['#fab219', '! To a person · 17'], ['#d03b3b', '✕ Wrong · 1'], ['#3a485c', 'No key · 253']]);
+  legend('lgAcc', [['#15803D', '✓ Right · 459'], ['#D97706', '! To a person · 17'], ['#B91C1C', '✕ Wrong · 1'], ['#CFC8BC', 'No key · 253']]);
 
   // 2. one series over time: 2px line, markers, crosshair-free point tips with big hit targets
   function line(id, pts) {
@@ -955,10 +712,10 @@
       el('line', {x1: L, x2: W - R, y1: ys(v), y2: ys(v), class: 'grid'}, svg);
       el('text', {x: L - 8, y: ys(v) + 4, class: 'ax', 'text-anchor': 'end'}, svg).textContent = v;
     });
-    el('polyline', {points: pts.map((p, i) => `${xs(i)},${ys(p.v)}`).join(' '), fill: 'none', stroke: '#3987e5', 'stroke-width': 2, 'stroke-linejoin': 'round'}, svg);
+    el('polyline', {points: pts.map((p, i) => `${xs(i)},${ys(p.v)}`).join(' '), fill: 'none', stroke: '#0F766E', 'stroke-width': 2, 'stroke-linejoin': 'round'}, svg);
     pts.forEach((p, i) => {
       el('text', {x: xs(i), y: H - 8, class: 'ax', 'text-anchor': 'middle'}, svg).textContent = p.d;
-      el('circle', {cx: xs(i), cy: ys(p.v), r: 4.5, fill: '#3987e5', stroke: '#151b24', 'stroke-width': 2}, svg);
+      el('circle', {cx: xs(i), cy: ys(p.v), r: 4.5, fill: '#0F766E', stroke: '#ffffff', 'stroke-width': 2}, svg);
       if (i === 0 || i === pts.length - 1) el('text', {x: xs(i) + (i ? -8 : 8), y: ys(p.v) - 10, class: 'lab', 'text-anchor': i ? 'end' : 'start'}, svg).textContent = p.v;
       const hit = el('circle', {cx: xs(i), cy: ys(p.v), r: 14, fill: 'transparent'}, svg);
       hover(hit, `<b>${p.d}</b><br>${p.v} open${p.n ? '<br>' + p.n : ''}`);
@@ -990,7 +747,7 @@
       });
     });
   }
-  const S = [{t: 'Automated', c: '#3987e5'}, {t: 'By hand', c: '#d95926'}];
+  const S = [{t: 'Automated', c: '#0F766E'}, {t: 'By hand', c: '#C2410C'}];
   hbars('chHrs', [
     {t: 'Strike-off notices, 972 pages', v: [2, 68], lbl: ['under 2 h', '~68 h']},
     {t: 'Prepayment knock-off, one brand', v: [0.67, 6.5], lbl: ['~40 min', '6–7 h']},
